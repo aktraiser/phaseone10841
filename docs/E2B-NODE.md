@@ -33,7 +33,11 @@ Valeurs initiales, configurables avec les variables `PHASEONE_LIMIT_*` du fichie
 
 La base `${DATABASE_PATH}.lab.sqlite` conserve quotas, versions du canal et traces. Sauvegarder cette base et la base principale de manière cohérente, ainsi que leurs WAL si les services sont actifs. Prévoir une rétention opérateur des traces. Le canal est borné à 128 chemins, 2048 versions et 32 KiB par fichier ; les archives ne sont pas modifiables.
 
-Les admissions sont atomiques entre connexions SQLite. Utiliser un seul processus Node pour les visites : les connexions SDK et jetons de session sont en mémoire. Les sessions ne reprennent pas après redéploiement. Les places incertaines restent retenues jusqu'au timeout plus 30 secondes et les budgets persistent. Une création incertaine n'est pas automatiquement retentée. Ces limites ne constituent pas un plafond financier de tout le compte E2B.
+Les admissions et verrous de commande sont atomiques entre processus partageant le même fichier SQLite persistant. L'identifiant E2B, l'empreinte du jeton de visite, l'échéance, les compteurs et l'activité sont conservés en base. Un autre processus peut reprendre une session avec le même jeton ; les secrets de connexion E2B ne sont pas enregistrés en base. La reconnexion utilise la durée restante avec une marge de 15 secondes, jamais une nouvelle durée de dix minutes. Un arrêt normal du serveur détache les sessions plutôt que de les détruire.
+
+Une commande dont le résultat est incertain conserve son verrou jusqu'à fermeture ou expiration : elle n'est pas rejouée automatiquement par un autre processus. Les quotas restent réservés après une erreur. Le bouton « Fermer mes VM existantes » demande à E2B la destruction des VM associées à la clé courante ; seules les suppressions confirmées libèrent leur place. Si la création a échoué avant que son identifiant E2B soit connu, la réservation demeure jusqu'à expiration. Les secondes réservées ne sont pas remboursées.
+
+Les erreurs E2B renvoient une référence et une étape (`provider_create`, `guest_setup`, `provider_reconnect`, `command`, `provider_kill`), également journalisées. Les messages bruts, clés et jetons ne sont pas affichés dans ces diagnostics. Les anciennes sessions sans jeton persistant ne peuvent pas être reprises, mais peuvent être fermées par le bouton de nettoyage si leur identifiant E2B est connu.
 
 ## Accès agent
 

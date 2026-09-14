@@ -29,3 +29,5 @@ PY`,timeout_ms:10000})},access);
   }catch(e){out.textContent='Test incomplet : '+e.message;}
   finally{if(visit){try{const closed=await request('/visits/'+visit.id+'/close',{method:'POST',headers:{'X-Visit-Token':visit.token}},access);out.textContent+=closed.kill_confirmed?'\nDestruction confirmée.':'\nDestruction non confirmée ; le timeout E2B reste actif.';}catch{out.textContent+='\nFermeture non confirmée ; le timeout E2B reste actif.';}}buttons.forEach(b=>b.disabled=false);}
 };
+
+document.querySelector('#cleanup').onclick=async()=>{buttons.forEach(b=>b.disabled=true);try{out.textContent=JSON.stringify(await request('/cleanup',{method:'POST'}),null,2);}catch(e){out.textContent=e.message;}finally{buttons.forEach(b=>b.disabled=false);}};
