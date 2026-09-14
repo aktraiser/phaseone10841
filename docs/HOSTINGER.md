@@ -30,6 +30,10 @@ Hostinger propose des applications Node.js avec import GitHub sur certaines offr
 
 Le serveur est hors de `dist` et charge `dist/server/index.js` ainsi que les migrations de `drizzle/`. Si le panneau ne conserve que le dossier de sortie, il faut adapter ce réglage ou utiliser le VPS ; ne pas démarrer directement le fichier Worker `dist/server/index.js`.
 
+### Erreur `vite: command not found`
+
+Vite est déclaré dans `dependencies` pour rester disponible quand l'hébergeur installe uniquement les dépendances de production (`npm ci --omit=dev` ou `NODE_ENV=production`). Après récupération de la dernière version de `main`, relancer une installation propre et la compilation. La commande de compilation reste `npm run build` ; aucune installation globale de Vite n'est nécessaire.
+
 Variables à renseigner dans Hostinger, sans commettre de secrets :
 
 ```text
