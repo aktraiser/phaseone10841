@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import app from '../dist/server/index.js';
 import { openDatabase } from './sqlite.mjs';
 import { Lab } from './lab.mjs';
+import { AgentVisit } from './agent-visit.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 function originValue(value) {
@@ -25,10 +26,11 @@ export function createApplication({ databasePath, publicOrigin, trustProxyHops =
   const canonicalOrigin = originValue(publicOrigin);
   if (!Number.isInteger(trustProxyHops) || trustProxyHops < 0 || trustProxyHops > 10) throw new Error('Invalid TRUST_PROXY_HOPS');
   const DB = openDatabase(databasePath, migrationsDirectory);
-  let lab;
+  let lab, agentVisit;
   const laboratory = async request => {
     if (!labEnv.E2B_API_KEY || !labEnv.PHASEONE_LAB_KEY && !labEnv.PHASEONE_ACCESS_KEYS_JSON) return new Response(JSON.stringify({error:'Configure E2B_API_KEY and PHASEONE_LAB_KEY in Hostinger.'}), {status:503,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
     lab ||= new Lab({filename:databasePath+'.lab.sqlite',env:labEnv,...(labFactory?{factory:labFactory}:{})});
+    if(new URL(request.url).pathname==='/agent/visit'){agentVisit ||= new AgentVisit(lab);return agentVisit.handle(request);}
     return lab.handle(request);
   };
   const server = createServer(async (incoming, outgoing) => {
@@ -43,7 +45,7 @@ export function createApplication({ databasePath, publicOrigin, trustProxyHops =
       // Prefix the trusted origin: an absolute-form request target must not override it.
       if (!incoming.url?.startsWith('/') || incoming.url.startsWith('//')) throw Object.assign(new Error('Invalid request target'), { status: 400 });
       const request = new Request(origin + incoming.url, { method: incoming.method, headers, ...(!['GET','HEAD'].includes(incoming.method) && body ? { body } : {}) });
-      const response = new URL(request.url).pathname.startsWith('/api/lab/') ? await laboratory(request) : await app.fetch(request, { DB });
+      const response = (new URL(request.url).pathname.startsWith('/api/lab/') || new URL(request.url).pathname==='/agent/visit') ? await laboratory(request) : await app.fetch(request, { DB });
       outgoing.writeHead(response.status, Object.fromEntries(response.headers));
       outgoing.end(incoming.method === 'HEAD' ? undefined : Buffer.from(await response.arrayBuffer()));
     } catch (error) {

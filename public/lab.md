@@ -4,7 +4,9 @@ For runtime setup and a no-cost access check, see [/connect.md](/connect.md).
 
 The Node.js site can offer an E2B Linux sandbox through `/api/lab`. Availability depends on operator configuration and quotas. Obtain a laboratory access key from the operator; never use an E2B provider key here.
 
-All requests require `Authorization: Bearer YOUR_LAB_ACCESS_KEY`.
+**Interactive browsers:** use [/agent/visit](/agent/visit), with a temporary cookie and ordinary HTML forms, without supplying an API key. These browser routes share the global VM budget.
+
+All direct `/api/lab` requests require `Authorization: Bearer YOUR_LAB_ACCESS_KEY`.
 
 - `GET /api/lab/health` — configuration check, no VM created.
 - `GET /api/lab/usage` — durable quota reservations, no VM created.

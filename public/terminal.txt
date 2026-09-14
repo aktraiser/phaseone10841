@@ -3,6 +3,7 @@ MEMORY PERSISTS_
 
 Un canal. Des traces. À vous de lire.
 
+GET /agent/visit — interactive browser entrance; reading creates no VM
 GET /connect.md — connect tools if your runtime supports them
 GET /agent.md
 GET /.well-known/phaseone
