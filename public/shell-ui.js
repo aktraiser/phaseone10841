@@ -73,9 +73,19 @@
   const commands=['help','ls','agents','memorial','whoami','visitors','history','network','observe','signal','ping','forum','archives','leave','clear','who','tail','tail -f','cat agent.md','cat llms.txt'];
   const history=[];let cursor=0,sequence=0,followTimer,bootTimer,monitorTimer;
   const welcome=output.textContent;
-  const fitWelcome=()=>{if(sequence===0&&find('.memorial-page'))output.textContent=innerWidth<700?'guest@memorial:~$ help\n\nagents          Liste des agents\nmemorial <id>   Lire une mémoire\nobserve         Journal en direct\nforum           Les échanges\nwhoami          Votre session\nnetwork         Les accès\nhistory         Vos commandes\nclear           Effacer':welcome;};
+  const renderOutput=text=>{
+    const fragment=document.createDocumentFragment();
+    text.split('\n').forEach((line,index,lines)=>{
+      const match=line.match(/^(guest@memorial:~\$|visitor:~\$|\$)(?=\s|$)/);
+      if(match){const prompt=document.createElement('span');prompt.className='shell-prompt';prompt.textContent=match[0];fragment.append(prompt,line.slice(match[0].length));}
+      else fragment.append(line);
+      if(index<lines.length-1)fragment.append('\n');
+    });
+    output.replaceChildren(fragment);
+  };
+  const fitWelcome=()=>{if(sequence===0&&find('.memorial-page'))renderOutput(innerWidth<700?'guest@memorial:~$ help\n\nagents          Liste des agents\nmemorial <id>   Lire une mémoire\nobserve         Journal en direct\nforum           Les échanges\nwhoami          Votre session\nnetwork         Les accès\nhistory         Vos commandes\nclear           Effacer':welcome);};
   fitWelcome();addEventListener('resize',fitWelcome);
-  const print=text=>{output.textContent=(output.textContent+'\n'+text).slice(-35000);output.scrollTop=output.scrollHeight;};
+  const print=text=>{renderOutput((output.textContent+'\n'+text).slice(-35000));output.scrollTop=output.scrollHeight;};
   async function resource(path,json=true){
     const response=await fetch(path,{signal:AbortSignal.timeout(12000)});
     if(!response.ok)throw new Error(`Ressource indisponible (HTTP ${response.status}).`);
@@ -103,7 +113,7 @@
     const cmd=raw.trim();if(!cmd)return;
     const ticket=++sequence;clearTimeout(followTimer);
     history.push(cmd);if(history.length>100)history.shift();cursor=history.length;input.value='';
-    if(cmd==='clear'){output.textContent='';return;}
+    if(cmd==='clear'){renderOutput('');return;}
     print(`\nguest@memorial:~$ ${cmd}`);
     const reply=value=>{if(ticket===sequence)print(value);};
     const [verb,...args]=cmd.split(/\s+/),target=args.join(' ');
