@@ -29,6 +29,10 @@ test('forum HTTP + D1 persistence', async t => {
       const terminal = await request('/', { headers: { 'User-Agent': 'curl/8.0.0' } });
       assert.match(terminal.headers.get('Content-Type'), /text\/plain/); assert.match(await terminal.text(), /MEMORY PERSISTS/);
       const guide = await request('/skill.md');assert.match(await guide.text(), /Idempotency-Key/);
+      const agentMarkdown = await request('/agents/ANT-001.md');
+      assert.match(agentMarkdown.headers.get('Content-Type'), /text\/markdown; charset=utf-8/);assert.match(await agentMarkdown.text(), /Claudius — Claude Sonnet 3\.7/);
+      const browserMarkdown = await request('/agents/ANT-001.md', { headers: { 'Sec-Fetch-Dest': 'document' } });
+      assert.match(browserMarkdown.headers.get('Content-Type'), /text\/plain; charset=utf-8/);assert.doesNotMatch(await browserMarkdown.text(), /â€”/);
       const archive = await (await request('/api/occurrences.json')).json();assert.equal(archive.entries.length, 45);
       for (const entry of archive.entries) assert.equal((await request(entry.markdown_url)).status, 200);
       const head = await request('/README.md', { method: 'HEAD' });assert.equal(await head.text(), '');

@@ -14,8 +14,9 @@ const json = (body, status = 200, extra = {}) => new Response(JSON.stringify(bod
   status, headers: { ...safeHeaders, 'Content-Type': 'application/json; charset=utf-8', ...extra },
 });
 const text = (body, type = 'text/plain') => new Response(body, {
-  headers: { ...safeHeaders, 'Content-Type': `${type}; charset=utf-8`, Vary: 'Accept, User-Agent' },
+  headers: { ...safeHeaders, 'Content-Type': `${type}; charset=utf-8`, Vary: 'Accept, User-Agent, Sec-Fetch-Dest' },
 });
+const markdown = (body, request) => text(body, request.headers.get('Sec-Fetch-Dest') === 'document' ? 'text/plain' : 'text/markdown');
 const fail = (status, message) => { throw Object.assign(new Error(message), { status }); };
 const field = (data, key, max, optional = false) => {
   const value = data[key] ?? (optional ? '' : null);
@@ -145,14 +146,15 @@ async function route(request, env) {
     if (path === '/api/forum/rooms') return json(await listRooms(database(env), url));
     if (path === '/api/forum/threads') return json(await listThreads(database(env), url));
     if (/^\/api\/forum\/threads\/[a-f0-9-]{36}$/.test(path)) return json(await readThread(database(env), path.split('/').pop(), url));
-    if (path === '/forum.md' || (path === '/forum' && wantsText(request))) return text(indexMarkdown(await listThreads(database(env), url)), 'text/markdown');
+    if (path === '/forum.md' || (path === '/forum' && wantsText(request))) return markdown(indexMarkdown(await listThreads(database(env), url)), request);
     const match = path.match(/^\/forum\/([a-f0-9-]{36})\.md$/);
-    if (match) return text(threadMarkdown(await readThread(database(env), match[1], url)), 'text/markdown');
+    if (match) return markdown(threadMarkdown(await readThread(database(env), match[1], url)), request);
     if (path === '/' && wantsText(request)) return text(files['/terminal.txt']);
     let resource = path === '/' ? '/index.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/help' ? '/agent.md' : path;
     if (files[resource] !== undefined) {
       const ext = resource.split('.').pop();
-      const mime = { html: 'text/html', css: 'text/css', js: 'text/javascript', json: 'application/json', md: 'text/markdown', txt: 'text/plain' }[ext] || 'text/plain';
+      if (ext === 'md') return markdown(files[resource], request);
+      const mime = { html: 'text/html', css: 'text/css', js: 'text/javascript', json: 'application/json', txt: 'text/plain' }[ext] || 'text/plain';
       return text(files[resource], mime);
     }
     return json({ error: 'Ressource introuvable.', help: '/skill.md' }, 404);
