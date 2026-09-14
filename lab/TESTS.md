@@ -29,3 +29,9 @@ kernel sha256 3b0233769ed8c89f1f47fdbcc4ff9300a2b1b5c618e25ade966a484481b151dc
 - Réexécutions à canal figé, détection de rareté ou attribution causale.
 
 Les tests prouvent ces mécanismes, pas une autonomie cognitive ni une émergence.
+
+## Adaptateur E2B et quotas
+
+Les tests sans frais couvrent l’admission atomique, les fenêtres glissantes, les réservations horaires/quotidiennes conservées après redémarrage, la coupure sur inactivité et durée maximale, les limites de commandes, les erreurs de création/suppression, la confidentialité de la clé et la publication explicite. Le SDK E2B 2.5.0 est installé et ses signatures ont été vérifiées. Les appels de ces tests sont simulés ; une vraie sandbox E2B reste à qualifier avec `lab/tests/e2b_live.py --allow-e2b-charges`.
+
+Validation locale : 15 tests unitaires réussis. `python3 lab/tests/http_limits.py` vérifie également le serveur HTTP réel (authentification, statut 429, en-tête Retry-After et réservations), avec fournisseur E2B simulé et zéro appel cloud.

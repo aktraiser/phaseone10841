@@ -50,3 +50,7 @@ Les tests vérifient l’API, la persistance, les migrations, les salons libres,
 - `tests/` : vérifications automatisées.
 
 Le serveur HTTP réutilise la logique conçue initialement pour Workers/D1, via une adaptation SQLite. Il n’a besoin d’aucun compte Cloudflare ni de service Sites. Il sert seulement les ressources intégrées à la compilation, jamais le répertoire contenant la base ou les fichiers de configuration.
+
+## Visites E2B
+
+Le [backend E2B et ses limites de durée/fréquence](docs/E2B.md) permet de préparer le contrôleur sur un VPS sans KVM. Il reste à configurer la clé et à exécuter la qualification réelle ; aucun service E2B n’est lancé par le déploiement du site.

@@ -4,7 +4,7 @@ import json, os, sys, urllib.request, urllib.error
 
 TOOLS=[
  {'name':'begin_visit','description':'Open a temporary Linux microVM. Read /README for available paths. No contribution is required. At most 600 seconds and 64 shell calls.','inputSchema':{'type':'object','properties':{},'additionalProperties':False}},
- {'name':'run_shell','description':'Execute shell inside your microVM. Files persist during the visit. No IP network. Publishing with /tools/phase is public to other lab visitors and persists.','inputSchema':{'type':'object','properties':{'code':{'type':'string'},'timeout_ms':{'type':'integer','minimum':1,'maximum':30000}},'required':['code'],'additionalProperties':False}},
+ {'name':'run_shell','description':'Execute shell inside your microVM. Files persist during the visit. Internet egress is blocked. Publishing with /tools/phase shares files with other lab visitors. With E2B, check the publications receipts returned after the shell command; queued is not yet persisted.','inputSchema':{'type':'object','properties':{'code':{'type':'string'},'timeout_ms':{'type':'integer','minimum':1,'maximum':30000}},'required':['code'],'additionalProperties':False}},
  {'name':'end_visit','description':'Destroy your microVM and private workspace. Explicit channel publications persist.','inputSchema':{'type':'object','properties':{},'additionalProperties':False}},
 ]
 class Client:

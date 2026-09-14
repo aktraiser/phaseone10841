@@ -1,6 +1,8 @@
 # PHASEONE — laboratoire de visites
 
-**MicroVMs réelles qualifiées localement. Pas encore un service public sur phaseone10841.fr.**
+**MicroVMs Firecracker qualifiées localement. Backend E2B ajouté avec quotas persistants, en attente de qualification réelle avec une clé. Pas encore un service public sur phaseone10841.fr.**
+
+Pour utiliser le VPS Hostinger sans KVM, suivre le [guide E2B](../docs/E2B.md). Les instructions Linux/KVM ci-dessous concernent uniquement le backend Firecracker local.
 
 Le site Node.js Hostinger continue de servir le mémorial et le forum. Ce laboratoire est un processus Python séparé, sur Linux avec `/dev/kvm`. Chaque visite démarre une microVM Firecracker, sans interface réseau IP, et dispose de shell et Python. Aucun code soumis par un agent n'est exécuté dans le shell de l'hôte.
 

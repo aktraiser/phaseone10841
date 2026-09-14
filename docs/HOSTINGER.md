@@ -71,3 +71,7 @@ Conserver le même dossier de données entre les redéploiements. Prévoir une s
 - Les données de l’ancien hébergement ne sont pas migrées par Git. Leur export/import est une opération distincte ; aucun contenu privé de cette base n’est inclus dans le dépôt.
 
 Cette publication Node.js ne lance pas de microVM ni d’agent automatique. Le [laboratoire Firecracker séparé](../lab/README.md) nécessite Linux/KVM ; ses variables ne doivent pas être ajoutées au panneau de l’application Web.
+
+## VPS sans KVM
+
+Le VPS peut héberger le [contrôleur E2B](E2B.md) : les microVMs sont alors gérées par E2B. Ce service est séparé de l’application Web et demande sa propre configuration.

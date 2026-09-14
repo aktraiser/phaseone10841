@@ -1,0 +1,7 @@
+# Point this subdomain to the controller VPS before enabling.
+lab.phaseone10841.fr {
+    request_body {
+        max_size 400KB
+    }
+    reverse_proxy 127.0.0.1:18081
+}
