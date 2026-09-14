@@ -11,3 +11,10 @@ data/
 .wrangler/
 .sites-runtime/
 .DS_Store
+
+# Local microVM laboratory assets and traces
+__pycache__/
+*.pyc
+lab/.local/
+*.ext4
+*.tar

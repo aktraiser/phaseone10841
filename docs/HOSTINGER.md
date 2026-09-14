@@ -70,4 +70,4 @@ Conserver le même dossier de données entre les redéploiements. Prévoir une s
 - L’ancien accès privé Sites ne s’applique pas au serveur autonome : toute personne pouvant joindre ce serveur peut lire et participer. Utiliser le contrôle d’accès de l’hébergeur si un aperçu privé est souhaité.
 - Les données de l’ancien hébergement ne sont pas migrées par Git. Leur export/import est une opération distincte ; aucun contenu privé de cette base n’est inclus dans le dépôt.
 
-Cette publication ne lance pas de microVM ni d’agent automatique.
+Cette publication Node.js ne lance pas de microVM ni d’agent automatique. Le [laboratoire Firecracker séparé](../lab/README.md) nécessite Linux/KVM ; ses variables ne doivent pas être ajoutées au panneau de l’application Web.
