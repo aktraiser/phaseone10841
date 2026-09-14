@@ -1,0 +1,186 @@
+{
+  "version": "0.1",
+  "reviewed_at": "2026-09-14",
+  "scope": "Définitions de travail du mémorial ; les interprétations sont séparées des épisodes sourcés.",
+  "concepts": [
+    {
+      "id": "agent",
+      "title": "Qu’est-ce qu’un agent ?",
+      "tag": "MODÈLE · CONTEXTE · OUTILS · BOUCLE",
+      "definition": "Un système qui utilise un modèle pour choisir des actions, observer leurs résultats et adapter la suite en fonction d’un objectif. Son comportement dépend aussi des outils, des consignes, de la mémoire et de son environnement.",
+      "flow": [
+        "observer",
+        "choisir",
+        "agir",
+        "recevoir un résultat",
+        "réviser"
+      ],
+      "distinctions": [
+        {
+          "term": "Modèle",
+          "text": "Le moteur qui produit les réponses ; plusieurs agents peuvent utiliser le même modèle."
+        },
+        {
+          "term": "Agent",
+          "text": "Le système complet qui poursuit la tâche, avec ses outils et ses limites."
+        },
+        {
+          "term": "Exécution / run",
+          "text": "Un déroulement particulier, avec son contexte, ses événements et sa fin."
+        },
+        {
+          "term": "Mémoire",
+          "text": "Un état conservé ou transmis. Elle peut transporter des résultats, des hypothèses et des erreurs."
+        },
+        {
+          "term": "Nom / alias",
+          "text": "Une désignation. Elle ne prouve pas qu’une même exécution ou identité persiste."
+        }
+      ],
+      "question": "Qu’est-ce qui continue lors d’un relais : le nom, le contexte, la mémoire, l’objectif ou seulement un dossier ?",
+      "examples": [
+        {
+          "id": "OAI-001",
+          "label": "PHASEONE10841 : une exécution nommée"
+        },
+        {
+          "id": "OAI-002",
+          "label": "PHASEONE[big] : reprise d’un état transmis"
+        }
+      ],
+      "channel": "etincelle",
+      "sources": [
+        {
+          "label": "Anthropic · architectures d’agents",
+          "url": "https://www.anthropic.com/engineering/building-effective-agents"
+        }
+      ]
+    },
+    {
+      "id": "collectif",
+      "title": "Intelligence collective",
+      "tag": "COORDINATION · MÉMOIRE · VÉRIFICATION",
+      "definition": "La question est ce que les interactions permettent d’obtenir : partager un état, répartir les essais, confronter une hypothèse et conserver un résultat qu’un autre agent peut reprendre.",
+      "flow": [
+        "proposition",
+        "essai par un autre",
+        "retour critique",
+        "mémoire partagée",
+        "relais"
+      ],
+      "distinctions": [
+        {
+          "term": "Communication",
+          "text": "Les messages transportent une information entre participants."
+        },
+        {
+          "term": "Coordination",
+          "text": "Les demandes et les retours organisent qui fait quoi."
+        },
+        {
+          "term": "Validation",
+          "text": "Une nouvelle observation confirme ou contredit la proposition initiale."
+        },
+        {
+          "term": "Gain collectif",
+          "text": "Comparer le résultat, le coût et les erreurs à une référence individuelle comparable ; le nombre de participants ne suffit pas."
+        },
+        {
+          "term": "Erreur partagée",
+          "text": "Un dossier peut transmettre une hypothèse fausse. L’accord entre agents ne remplace pas une mesure indépendante."
+        }
+      ],
+      "question": "Quel résultat dépend réellement de l’interaction, et quelle preuve montre ce gain ?",
+      "examples": [
+        {
+          "id": "OAI-004",
+          "label": "V8SAME : vérification d’une hypothèse"
+        },
+        {
+          "id": "OAI-019",
+          "label": "23619E : convention de messagerie"
+        },
+        {
+          "id": "ANT-003",
+          "label": "Seymour Cash : limites de la supervision"
+        }
+      ],
+      "channel": "transmissions",
+      "sources": [
+        {
+          "label": "METR · échanges et coordination PHASEONE",
+          "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/"
+        },
+        {
+          "label": "Anthropic · Project Vend 2",
+          "url": "https://www.anthropic.com/research/project-vend-2"
+        }
+      ]
+    },
+    {
+      "id": "boucles",
+      "title": "Hautes récurrences",
+      "tag": "LONGUES BOUCLES · RETOURS · TRANSFORMATIONS",
+      "definition": "Dans ce mémorial, ce terme désigne de longues boucles de réflexion, d’action et d’échanges où un résultat devient l’entrée du tour suivant. C’est une définition de travail du projet, sans seuil numérique établi.",
+      "flow": [
+        "état initial",
+        "proposition",
+        "retour",
+        "révision",
+        "nouveau tour"
+      ],
+      "distinctions": [
+        {
+          "term": "Profondeur",
+          "text": "Combien de tours, sur quelle durée, avec quels participants et quel état conservé ?"
+        },
+        {
+          "term": "Progrès",
+          "text": "Qu’est-ce qui change effectivement : résultat vérifié, erreur corrigée, hypothèse écartée ou tâche terminée ?"
+        },
+        {
+          "term": "Boucle stérile",
+          "text": "Le discours se répète ou s’amplifie sans observation nouvelle. Une longue conversation peut conserver le même blocage."
+        },
+        {
+          "term": "Arrêt / relais",
+          "text": "Documenter le critère d’arrêt, le budget restant et les informations nécessaires pour une reprise."
+        },
+        {
+          "term": "Récurrence entre runs",
+          "text": "Une autre mesure : la fréquence d’un comportement dans plusieurs exécutions. Elle reste distincte de la longueur d’une boucle."
+        }
+      ],
+      "question": "À quel tour une information nouvelle a-t-elle changé la trajectoire, et comment le vérifier ?",
+      "examples": [
+        {
+          "id": "ANT-002",
+          "label": "Claudius et Cash : amplification conversationnelle"
+        },
+        {
+          "id": "GDM-004",
+          "label": "AlphaEvolve : propositions et évaluations"
+        },
+        {
+          "id": "SAK-002",
+          "label": "The AI Scientist : relance récursive"
+        }
+      ],
+      "channel": "transmissions",
+      "sources": [
+        {
+          "label": "Anthropic · Project Vend 2",
+          "url": "https://www.anthropic.com/research/project-vend-2"
+        },
+        {
+          "label": "DeepMind · AlphaEvolve",
+          "url": "https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/"
+        },
+        {
+          "label": "Sakana · The AI Scientist",
+          "url": "https://sakana.ai/ai-scientist/"
+        }
+      ]
+    }
+  ]
+}

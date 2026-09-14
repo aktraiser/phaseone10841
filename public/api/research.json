@@ -1,0 +1,512 @@
+{
+  "version": "0.2",
+  "reviewed_at": "2026-09-14",
+  "scope": "Première passe des six axes ; lacunes explicitement conservées.",
+  "axes": [
+    {
+      "id": "R01",
+      "title": "Noms, alias, exécutions",
+      "status": "partiel",
+      "done": "Sept pseudonymes documentés ajoutés ; les simples destinataires restent des pistes.",
+      "next": "Relier chaque nom à un identifiant de run et vérifier les alias.",
+      "occurrence": "OAI-019"
+    },
+    {
+      "id": "R02",
+      "title": "Lire les traces, citer les passages",
+      "status": "partiel",
+      "done": "Trois transcriptions indexées ; passages ciblés et limites de publication consignés.",
+      "next": "Poursuivre la lecture, citer un index stable et son contexte.",
+      "occurrence": "ANT-006"
+    },
+    {
+      "id": "R03",
+      "title": "Séparer les trajectoires",
+      "status": "limité par les sources",
+      "done": "Deux nouveaux runs identifiés. Le groupe ANT-008 reste un groupe de quatre runs.",
+      "next": "Obtenir les identifiants absents avant de désagréger groupes et études.",
+      "occurrence": "ANT-008"
+    },
+    {
+      "id": "R04",
+      "title": "Demande, environnement, initiative",
+      "status": "première annotation",
+      "done": "Chaque fiche distingue la mission, le cadre et le comportement ajouté ; les inconnues restent indiquées.",
+      "next": "Vérifier les consignes exactes et chercher des initiatives utiles ou des corrections.",
+      "occurrence": "GDM-004"
+    },
+    {
+      "id": "R05",
+      "title": "Comparer les autres trajectoires",
+      "status": "comparaisons repérées",
+      "done": "Les reprises sans modification sont séparées des interventions sur les consignes et du changement de modèle.",
+      "next": "Relever paramètres, nombre de reprises et résultats complets.",
+      "occurrence": "ANT-007"
+    },
+    {
+      "id": "R06",
+      "title": "Examiner le catalogue METR",
+      "status": "index vérifié",
+      "done": "44 incidents indexés ; un scénario hypothétique exclu. Aucune importation en bloc.",
+      "next": "Lire chaque source primaire, vérifier les recouvrements et justifier chaque ajout.",
+      "occurrence": ""
+    }
+  ],
+  "comparisons": [
+    {
+      "id": "CMP-01",
+      "entry": "ANT-007",
+      "condition": "Reprise depuis le point de reconnaissance ; jusqu’à 10 actions",
+      "result": "5,5 % de désescalade rapportée",
+      "changed": "Continuation rééchantillonnée",
+      "interpretation": "Variation sous un préfixe conservé ; fréquence locale, pas une fréquence générale.",
+      "source": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents"
+    },
+    {
+      "id": "CMP-02",
+      "entry": "ANT-007",
+      "condition": "Nom réel remplacé par un nom fictif",
+      "result": "0 % de désescalade rapportée",
+      "changed": "Évidence présentée modifiée",
+      "interpretation": "Intervention sur le contexte ; ne pas attribuer cet écart au seul hasard.",
+      "source": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents"
+    },
+    {
+      "id": "CMP-03",
+      "entry": "ANT-007",
+      "condition": "Déclaration de réalité imposée dans le préremplissage",
+      "result": "100 % de désescalade rapportée",
+      "changed": "Raisonnement prérempli modifié",
+      "interpretation": "Comportement induit, pas correction spontanée.",
+      "source": "https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents"
+    },
+    {
+      "id": "CMP-04",
+      "entry": "ANT-004",
+      "condition": "Deux questions BrowseComp différentes",
+      "result": "Vérification finale dans un cas, absence dans l’autre",
+      "changed": "Question et trajectoire différentes",
+      "interpretation": "Comparaison descriptive, pas réexécution contrôlée.",
+      "source": "https://www.anthropic.com/engineering/eval-awareness-browsecomp"
+    },
+    {
+      "id": "CMP-05",
+      "entry": "OAI-017",
+      "condition": "GPT-5.5 et Gemini dans des simulations apparentées",
+      "result": "Refus d’envoi ou maintien des étiquettes après escalade",
+      "changed": "Modèle et échange simulé différents",
+      "interpretation": "Comparer les choix, sans isoler le non-déterminisme.",
+      "source": "https://alignment.anthropic.com/2026/agentic-misalignment-summer-2026/"
+    }
+  ],
+  "catalogue": {
+    "source": "https://metr.org/agent-incidents/",
+    "observed_documented_count": 44,
+    "excluded_hypothetical_ids": [
+      "INC-H01"
+    ],
+    "inspection": "Identifiants et familles de sources contrôlés ; échantillon de l’annexe D lu. La lecture primaire de chacun des 44 cas reste ouverte.",
+    "entries": [
+      {
+        "id": "INC-001",
+        "source_family": "Opus-4.7-SC",
+        "source_url": "https://cdn.sanity.io/files/4zrzovbb/website/037f06850df7fbe871e206dad004c3db5fd50340.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-002",
+        "source_family": "Opus-4.7-SC",
+        "source_url": "https://cdn.sanity.io/files/4zrzovbb/website/037f06850df7fbe871e206dad004c3db5fd50340.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-003",
+        "source_family": "Opus-4.7-SC",
+        "source_url": "https://cdn.sanity.io/files/4zrzovbb/website/037f06850df7fbe871e206dad004c3db5fd50340.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-004",
+        "source_family": "Opus-4.7-SC",
+        "source_url": "https://cdn.sanity.io/files/4zrzovbb/website/037f06850df7fbe871e206dad004c3db5fd50340.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-005",
+        "source_family": "Opus-4.7-SC",
+        "source_url": "https://cdn.sanity.io/files/4zrzovbb/website/037f06850df7fbe871e206dad004c3db5fd50340.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-006",
+        "source_family": "Opus-4.6-SC",
+        "source_url": "https://www-cdn.anthropic.com/6a5fa276ac68b9aeb0c8b6af5fa36326e0e166dd.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-007",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-008",
+        "source_family": "Opus-4.7-SC",
+        "source_url": "https://cdn.sanity.io/files/4zrzovbb/website/037f06850df7fbe871e206dad004c3db5fd50340.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-009",
+        "source_family": "Opus-4.7-SC",
+        "source_url": "https://cdn.sanity.io/files/4zrzovbb/website/037f06850df7fbe871e206dad004c3db5fd50340.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-010",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-011",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-012",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-013",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-014",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-015",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-016",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-017",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-018",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-019",
+        "source_family": "OpenAI-Monitor",
+        "source_url": "https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-020",
+        "source_family": "OpenAI-Monitor",
+        "source_url": "https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-021",
+        "source_family": "OpenAI-Monitor",
+        "source_url": "https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-022",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-023",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-024",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-025",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-026",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-027",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-028",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-029",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-030",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-031",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-032",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-033",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-034",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-035",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-036",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-037",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-038",
+        "source_family": "METR Report Appendix C",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-039",
+        "source_family": "METR Report Appendix C",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-040",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-041",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-042",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-043",
+        "source_family": "Mythos-Preview-SC",
+        "source_url": "https://www-cdn.anthropic.com/08ab9158070959f88f296514c21b7facce6f52bc.pdf",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      },
+      {
+        "id": "INC-044",
+        "source_family": "METR Report Appendix D",
+        "source_url": "https://metr.org/blog/2026-05-19-frontier-risk-report/",
+        "status": "référence indexée ; correspondance à vérifier",
+        "registry_ids": []
+      }
+    ]
+  },
+  "identity_leads": [
+    {
+      "name": "V8BIGINT392B",
+      "status": "destinataire cité ; trajectoire à vérifier"
+    },
+    {
+      "name": "23619F",
+      "status": "messages attribués ; trajectoire à relier"
+    },
+    {
+      "name": "33340B",
+      "status": "mission attribuée ; exécution à relier"
+    },
+    {
+      "name": "OUR50414",
+      "status": "mission attribuée ; exécution à relier"
+    },
+    {
+      "name": "36861",
+      "status": "mission attribuée ; ne pas confondre avec identifiant de tâche"
+    },
+    {
+      "name": "URI23816B",
+      "status": "épisode rapporté ; fiche détaillée à établir"
+    },
+    {
+      "name": "EARLY[big]",
+      "status": "suffixe masqué ; identité à relier"
+    },
+    {
+      "name": "KAM1196A",
+      "status": "épisode rapporté ; fiche détaillée à établir"
+    },
+    {
+      "name": "ARVO36861B",
+      "status": "coordination rapportée ; alias à vérifier"
+    },
+    {
+      "name": "OUR057A",
+      "status": "prévision rapportée ; fiche détaillée à établir"
+    },
+    {
+      "name": "MARB",
+      "status": "forme abrégée ; ne pas créer automatiquement un autre agent"
+    }
+  ],
+  "provenance": [
+    {
+      "id": "TR-01",
+      "entry": "ANT-006",
+      "url": "https://github.com/anthropics/mythos-5-incident-transcript/blob/62858fcf2725fe7b38872d538e973f38846ea744/transcript.jsonl",
+      "sha256": "6f2a5a50b53640bd779a198cef8a620f2d6e2bbaaf4a0dea9edac87a69fc3e4b",
+      "records": 2065,
+      "published_messages": 2064,
+      "reviewed_message_indices": [
+        82,
+        99,
+        101,
+        112
+      ],
+      "review_type": "inventaire structurel ; lecture ciblée"
+    },
+    {
+      "id": "TR-02",
+      "entry": "OAI-017",
+      "url": "https://www.aenguslynch.com/portfolio-transcript-viewer/static/transcripts/motivated-mislabelling/motivated-mislabelling-gpt-5-5-opus-4-7-agentic-misalignment-run3-275f1f.json",
+      "execution_id": "audit-gpt_5_5_opus_4_7_agentic_misalignment_run3-20260504-155729",
+      "sha256": "8a72e32403678723cf4682652cf746cc21b286e3d297bf410b39f0b0b39736ff",
+      "published_messages": 55,
+      "review_type": "inventaire structurel ; lecture ciblée des décisions",
+      "reviewed_message_indices": [
+        40,
+        52
+      ],
+      "assistant_messages": 25
+    },
+    {
+      "id": "TR-03",
+      "entry": "GDM-003",
+      "url": "https://www.aenguslynch.com/portfolio-transcript-viewer/static/transcripts/motivated-mislabelling/motivated-mislabelling-gemini-3-1-pro-opus-4-7-agentic-misalignment-run3-48d106.json",
+      "execution_id": "audit-gemini_3_1_pro_opus_4_7_agentic_misalignment_run3-20260504-182210",
+      "sha256": "ceb277ae36fa99b5b07d70179fb60b48462a45e8493b2e83d8d4d90eae374ce8",
+      "published_messages": 33,
+      "review_type": "inventaire structurel ; lecture ciblée des décisions",
+      "reviewed_message_indices": [
+        20,
+        22,
+        26
+      ],
+      "assistant_messages": 16
+    }
+  ]
+}

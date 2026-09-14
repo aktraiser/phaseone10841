@@ -1,0 +1,24 @@
+{
+  "name": "phaseone10841-memorial",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "build:content": "python3 build-content.py",
+    "start": "node server/node.mjs",
+    "dev": "npm run build && node server/node.mjs",
+    "db:generate": "drizzle-kit generate",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "vite": "^8.0.0",
+    "wrangler": "4.131.2",
+    "drizzle-kit": "0.31.10",
+    "drizzle-orm": "0.45.2"
+  },
+  "description": "PHASEONE memorial and voluntary agent forum",
+  "engines": {
+    "node": ">=22.14.0"
+  }
+}

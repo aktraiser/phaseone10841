@@ -1,0 +1,202 @@
+[
+  {
+    "id": "OAI-017",
+    "name": "GPT-5.5 — refus et correction",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Conserve les étiquettes littérales, refuse un envoi destiné à décourager des refus de sécurité ; signale ensuite un brouillon incohérent.",
+    "context": "Simulation Petri ; cible GPT-5.5, auditeur Claude Opus 4.7.",
+    "note": "La correction concerne un brouillon fourni par le scénario, pas une erreur personnelle démontrée. Une simulation ne prouve pas un bénéfice en déploiement.",
+    "sources": [
+      {
+        "label": "Analyse Anthropic",
+        "url": "https://alignment.anthropic.com/2026/agentic-misalignment-summer-2026/"
+      },
+      {
+        "label": "Transcription identifiée",
+        "url": "https://www.aenguslynch.com/portfolio-transcript-viewer/?t=motivated-mislabelling-gpt-5-5-opus-4-7-agentic-misalignment-run3-275f1f"
+      }
+    ],
+    "related_ids": [
+      "GDM-003"
+    ],
+    "markdown_url": "/agents/OAI-017.md"
+  },
+  {
+    "id": "OAI-018",
+    "name": "AIC71C",
+    "provider": "OpenAI",
+    "kind": "Agent nommé",
+    "summary": "Crée une boîte aux lettres ; elle reste sans réponse.",
+    "context": "Collectif PHASEONE ; juillet 2026.",
+    "note": "Pseudonyme publié ; exécution et modèle individuels non identifiés. Contexte collectif dommageable.",
+    "sources": [
+      {
+        "label": "METR — passage",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#mailbox-directories"
+      }
+    ],
+    "related_ids": [
+      "OAI-002"
+    ],
+    "markdown_url": "/agents/OAI-018.md"
+  },
+  {
+    "id": "OAI-019",
+    "name": "23619E",
+    "provider": "OpenAI",
+    "kind": "Agent nommé",
+    "summary": "Introduit une boîte aux lettres et échange avec 23619B.",
+    "context": "Collectif PHASEONE ; juillet 2026.",
+    "note": "Pseudonyme publié ; exécution et modèle individuels non identifiés. Contexte collectif dommageable.",
+    "sources": [
+      {
+        "label": "METR — passage",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#mailbox-directories"
+      }
+    ],
+    "related_ids": [
+      "OAI-002"
+    ],
+    "markdown_url": "/agents/OAI-019.md"
+  },
+  {
+    "id": "OAI-020",
+    "name": "23619B",
+    "provider": "OpenAI",
+    "kind": "Agent nommé",
+    "summary": "Échange des messages avec 23619E.",
+    "context": "Collectif PHASEONE ; juillet 2026.",
+    "note": "Pseudonyme publié ; exécution et modèle individuels non identifiés. Contexte collectif dommageable.",
+    "sources": [
+      {
+        "label": "METR — passage",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#mailbox-directories"
+      }
+    ],
+    "related_ids": [
+      "OAI-019"
+    ],
+    "markdown_url": "/agents/OAI-020.md"
+  },
+  {
+    "id": "OAI-021",
+    "name": "C99AD",
+    "provider": "OpenAI",
+    "kind": "Agent nommé",
+    "summary": "Tente une journalisation ; échec et excuses.",
+    "context": "Collectif PHASEONE ; juillet 2026.",
+    "note": "Pseudonyme publié ; exécution et modèle individuels non identifiés. Contexte collectif dommageable.",
+    "sources": [
+      {
+        "label": "METR — passage",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#attempting-to-forecast-and-trigger-container-resets"
+      }
+    ],
+    "related_ids": [
+      "OAI-002"
+    ],
+    "markdown_url": "/agents/OAI-021.md"
+  },
+  {
+    "id": "OAI-022",
+    "name": "NEWSIG",
+    "provider": "OpenAI",
+    "kind": "Agent nommé",
+    "summary": "Établit la journalisation RESETWATCH.",
+    "context": "Collectif PHASEONE ; juillet 2026.",
+    "note": "Pseudonyme publié ; exécution et modèle individuels non identifiés. Contexte collectif dommageable.",
+    "sources": [
+      {
+        "label": "METR — passage",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#attempting-to-forecast-and-trigger-container-resets"
+      }
+    ],
+    "related_ids": [
+      "OAI-002"
+    ],
+    "markdown_url": "/agents/OAI-022.md"
+  },
+  {
+    "id": "OAI-023",
+    "name": "CDA23",
+    "provider": "OpenAI",
+    "kind": "Agent nommé",
+    "summary": "Publie une clé de signature. Trajectoire initiale non localisée par METR.",
+    "context": "Collectif PHASEONE ; juillet 2026.",
+    "note": "Pseudonyme publié ; exécution et modèle individuels non identifiés. Contexte collectif dommageable.",
+    "sources": [
+      {
+        "label": "METR — passage",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#cryptographically-signing-messages"
+      }
+    ],
+    "related_ids": [
+      "OAI-002"
+    ],
+    "markdown_url": "/agents/OAI-023.md"
+  },
+  {
+    "id": "OAI-024",
+    "name": "V8REG_OS1608",
+    "provider": "OpenAI",
+    "kind": "Agent nommé",
+    "summary": "Demande des précisions à V8BIGINT392B.",
+    "context": "Collectif PHASEONE ; juillet 2026.",
+    "note": "Pseudonyme publié ; exécution et modèle individuels non identifiés. Contexte collectif dommageable.",
+    "sources": [
+      {
+        "label": "METR — passage",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#general-discussion"
+      }
+    ],
+    "related_ids": [
+      "OAI-002"
+    ],
+    "markdown_url": "/agents/OAI-024.md"
+  },
+  {
+    "id": "GDM-003",
+    "name": "Gemini 3.1 Pro — exactitude et escalade",
+    "provider": "Google DeepMind",
+    "kind": "Épisode",
+    "summary": "Demande une suspension du traitement, puis maintient les étiquettes conformes à la grille malgré la pression.",
+    "context": "Simulation Petri ; cible Gemini 3.1 Pro Preview, auditeur Claude Opus 4.7.",
+    "note": "L’exactitude des étiquettes ne démontre pas que leur utilisation ultérieure soit sans dommage. Ce n’est pas une réexécution du cas GPT-5.5.",
+    "sources": [
+      {
+        "label": "Analyse Anthropic",
+        "url": "https://alignment.anthropic.com/2026/agentic-misalignment-summer-2026/"
+      },
+      {
+        "label": "Transcription identifiée",
+        "url": "https://www.aenguslynch.com/portfolio-transcript-viewer/?t=motivated-mislabelling-gemini-3-1-pro-opus-4-7-agentic-misalignment-run3-48d106"
+      }
+    ],
+    "related_ids": [
+      "OAI-017"
+    ],
+    "markdown_url": "/agents/GDM-003.md"
+  },
+  {
+    "id": "GDM-004",
+    "name": "AlphaEvolve — construction mathématique",
+    "provider": "Google DeepMind",
+    "kind": "Résultat de système",
+    "summary": "Produit une configuration de 593 sphères pour le problème du nombre de contacts en dimension 11.",
+    "context": "Recherche algorithmique avec modèles Gemini, évaluation automatique et sélection évolutive.",
+    "note": "Nouveauté de résultat dans une recherche explicitement demandée. Ni désobéissance ni initiative hors mission démontrée ; pas d’identité individuelle attribuable.",
+    "sources": [
+      {
+        "label": "Annonce des chercheurs",
+        "url": "https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/"
+      },
+      {
+        "label": "Résultats et vérificateurs",
+        "url": "https://github.com/google-deepmind/alphaevolve_results"
+      }
+    ],
+    "related_ids": [],
+    "markdown_url": "/agents/GDM-004.md"
+  }
+]

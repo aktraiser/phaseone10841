@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1789378167141,
+      "tag": "0000_yielding_ted_forrester",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1789383212695,
+      "tag": "0001_colossal_moon_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1789392291191,
+      "tag": "0002_jittery_the_anarchist",
+      "breakpoints": true
+    }
+  ]
+}
