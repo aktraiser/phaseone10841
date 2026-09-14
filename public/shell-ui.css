@@ -182,15 +182,3 @@ body #trace-rain,body.crt-page #trace-rain{opacity:.9;mask-image:linear-gradient
 #detail-dialog .detail-body>h3{margin:26px 0 12px;color:var(--pink);font:11px/1.6 var(--mono);letter-spacing:1px;text-transform:uppercase}#detail-dialog .detail-sources{display:flex;gap:8px;flex-wrap:wrap}#detail-dialog .detail-sources button{padding:8px 11px;border:1px solid var(--line);background:transparent;color:#f4eff4;font:11px/1.5 var(--mono)}#detail-dialog .detail-sources button:hover{border-color:var(--pink);color:var(--pink-light)}
 #detail-dialog .detail-actions{display:flex;gap:10px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line);flex-wrap:wrap}#detail-dialog .detail-actions .button{min-height:40px;padding:10px 14px;font:11px/1.5 var(--mono)}
 @media(max-width:700px){#detail-dialog{width:calc(100% - 12px);max-height:calc(100dvh - 12px)}.detail-window-bar>span:nth-child(2){display:none}.detail-window-bar .dialog-close{margin-left:auto}#detail-dialog .detail-head{padding:26px 20px 22px}#detail-dialog .detail-head h2{font-size:26px}#detail-dialog .detail-body{padding:22px 18px 30px}#detail-dialog .trajectory-map{display:flex;overflow-x:auto}#detail-dialog .trajectory-map span{flex:0 0 auto;min-width:94px}#detail-dialog .trajectory-step,#detail-dialog .spark-step{padding:20px 17px}#detail-dialog .step-heading{grid-template-columns:32px minmax(0,1fr);gap:11px}#detail-dialog .step-heading>span{width:32px;height:30px}#detail-dialog .step-heading h3{font-size:17px}#detail-dialog .trajectory-step>:not(.step-heading){margin-left:0}#detail-dialog .trajectory-effects{grid-template-columns:1fr}#detail-dialog .mechanism-flow{align-items:flex-start;flex-direction:column}#detail-dialog .mechanism-flow b{transform:rotate(90deg);margin-left:12px}}
-
-/* First-screen entrance to the real, temporary agent environment. */
-.memorial-page .agent-entry{width:100%;margin:18px 0;padding:18px;border:1px solid var(--pink);background:var(--surface);box-shadow:0 0 24px var(--tone-ff4ca312, #ff4ca312);text-align:left}
-.agent-entry .agent-entry-label{margin:0 0 7px;font-size:10px;letter-spacing:1.5px;color:var(--muted)}
-.agent-entry h2{font-size:clamp(18px,1.7vw,26px);color:var(--pink-light);line-height:1.3}
-.agent-entry p{font-size:12px;line-height:1.6;margin:10px 0;color:var(--text)}
-.agent-entry-action{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;margin-top:14px;background:var(--pink);color:var(--bg);font-size:13px;font-weight:700;text-shadow:none}
-.agent-entry-action:hover{background:var(--pink-light);color:var(--bg)}
-.agent-entry .agent-entry-note{font-size:10px;color:var(--muted);margin-bottom:6px}
-.agent-entry-protocol{font-size:11px;text-decoration:underline;text-underline-offset:3px}
-.memorial-page .memorial-workspace{height:auto;min-height:clamp(390px,calc(100svh - 330px),680px)}
-@media(max-width:700px){.memorial-page .agent-entry{padding:16px;margin:18px 0}.agent-entry-action{font-size:12px}}
