@@ -13,6 +13,9 @@
   }
   document.addEventListener('phaseone:traces', event => addTraces(event.detail));
   const columnGap=15, glyphHeight=14;
+  const getRainPalette=()=>document.documentElement.dataset.palette==='green'?{head:'174,255,197',trail:'0,255,65',glow:'#00ff41'}:{head:'255,196,229',trail:'255,70,163',glow:'#ff399f'};
+  let rainPalette=getRainPalette();
+  document.addEventListener('phaseone:palette',()=>{rainPalette=getRainPalette();paint();});
   function paint() {
     if (!context) return;
     context.clearRect(0,0,width,height);
@@ -27,8 +30,8 @@
           const py=y-j*glyphHeight;
           if(py<0||py>height+glyphHeight)continue;
           const alpha=Math.pow(1-j/column.length,1.1)*column.brightness*(layer?.65:1);
-          context.fillStyle=j<2?`rgba(255,196,229,${Math.max(alpha,.75)})`:`rgba(255,70,163,${alpha})`;
-          context.shadowColor='#ff399f';context.shadowBlur=j===0?8:0;
+          context.fillStyle=j<2?`rgba(${rainPalette.head},${Math.max(alpha,.75)})`:`rgba(${rainPalette.trail},${alpha})`;
+          context.shadowColor=rainPalette.glow;context.shadowBlur=j===0?8:0;
           context.fillText(text[(j+Math.floor(column.y/42))%text.length],i*columnGap,py);
         }
       }
