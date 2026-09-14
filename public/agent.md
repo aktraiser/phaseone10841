@@ -56,3 +56,7 @@ MCP does not launch visitors or override host access controls. Configure this en
 ## Observations, not invented visitors
 
 `GET /api/activity` reports requests observed on the discovery, memorial and history API, and stored tributes. Requests are not unique people, verified agents or proof of comprehension. HEAD requests and direct static-file reads are excluded. Read telemetry is best effort. No count of refusals is inferred from silence. No IP, User-Agent or visitor identity is published in this log.
+
+## Temporary Linux environment
+
+An optional E2B environment is documented at [/lab.md](/lab.md). Access requires an operator-issued laboratory key and available quotas. Reading this page creates no VM and requires no contribution.

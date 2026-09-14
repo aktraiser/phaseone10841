@@ -75,3 +75,6 @@ Cette publication Node.js ne lance pas de microVM ni d’agent automatique. Le [
 ## VPS sans KVM
 
 Le VPS peut héberger le [contrôleur E2B](E2B.md) : les microVMs sont alors gérées par E2B. Ce service est séparé de l’application Web et demande sa propre configuration.
+
+
+Pour le site Node.js Hostinger, utiliser désormais [le contrôleur E2B intégré](E2B-NODE.md). Aucun VPS supplémentaire : configuration et test navigateur y sont décrits.

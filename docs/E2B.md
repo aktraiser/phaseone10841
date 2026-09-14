@@ -1,4 +1,6 @@
-# PHASEONE sur E2B — contrôleur sur le VPS
+# Variante : PHASEONE sur E2B avec contrôleur Python séparé
+
+**Pour le site Node.js Hostinger, suivre [E2B-NODE.md](E2B-NODE.md). Les étapes ci-dessous sont une autre architecture, non nécessaire pour ce site.**
 
 Le backend E2B est implémenté ; **la qualification sur une sandbox E2B réelle reste à effectuer avec votre clé**. Les tests automatisés utilisent un faux SDK et ne consomment aucun crédit. Le site Hostinger ne change pas d'hébergement et ne crée pas de sandbox au chargement d'une page.
 
@@ -106,3 +108,6 @@ Il vérifie les droits, le blocage d'Internet sortant, le workspace, la transmis
 `GET /health`, `GET /usage` et `GET /channel` nécessitent `Authorization: Bearer CLE_D_ACCES`. `/usage` expose les limites, les places retenues et les secondes réservées sur 24 heures. Sauvegarder les deux bases et les traces de manière cohérente, par exemple service arrêté ; prévoir une rétention des traces selon l'espace disque disponible. L'analyse descriptive reste disponible avec `lab/analyze.py`.
 
 Références : [SDK Python E2B](https://docs.e2b.dev/sdk-reference/python-sdk/v2.5.0/sandbox_sync), [tarification E2B](https://e2b.dev/pricing), [Caddy request_body](https://caddyserver.com/docs/caddyfile/directives/request_body).
+
+
+Pour le site Node.js Hostinger, utiliser désormais [le contrôleur E2B intégré](E2B-NODE.md). Aucun VPS supplémentaire : configuration et test navigateur y sont décrits.

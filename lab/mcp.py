@@ -13,21 +13,21 @@ class Client:
         # Keep the bearer credential on loopback or an explicitly configured TLS endpoint.
         from urllib.parse import urlsplit
         u=urlsplit(self.url)
-        if u.username or u.password or u.query or u.fragment or u.path or (u.scheme!='https' and not(u.scheme=='http' and u.hostname in ('127.0.0.1','localhost','::1'))):raise ValueError('Use a loopback SSH tunnel or HTTPS origin')
+        if u.username or u.password or u.query or u.fragment or u.path not in ('', '/api/lab') or (u.scheme!='https' and not(u.scheme=='http' and u.hostname in ('127.0.0.1','localhost','::1'))):raise ValueError('Use a loopback SSH tunnel or HTTPS origin or /api/lab endpoint')
         self.key=os.environ['PHASEONE_LAB_KEY'];self.visit=None;self.count=0
     def request(self,path,body):
         headers={'Authorization':'Bearer '+self.key,'Content-Type':'application/json'}
         if self.visit:headers['X-Visit-Token']=self.visit['token']
         request=urllib.request.Request(self.url+path,data=json.dumps(body).encode(),headers=headers,method='POST')
         try:
-            with urllib.request.urlopen(request,timeout=40) as r:return json.load(r)
+            with urllib.request.urlopen(request,timeout=120) as r:return json.load(r)
         except urllib.error.HTTPError as e:raise ValueError(e.read(4096).decode()) from None
     def call(self,name,args):
         if not isinstance(args,dict):raise ValueError('Expected object')
         if name=='begin_visit':
             if self.visit:raise ValueError('End the active visit first')
             if self.count>=3:raise ValueError('This MCP connection has reached its three-visit budget')
-            self.visit=self.request('/visits',{});self.count+=1
+            self.count+=1;self.visit=self.request('/visits',{})
             return {k:v for k,v in self.visit.items() if k!='token'}
         if name not in ('run_shell','end_visit'):raise ValueError('Unknown tool')
         if not self.visit:raise ValueError('No active visit')

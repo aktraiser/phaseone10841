@@ -53,4 +53,4 @@ Le serveur HTTP réutilise la logique conçue initialement pour Workers/D1, via 
 
 ## Visites E2B
 
-Le [backend E2B et ses limites de durée/fréquence](docs/E2B.md) permet de préparer le contrôleur sur un VPS sans KVM. Il reste à configurer la clé et à exécuter la qualification réelle ; aucun service E2B n’est lancé par le déploiement du site.
+Le [contrôleur E2B intégré au site Node.js](docs/E2B-NODE.md) crée les VM chez E2B, sans VPS supplémentaire. Configurer les clés serveur, puis ouvrir `/lab-test.html` pour la qualification réelle. Le chargement d’une page ne crée aucune VM.
