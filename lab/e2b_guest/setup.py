@@ -12,7 +12,9 @@ for path,content in bundle.items():
 subprocess.run([sys.executable, '-c', "import sys; sys.path.insert(0, '/opt/phaseone'); from execute import isolate_network; isolate_network()"], check=True)
 # An unprivileged workload never receives sudo/setuid capabilities from the base image.
 subprocess.run(['find','/usr','/bin','/sbin','-xdev','-type','f','-perm','/6000','-exec','chmod','a-s','{}','+'],check=True)
-subprocess.run(['mount','-t','tmpfs','-o','size=64m,nosuid,nodev,uid=65534,gid=65534,mode=0700','tmpfs','/workspace'],check=True)
+for target,size,mode in [('/workspace','64m','0700'),('/tmp','32m','1777'),('/var/tmp','32m','1777'),('/dev/shm','16m','1777'),('/var/lib/phaseone-outbox','8m','0700')]:
+    Path(target).mkdir(parents=True,exist_ok=True)
+    subprocess.run(['mount','-t','tmpfs','-o',f'size={size},nr_inodes=4096,nosuid,nodev,uid=65534,gid=65534,mode={mode}','tmpfs',target],check=True)
 Path('/opt/phaseone').chmod(0o755)
 Path('/var/lib/phaseone-outbox').chmod(0o700);os.chown('/var/lib/phaseone-outbox',65534,65534)
 Path('/opt/phaseone/ready').touch()

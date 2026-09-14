@@ -152,7 +152,7 @@ export class Lab {
     if(this.ticking||this.stopped)return;this.ticking=true;
     try{
       const now=this.clock();
-      const rows=this.db.prepare("SELECT * FROM visits WHERE sandbox IS NOT NULL AND state!='closed' AND hold_until>? AND ((state='closing' AND coalesce(kill_retry_at,0)<=?) OR (state!='closing' AND (deadline<=? OR (state='active' AND lease IS NULL AND last_activity<=?))))").all(now,now,now,now-this.limits.IDLE);
+      const rows=this.db.prepare("SELECT * FROM visits WHERE sandbox IS NOT NULL AND state!='closed' AND hold_until>? AND ((state='closing' AND coalesce(kill_retry_at,0)<=?) OR (state!='closing' AND (deadline<=? OR (state='preparing' AND created<=?) OR (state='active' AND lease IS NULL AND last_activity<=?))))").all(now,now,now,now-120,now-this.limits.IDLE);
       for(const row of rows)await this.kill({id:row.id});
     }finally{this.ticking=false;}
   }

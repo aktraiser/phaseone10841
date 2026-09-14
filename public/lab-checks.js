@@ -1,5 +1,5 @@
 // Separate commands preserve successful checks if a later probe fails.
-export const localPython = `import os, pathlib, socket
+export const localPython = `import os, pathlib, socket, resource
 print('Python démarré', flush=True)
 assert os.getuid()==65534
 print('Identité non privilégiée : OK', flush=True)
@@ -15,7 +15,13 @@ for path in ['/archive/test-write','/channel/test-write']:
         raise AssertionError('Unexpected write access: ' + path)
 pathlib.Path('/workspace/test.txt').write_text('42')
 assert pathlib.Path('/workspace/test.txt').read_text()=='42'
-print('Workspace privé : lecture/écriture OK', flush=True)`;
+print('Workspace privé : lecture/écriture OK', flush=True)
+assert resource.getrlimit(resource.RLIMIT_AS)[0] <= 256*1024*1024
+for directory,cap in [('/workspace',64),('/tmp',32),('/var/tmp',32),('/dev/shm',16),('/var/lib/phaseone-outbox',8)]:
+    info=os.statvfs(directory)
+    assert info.f_blocks*info.f_frsize <= cap*1024*1024, directory
+    assert info.f_files <= 4096, directory
+print('Limites mémoire et espaces temporaires : OK', flush=True)`;
 export const networkPython = `import subprocess, sys
 print('Sondage réseau borné, résolution DNS comprise', flush=True)
 probe = """import socket, sys

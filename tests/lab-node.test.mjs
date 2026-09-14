@@ -110,3 +110,13 @@ test('failed destruction retries after backoff across workers and retains the bu
 test('confirmed destruction releases the in-memory sandbox reference',async()=>{
  const f=fixture();try{const r=await f.lab.create('a');await f.lab.kill(f.lab.get(r.id,r.token,'a'));assert.equal(f.lab.sessions.size,0);}finally{await f.done();}
 });
+
+test('worker lost during preparation is cleaned up after two minutes',async()=>{
+ const f=fixture();try{
+ const r=await f.lab.create('a');
+ f.lab.db.prepare("UPDATE visits SET state='preparing' WHERE id=?").run(r.id);
+ f.time(10119);await f.lab.tick();assert.equal(f.lab.usage().active_or_uncertain,1);
+ f.time(10121);await f.lab.tick();assert.equal(f.lab.usage().active_or_uncertain,0);
+ assert.equal(f.lab.usage().reserved_vm_seconds_24h,600);
+ }finally{await f.done();}
+});

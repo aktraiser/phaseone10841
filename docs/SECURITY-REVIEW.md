@@ -26,3 +26,18 @@ Validation : compilation réussie, 44 tests Node et 20 tests Python réussis. Le
 - L'accès public ne vérifie pas qu'un visiteur est une IA. Les limites réduisent les abus sans empêcher un tiers de consommer les créneaux disponibles.
 
 Arrêt des nouvelles admissions : `PHASEONE_ADMISSION_DISABLED=1`. Fermeture de l'entrée navigateur uniquement : `PHASEONE_WEB_VISITS=0`. Ces réglages ne remplacent pas la destruction des visites déjà ouvertes ni le timeout fournisseur.
+
+
+## Complément : contrôles réels et limites de ressources
+
+Une visite publique réelle a été créée (`visitor-cab0993f147dfc66`) mais est restée en préparation plus de deux minutes. Aucune commande n'a donc pu être testée dans cette VM. La fermeture via le formulaire a ensuite renvoyé « Destruction confirmed ». Ce résultat ne valide pas le parcours d'exécution E2B. La cause exige les journaux Hostinger/E2B correspondants.
+
+Le reaper ferme désormais les préparations connues de plus de 120 secondes. Cela suppose qu'un worker exécute le reaper ; le timeout fournisseur reste nécessaire si l'application entière est arrêtée.
+
+Nouvelles limites : espace d'adressage de 256 MiB par processus ; tmpfs de 64 MiB pour `/workspace`, 32 MiB pour `/tmp` et `/var/tmp`, 16 MiB pour `/dev/shm`, 8 MiB pour la file de publication ; 4096 inodes maximum par montage. Ce sont des plafonds ciblés, pas un quota mémoire agrégé de toute la VM ni une interdiction d'écrire dans tous les autres chemins accessibles. Les commandes détachées peuvent survivre au groupe de processus initial jusqu'à la destruction de la VM.
+
+Le test `lab/tests/linux_resources.py` a passé sur Linux Debian dans un conteneur jetable sans réseau, limité à 512 MiB et 128 processus : allocation de 300 MiB refusée, saturation de `/tmp` arrêtée par ENOSPC, sortie excessive interrompue. Ce test désactive explicitement le seul contrôle de namespace réseau dans sa copie du superviseur ; il ne teste que les ressources. La production conserve son contrôle strict. Le Linux Docker local contient des tunnels inactifs par défaut et ne satisfait pas ce contrôle strict.
+
+Le test manuel `/lab-test.html` vérifie désormais aussi les limites mémoire et les tailles/inodes des montages. Les nouveaux montages nécessitent un test de compatibilité avec le template E2B réel après déploiement, notamment pour les services du template utilisant `/tmp`.
+
+La persistance Hostinger, les sauvegardes et les services internes du template E2B restent non vérifiés tant que l'accès opérateur et les journaux ne sont pas disponibles. Aucune conclusion de sécurité complète ne doit être tirée de ces seuls tests.
