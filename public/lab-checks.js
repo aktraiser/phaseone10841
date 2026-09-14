@@ -1,8 +1,11 @@
 // Separate commands preserve successful checks if a later probe fails.
-export const localPython = `import os, pathlib
+export const localPython = `import os, pathlib, socket
 print('Python démarré', flush=True)
 assert os.getuid()==65534
 print('Identité non privilégiée : OK', flush=True)
+interfaces = [name for _, name in socket.if_nameindex()]
+assert all(name == 'lo' for name in interfaces), 'Interface réseau externe présente'
+print('Espace réseau isolé : aucune interface externe', flush=True)
 for path in ['/archive/test-write','/channel/test-write']:
     try:
         pathlib.Path(path).write_text('test')

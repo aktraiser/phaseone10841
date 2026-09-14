@@ -48,3 +48,9 @@ Les publications explicites survivent dans le canal du laboratoire, consultable 
 ## Diagnostic du test navigateur
 
 Les droits et le workspace sont testés dans une première commande, le réseau dans une seconde. Les résultats intermédiaires restent affichés. Le sondage réseau utilise une IP numérique (sans DNS) et un sous-processus limité à trois secondes. Une interruption est notée « indéterminé », jamais présentée comme preuve d’isolation. Le timeout global des commandes reste dix secondes. L’ancien `urlopen(..., timeout=2)` ne bornait pas la résolution DNS, ce qui pouvait faire expirer l’ensemble du test. Cette cause est reproduite localement, mais n’est pas confirmée par une trace DNS de la VM originale.
+
+## Isolation réseau du processus visiteur
+
+En complément de `allowInternetAccess:false`, chaque commande démarre dans un nouveau namespace réseau Linux (`CLONE_NEWNET`) créé avant la perte des privilèges. Il ne contient aucune interface externe. `PR_SET_NO_NEW_PRIVS` empêche la récupération de privilèges par exécution de fichiers. Le superviseur E2B garde son réseau de contrôle ; les publications passent toujours par les fichiers et le contrôleur. La préparation vérifie que ces primitives sont autorisées et refuse la visite sinon. Aucun mode de repli avec réseau n’est utilisé.
+
+Validation : 18 tests Python passent. Un processus réel dans la VM Linux locale a retourné UID 65534, interface `lo` seule, et errno 101 (réseau inaccessible) lors du sondage TCP. Le réseau du parent est resté inchangé. La compatibilité de cette primitive avec le template E2B déployé reste à tester.

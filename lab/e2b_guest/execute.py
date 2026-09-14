@@ -1,8 +1,21 @@
 """Trusted E2B command supervisor. Invoked only inside the sandbox by the controller."""
-import json,os,resource,selectors,signal,subprocess,time
+import ctypes,json,os,resource,selectors,signal,socket,subprocess,time
 from pathlib import Path
 MAX_OUTPUT=128*1024
+def isolate_network():
+    # Only the command child enters this namespace. E2B's root supervisor keeps
+    # its control connection; the workload receives no external interface.
+    libc = ctypes.CDLL(None, use_errno=True)
+    if libc.unshare(0x40000000) != 0:  # CLONE_NEWNET
+        raise OSError(ctypes.get_errno(), 'Network namespace isolation required')
+    if any(name != 'lo' for _, name in socket.if_nameindex()):
+        raise RuntimeError('Unexpected interface in workload network namespace')
+    if libc.prctl(38, 1, 0, 0, 0) != 0:  # PR_SET_NO_NEW_PRIVS
+        raise OSError(ctypes.get_errno(), 'No-new-privileges protection required')
+
+
 def child_limits():
+    isolate_network()
     os.setgroups([])
     os.setgid(65534)
     os.setuid(65534)
