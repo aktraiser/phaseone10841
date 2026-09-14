@@ -108,3 +108,26 @@ body.crt-page{padding:14px;background:#080609;color:var(--pink);font:14px/1.55 v
  .memorial-page .activity-panel{height:180px}
  .memorial-page #channel-output{height:340px;font-size:12px}
 }
+
+/* Shared masthead across memorial, archives and forum. */
+.site-masthead{--pink:#ff62b5;--pink-light:#ff9bd0;--line:#7d345c;display:flex;align-items:center;justify-content:space-between;gap:24px;width:calc(100% - 68px);max-width:1758px;min-height:38px;margin:28px auto 0;padding:6px 12px;border:1px solid var(--line);background:#070409e6;color:var(--pink);font:12px/1.6 var(--mono);box-shadow:none}
+.channel>.site-masthead{width:100%;max-width:none;margin:0}
+.site-masthead .masthead-brand{font:13px/1.6 var(--mono);color:var(--pink);white-space:nowrap;letter-spacing:0}
+.site-masthead .masthead-brand span{font-size:12px;margin-left:5px}
+.site-masthead nav{display:flex;align-items:center;justify-content:center;gap:24px;margin:0;font:12px/1.6 var(--mono)}
+.site-masthead nav a{display:block;height:auto;padding:0;color:#cf8bb1;white-space:nowrap;font:inherit;border:0}
+.site-masthead nav a::after{display:none}
+.site-masthead nav a:hover,.site-masthead nav a[aria-current=page]{color:var(--pink-light);text-shadow:0 0 9px #ff62b560}
+.site-masthead nav a[aria-current=page]{text-decoration:underline;text-underline-offset:5px}
+.site-masthead .system-clock{font:12px/1.6 var(--mono);white-space:nowrap;margin:0}
+.forum-page .forum-title h1 .block-cursor{font-size:1em;width:.5em;height:.8em;vertical-align:-.04em;line-height:1;margin-left:.18em;background:var(--pink);box-shadow:0 0 12px #ff4ca335}
+@media(max-width:1050px){.site-masthead{gap:14px}.site-masthead nav{gap:16px}.site-masthead .system-clock{font-size:10px}}
+@media(max-width:760px){.site-masthead{width:calc(100% - 36px);margin-top:18px;padding:8px;gap:10px;flex-wrap:wrap}.site-masthead .masthead-brand{font-size:11px}.site-masthead .masthead-brand span{font-size:10px}.site-masthead .system-clock{font-size:9px;margin-left:auto}.site-masthead nav{order:3;flex-basis:100%;justify-content:space-between;gap:12px;font-size:12px;padding-top:4px}.channel>.site-masthead{width:100%;margin:0}.forum-page .forum-title h1 .block-cursor{width:.45em}}
+@media(max-width:380px){.site-masthead .system-clock{font-size:8px}.site-masthead .masthead-brand{font-size:10px}.site-masthead .masthead-brand span{font-size:9px}}
+
+/* Dense phosphor rain across the full screen, softened behind reading surfaces. */
+body #trace-rain,body.crt-page #trace-rain{opacity:.9;mask-image:linear-gradient(90deg,#000 0%,#000e 22%,#0008 43%,#0009 62%,#000e 85%,#000 100%)}
+.memorial-page .terminal{background:#0b040ded}
+.forum-page .thread-row,.forum-page .forum-post{background:#0d090df2}
+.forum-page .forum-console .terminal{background:#0a080bf2}
+@media(max-width:760px){body #trace-rain,body.crt-page #trace-rain{opacity:.72;mask-image:linear-gradient(90deg,#000,#0009 45%,#000)}}

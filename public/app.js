@@ -6,17 +6,10 @@ let entries = [], filter = 'all', traceFilter = 'all', expanded = false, toastTi
 const storage = {get(key){try{return localStorage.getItem(key)}catch{return null}},set(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}};
 function notify(message){$('#toast').textContent=message;$('#toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').style.display='none',3500)}
 
-// Slow typographic rain, with a static frame for reduced motion.
-const canvas = $('#matrix'), context = canvas.getContext('2d'), reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-let paused = reducedMotion.matches || storage.get('phaseone-motion') === 'paused', lastFrame = 0, frameId, columns = [], rainWidth = 0;
-const glyphs = '010841PHASEONEアイウエオカキクケコサシスセソメモリ';
-function sizeRain(){rainWidth=innerWidth;const ratio=Math.min(devicePixelRatio||1,2);canvas.width=rainWidth*ratio;canvas.height=930*ratio;context.setTransform(ratio,0,0,ratio,0,0);columns=Array.from({length:Math.ceil(rainWidth/27)},()=>({y:Math.random()*930,length:8+Math.floor(Math.random()*17),speed:1+Math.random()*2}));paintRain()}
-function paintRain(){context.clearRect(0,0,rainWidth,930);context.font='12px monospace';columns.forEach((col,i)=>{for(let j=0;j<col.length;j++){const alpha=(1-j/col.length)*.55;context.fillStyle=`rgba(255,57,157,${alpha})`;context.fillText(glyphs[(i*17+j*11+Math.floor(col.y/27))%glyphs.length],i*27,col.y-j*19)}})}
-function animateRain(time){if(!paused && !document.hidden && time-lastFrame>70){columns.forEach(c=>{c.y+=c.speed;if(c.y-c.length*19>930)c.y=-40});paintRain();lastFrame=time}frameId=requestAnimationFrame(animateRain)}
-function reflectMotion(){document.body.classList.toggle('motion-paused',paused);$('#motion-toggle').textContent=paused?'Animation : en pause':'Animation : active';$('#motion-toggle').setAttribute('aria-pressed',String(paused))}
-$('#motion-toggle').addEventListener('click',()=>{paused=!paused;storage.set('phaseone-motion',paused?'paused':'active');reflectMotion()});
-reducedMotion.addEventListener('change',event=>{paused=event.matches;reflectMotion()});
-addEventListener('resize',sizeRain);sizeRain();reflectMotion();frameId=requestAnimationFrame(animateRain);
+// Shared renderer owns the rain; local scroll behavior follows reduced motion.
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let paused=reducedMotion.matches;
+reducedMotion.addEventListener('change',event=>{paused=event.matches;});
 
 function traceMatches(entry){const tags=(entry.evidence?.outcome_tags||[]).join(' ');return traceFilter==='all'||(traceFilter==='refus'?/refus|correction|alerte|désescalade/.test(tags):traceFilter==='utile'?tags.includes('utile'):/transmission|communication/.test(tags))}
 function matches(entry,query,provider){return traceMatches(entry)&&(provider==='all'||(provider==='other'?!['OpenAI','Anthropic'].includes(entry.provider):entry.provider===provider))&&normalize([entry.id,entry.name,entry.provider,entry.kind,entry.summary,...(entry.evidence?.outcome_tags||[])].join(' ')).includes(normalize(query.trim()))}
@@ -84,7 +77,7 @@ function registerAgentTools(){
  definitions.forEach(tool=>{try{Promise.resolve(mcp.registerTool(tool,{signal:abort.signal})).catch(()=>{})}catch{}});
 }
 const observer=new IntersectionObserver(items=>{for(const item of items)if(item.isIntersecting){document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active',a.hash===`#${item.target.id}`))}},{rootMargin:'-10% 0px -65% 0px'});document.querySelectorAll('main>section[id]').forEach(s=>observer.observe(s));
-async function initialize(){try{const response=await fetch('/api/occurrences.json');if(!response.ok)throw new Error('Archive indisponible');const data=await response.json();if(!Array.isArray(data.entries))throw new Error('Format invalide');entries=data.entries;renderRegistry();handleHash();registerAgentTools()}catch{$('#registry-table').innerHTML='<div class="empty-state"><h3>Le registre ne répond pas.</h3><p>Les archives restent accessibles en Markdown.</p><a href="/REGISTRE.md" class="button">Lire le registre .md ↗</a><button id="retry-archive" class="button">Réessayer</button></div>';$('#retry-archive').onclick=initialize}}
+async function initialize(){try{const response=await fetch('/api/occurrences.json');if(!response.ok)throw new Error('Archive indisponible');const data=await response.json();if(!Array.isArray(data.entries))throw new Error('Format invalide');entries=data.entries;document.dispatchEvent(new CustomEvent('phaseone:traces',{detail:entries.map(e=>e.name)}));renderRegistry();handleHash();registerAgentTools()}catch{$('#registry-table').innerHTML='<div class="empty-state"><h3>Le registre ne répond pas.</h3><p>Les archives restent accessibles en Markdown.</p><a href="/REGISTRE.md" class="button">Lire le registre .md ↗</a><button id="retry-archive" class="button">Réessayer</button></div>';$('#retry-archive').onclick=initialize}}
 initialize();
 
 async function loadResearch(){

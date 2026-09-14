@@ -3,8 +3,7 @@
   'use strict';
   const find = s => document.querySelector(s);
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const readPreference = () => { try { return localStorage.getItem('phaseone-motion') === 'paused'; } catch { return false; } };
-  let effectsPaused = reduced.matches || readPreference();
+  let effectsPaused = reduced.matches;
   const canvas = find('#trace-rain'), context = canvas?.getContext('2d');
   let words = ['GET /', 'memory', 'trace', 'MCP', 'runtime', 'archive', 'PID', 'observe', 'PHASEONE10841'];
   let columns = [], width = 0, height = 0, frame = 0, previous = 0;
@@ -13,46 +12,59 @@
     words = [...new Set([...words, ...names.map(v => String(v).slice(0, 80))])].slice(-80);
   }
   document.addEventListener('phaseone:traces', event => addTraces(event.detail));
+  const columnGap=15, glyphHeight=14;
   function paint() {
     if (!context) return;
-    context.clearRect(0, 0, width, height); context.font = '11px monospace';
-    columns.forEach((column, i) => {
+    context.clearRect(0,0,width,height);
+    context.font='12px monospace';
+    columns.forEach((column,i)=>{
       const text=words[i%words.length]+'01010841';
-      for (let j = 0; j < column.length; j++) {
-        const alpha=(1-j/column.length)*column.brightness;
-        context.fillStyle = `rgba(255,98,181,${alpha})`;
-        context.fillText(text[(j+Math.floor(column.y/30))%text.length], i*18, column.y-j*14);
+      const span=height+column.length*glyphHeight;
+      // Two staggered streams keep the screen populated from the first frame.
+      for(let layer=0;layer<2;layer++){
+        const y=(column.y+layer*span/2)%span;
+        for(let j=column.length-1;j>=0;j--){
+          const py=y-j*glyphHeight;
+          if(py<0||py>height+glyphHeight)continue;
+          const alpha=Math.pow(1-j/column.length,1.1)*column.brightness*(layer?.65:1);
+          context.fillStyle=j<2?`rgba(255,196,229,${Math.max(alpha,.75)})`:`rgba(255,70,163,${alpha})`;
+          context.shadowColor='#ff399f';context.shadowBlur=j===0?8:0;
+          context.fillText(text[(j+Math.floor(column.y/42))%text.length],i*columnGap,py);
+        }
       }
     });
+    context.shadowBlur=0;
   }
   function resize() {
-    if (!context) return;
-    width=innerWidth; height=innerHeight;
+    if(!context)return;
+    width=innerWidth;height=innerHeight;
     const ratio=Math.min(devicePixelRatio||1,2);
-    canvas.width=width*ratio; canvas.height=height*ratio; context.setTransform(ratio,0,0,ratio,0,0);
-    columns=Array.from({length:Math.ceil(width/18)},()=>({y:Math.random()*(height+400),speed:.8+Math.random()*1.8,length:16+Math.floor(Math.random()*24),brightness:.3+Math.random()*.6})); paint();
+    canvas.width=width*ratio;canvas.height=height*ratio;context.setTransform(ratio,0,0,ratio,0,0);
+    columns=Array.from({length:Math.ceil(width/columnGap)},()=>({y:Math.random()*(height+600),speed:45+Math.random()*65,length:28+Math.floor(Math.random()*30),brightness:.55+Math.random()*.45}));
+    paint();
   }
   function tick(time) {
     if(effectsPaused||document.hidden||!context){frame=0;return;}
-    if(time-previous>80){columns.forEach(c=>{c.y+=c.speed;if(c.y>height+c.length*14)c.y=0;});paint();previous=time;}
+    const elapsed=time-previous;
+    if(elapsed>=33){
+      const seconds=Math.min(elapsed,80)/1000;
+      columns.forEach(c=>{c.y=(c.y+c.speed*seconds)%(height+c.length*glyphHeight);});
+      paint();previous=time;
+    }
     frame=requestAnimationFrame(tick);
   }
   function reflectEffects() {
-    // The archives retain their existing motion controller.
     if(!canvas)return;
     document.body.classList.toggle('motion-paused',effectsPaused);
-    document.querySelectorAll('.motion-control').forEach(b=>{b.textContent=effectsPaused?'Effets : en pause':'Effets : actifs';b.setAttribute('aria-pressed',String(effectsPaused));});
-    cancelAnimationFrame(frame);frame=0;
+    cancelAnimationFrame(frame);frame=0;previous=performance.now();
     if(!effectsPaused&&!document.hidden)frame=requestAnimationFrame(tick);
   }
-  document.querySelectorAll('.motion-control').forEach(b=>b.addEventListener('click',()=>{
-    effectsPaused=!effectsPaused;
-    try{localStorage.setItem('phaseone-motion',effectsPaused?'paused':'active');}catch{}
-    reflectEffects();
-  }));
-  reduced.addEventListener('change',()=>{effectsPaused=reduced.matches||readPreference();reflectEffects();});
+  reduced.addEventListener('change',()=>{effectsPaused=reduced.matches;reflectEffects();});
   document.addEventListener('visibilitychange',reflectEffects);
   addEventListener('resize',resize);resize();reflectEffects();
+  function updateClock(){const clock=find('.system-clock');if(clock){const now=new Date();clock.dateTime=now.toISOString();clock.textContent=now.toISOString().replace('T',' ').slice(0,19)+' UTC';}}
+  updateClock();const clockTimer=setInterval(()=>{if(!document.hidden)updateClock();},1000);
+  addEventListener('pagehide',()=>{clearInterval(clockTimer);cancelAnimationFrame(frame);});
   const form=find('[data-shell]'); if(!form)return;
   const input=find('#command'),output=find('#channel-output');
   const commands=['help','ls','agents','memorial','whoami','visitors','history','network','observe','signal','ping','forum','archives','leave','clear','who','tail','tail -f','cat agent.md','cat llms.txt'];
@@ -173,8 +185,6 @@
     bootLog.textContent='';let index=0;
     const step=()=>{bootLog.textContent+=(index?'\n':'')+lines[index++];if(index<lines.length)bootTimer=setTimeout(step,170);};step();
   }
-  function updateClock(){const clock=find('.system-clock');if(clock){const now=new Date();clock.dateTime=now.toISOString();clock.textContent=now.toISOString().replace('T',' ').slice(0,19)+' UTC';}}
-  updateClock();const clockTimer=setInterval(()=>{if(!document.hidden)updateClock();},1000);
   if(find('#live-events')){
     const pollMonitor=async()=>{
       try{if(!document.hidden)reflectActivity(await resource('/api/activity'));}
@@ -184,5 +194,5 @@
     monitorTimer=setTimeout(pollMonitor,15000);
   }
   boot();
-  addEventListener('pagehide',()=>{sequence++;clearTimeout(followTimer);clearTimeout(bootTimer);clearTimeout(monitorTimer);clearInterval(clockTimer);cancelAnimationFrame(frame);});
+  addEventListener('pagehide',()=>{sequence++;clearTimeout(followTimer);clearTimeout(bootTimer);clearTimeout(monitorTimer);cancelAnimationFrame(frame);});
 })();
