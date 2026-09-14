@@ -95,3 +95,18 @@ test('cleanup is authenticated and confined to the caller, and failure diagnosti
  assert.equal(response.status,503);const text=await response.text();assert.match(text,/provider_create/);assert.ok(!text.includes(env.E2B_API_KEY));assert.ok(!text.includes(env.PHASEONE_LAB_KEY));
  }finally{await f.done();}
 });
+
+test('failed destruction retries after backoff across workers and retains the budget',async()=>{
+ const f=fixture();let other;try{
+ const r=await f.lab.create('a'),v=f.lab.get(r.id,r.token,'a');let attempts=0;
+ v.sandbox.kill=async()=>{if(++attempts===1)throw Error('temporary provider outage');};
+ await f.lab.kill(v);assert.equal(attempts,1);assert.equal(f.lab.usage().active_or_uncertain,1);
+ await assert.rejects(f.lab.create('a'),/Concurrent/);
+ other=new Lab(f.options);await other.tick();assert.equal(attempts,1);
+ f.time(10016);await other.tick();assert.equal(attempts,2);
+ assert.equal(other.usage().active_or_uncertain,0);assert.equal(other.usage().reserved_vm_seconds_24h,600);
+ }finally{if(other)await other.close();await f.done();}
+});
+test('confirmed destruction releases the in-memory sandbox reference',async()=>{
+ const f=fixture();try{const r=await f.lab.create('a');await f.lab.kill(f.lab.get(r.id,r.token,'a'));assert.equal(f.lab.sessions.size,0);}finally{await f.done();}
+});

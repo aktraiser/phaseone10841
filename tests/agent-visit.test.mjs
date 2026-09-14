@@ -43,3 +43,13 @@ test('resetting browser cookies does not reset the network admission quota',asyn
 test('browser resumes its own visit through a new handler and shares persistent operation receipts',async()=>{
  const f=fixture();try{const a=await f.open();await f.req(a.cookie,a.form);const other=new AgentVisit(f.lab);const html=await(await other.handle(new Request('https://test/agent/visit',{headers:{cookie:a.cookie}}))).text();assert.match(html,/Execute command/);assert.match(html,/Visit opened/);}finally{await f.done();}
 });
+
+test('parallel opens share admission and another visitor cannot execute a command',async()=>{
+ const f=fixture();try{
+ const a=await f.open(),b=await f.open();
+ const second=new URLSearchParams(a.form);second.set('nonce','b'.repeat(48));
+ await Promise.all([f.req(a.cookie,a.form),f.req(a.cookie,second)]);assert.equal(f.creates(),1);
+ b.form.set('action','exec');b.form.set('visit',f.lab.usage().sessions[0].id);b.form.set('command','echo forbidden');
+ await f.req(b.cookie,b.form);assert.equal(f.executes(),0);
+ }finally{await f.done();}
+});
