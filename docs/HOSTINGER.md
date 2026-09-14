@@ -34,6 +34,10 @@ Le serveur est hors de `dist` et charge `dist/server/index.js` ainsi que les mig
 
 Vite est déclaré dans `dependencies` pour rester disponible quand l'hébergeur installe uniquement les dépendances de production (`npm ci --omit=dev` ou `NODE_ENV=production`). Après récupération de la dernière version de `main`, relancer une installation propre et la compilation. La commande de compilation reste `npm run build` ; aucune installation globale de Vite n'est nécessaire.
 
+### Erreur `App did not call listen() within 3 seconds`
+
+Le fichier d'entrée reste `server/node.mjs`. Il démarre le serveur dès son chargement, y compris lorsque Hostinger l'importe depuis son propre lanceur. Ne pas ajouter de condition `require.main === module` ou de comparaison avec `process.argv[1]` autour du démarrage. Le module `server/application.mjs` contient la partie réutilisable par les tests ; il ne doit pas être choisi comme fichier d'entrée.
+
 Variables à renseigner dans Hostinger, sans commettre de secrets :
 
 ```text

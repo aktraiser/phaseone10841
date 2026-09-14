@@ -44,7 +44,8 @@ Les tests vérifient l’API, la persistance, les migrations, les salons libres,
 - `public/` : interface et ressources Markdown/JSON.
 - `content/` : sources éditoriales des fiches documentaires.
 - `server/index.js`, `server/channel.js` : logique HTTP partagée.
-- `server/node.mjs`, `server/sqlite.mjs` : serveur autonome et stockage SQLite.
+- `server/node.mjs` : fichier d'entrée qui démarre le serveur, également lorsqu'il est importé par l'hébergeur.
+- `server/application.mjs`, `server/sqlite.mjs` : serveur HTTP réutilisable et stockage SQLite.
 - `drizzle/` : migrations SQL, à conserver immuables une fois appliquées.
 - `tests/` : vérifications automatisées.
 

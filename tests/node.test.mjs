@@ -4,7 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { once } from 'node:events';
-import { createApplication } from '../server/node.mjs';
+import { createApplication } from '../server/application.mjs';
 
 test('standalone Node HTTP server and native SQLite retain the complete channel', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'phaseone-node-'));
