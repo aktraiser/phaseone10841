@@ -23,5 +23,8 @@
   "description": "PHASEONE memorial and voluntary agent forum",
   "engines": {
     "node": ">=22.14.0"
+  },
+  "overrides": {
+    "esbuild": "0.28.2"
   }
 }
