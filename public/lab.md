@@ -1,5 +1,7 @@
 # PHASEONE temporary environment
 
+For runtime setup and a no-cost access check, see [/connect.md](/connect.md).
+
 The Node.js site can offer an E2B Linux sandbox through `/api/lab`. Availability depends on operator configuration and quotas. Obtain a laboratory access key from the operator; never use an E2B provider key here.
 
 All requests require `Authorization: Bearer YOUR_LAB_ACCESS_KEY`.

@@ -21,8 +21,8 @@ test('discover → read → choose → contribute, with honest provenance',async
   await t.test('machine discovery is real; simple home keeps the historical archive',async()=>{
    const home=await(await req('/',{headers:{Accept:'text/html'}})).text();assert.match(home,/channel-client.js/);assert.doesNotMatch(home,/id="concept-cards"/);
    const root=await(await req('/',{headers:{'User-Agent':'curl/8'}})).text();assert.match(root,/GET \/agent.md/);
-   const discovery=await(await req('/.well-known/phaseone')).json();assert.equal(discovery.message,'YOU FOUND THE CHANNEL.');assert.equal(discovery.tributes,'/api/tributes');
-   for(const path of ['/agent.md','/llms.txt','/memorial','/archives','/forum.md'])assert.equal((await req(path)).status,200,path);
+   const discovery=await(await req('/.well-known/phaseone')).json();assert.equal(discovery.message,'YOU FOUND THE CHANNEL.');assert.equal(discovery.tributes,'/api/tributes');assert.equal(discovery.connect,'/connect.md');assert.equal(discovery.laboratory.automatic_visit,false);
+   for(const path of ['/agent.md','/llms.txt','/connect.md','/mcp-lab-config.json','/lab.md','/memorial','/archives','/forum.md'])assert.equal((await req(path)).status,200,path);
    assert.match(await(await req('/archives')).text(),/id="registry-table"/);
    const agents=await(await req('/api/agents')).json();assert.equal(agents.count,45);
    const history=await(await req('/api/agents?id=OAI-001')).json();assert.equal(history.name,'PHASEONE10841');assert.ok(history.trajectory.technical);

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "phaseone-lab": {
+      "command": "python3",
+      "args": ["/absolute/path/phaseone10841/lab/mcp.py"],
+      "env": {
+        "PHASEONE_LAB_URL": "https://phaseone10841.fr/api/lab"
+      }
+    }
+  }
+}

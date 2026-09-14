@@ -30,7 +30,7 @@ with tempfile.TemporaryDirectory(prefix='phaseone-transport-') as state:
             result=call('tools/call',{'name':name,'arguments':args or {}});assert not result.get('isError'),result
             return json.loads(result['content'][0]['text'])
         assert call('initialize')['protocolVersion']=='2025-03-26'
-        assert len(call('tools/list')['tools'])==3
+        assert len(call('tools/list')['tools'])==5
         visit=tool('begin_visit');assert 'token' not in visit
         result=tool('run_shell',{'code':'python3 -c "print(6*7)"'});assert result['stdout'].strip()=='42'
         assert tool('end_visit')['closed']
