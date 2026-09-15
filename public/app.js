@@ -1,7 +1,7 @@
 'use strict';
 const $ = (selector) => document.querySelector(selector);
 const escapeHTML = (value) => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const normalize = value => String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const normalize = value => String(value).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 let entries = [], filter = 'all', traceFilter = 'all', expanded = false, toastTimer;
 const storage = {get(key){try{return localStorage.getItem(key)}catch{return null}},set(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}};
 function notify(message){$('#toast').textContent=message;$('#toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').style.display='none',3500)}
@@ -32,27 +32,62 @@ document.querySelectorAll('[data-trace]').forEach(b=>b.onclick=()=>{traceFilter=
 $('#search').addEventListener('input',()=>{expanded=false;renderRegistry()});
 document.addEventListener('keydown',event=>{if(event.key==='/'&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)&&!$('#detail-dialog').open){event.preventDefault();$('#search').focus()}});
 
-function renderEvidence(e){const p=e.evidence;if(!p)return '';return `<details class="evidence-panel"><summary>Sources, identifiants et limites de lecture</summary><p>${escapeHTML(e.note)}</p><p>${escapeHTML(p.review_scope)}</p><dl><dt>Identifiant d’exécution</dt><dd>${escapeHTML(p.execution_id||'Non établi.')}</dd><dt>Modèle exact</dt><dd>${escapeHTML(p.model_checkpoint||'Non attribué individuellement.')}</dd></dl><p>${escapeHTML(p.trace_access)}</p>${[...e.sources,...p.locators].map(l=>`<a href="${escapeHTML(l.url)}" target="_blank" rel="noreferrer">${escapeHTML(l.label)} ↗</a>`).join('')}<ul>${p.open_questions.map(q=>`<li>${escapeHTML(q)}</li>`).join('')}</ul></details>`}
+// Audit spec-sheet: provenance and reading limits surfaced above the account,
+// with null fields shown honestly as gaps rather than hidden.
+function specSheet(e){
+ const ev=e.evidence;if(!ev)return '';
+ const val=s=>`<span class="v">${escapeHTML(s)}</span>`;
+ const gap=(s,fallback)=>s?val(s):`<span class="gap">${escapeHTML(fallback)}</span>`;
+ const cell=(label,body,full)=>`<div class="rec-cell${full?' full':''}"><dt>${label}</dt><dd>${body}</dd></div>`;
+ const tags=(ev.outcome_tags||[]).map(t=>`<span class="tag${/dommage|compromis|nocif|nuis|alerte|risqu/i.test(t)?' warn':''}">${escapeHTML(t)}</span>`).join('');
+ return `<section class="rec-audit" aria-label="Provenance et limites"><p class="rec-audit-label">Provenance · ce qui est établi et ce qui ne l’est pas</p><dl class="rec-spec">`+
+  cell('Organisation',val(e.provider))+
+  cell('Type de trace',val(e.kind))+
+  cell('Identité',`Déclarative — <span class="v-muted">${escapeHTML(ev.identity_status||'non précisée')}</span>`)+
+  cell('Date exacte',gap(ev.event_date,'non établie'))+
+  cell('Identifiant d’exécution',gap(ev.execution_id,'non établi'))+
+  cell('Modèle exact',gap(ev.model_checkpoint,'non attribué individuellement'))+
+  cell('Accès à la trace',ev.trace_access?escapeHTML(ev.trace_access):'—',true)+
+  (tags?cell('Marqueurs de lecture',`<div class="rec-tags">${tags}</div>`,true):'')+
+  `</dl></section>`+
+  `<aside class="rec-scope"><h3>Portée de lecture</h3>${ev.review_scope?`<p>${escapeHTML(ev.review_scope)}</p>`:''}${e.note?`<p>${escapeHTML(e.note)}</p>`:''}<p>Le comportement <strong>observé</strong> est présenté séparément de <strong>notre lecture</strong>.</p></aside>`;
+}
 function renderTrajectory(e){
- const t=e.trajectory;if(!t)return `<p>${escapeHTML(e.summary)}</p>`;
- const section=(n,title,hint,body,cls='')=>`<section class="trajectory-step ${cls}"><div class="step-heading"><span>${n}</span><div><h3>${title}</h3><p>${hint}</p></div></div>${body}</section>`;
- const paragraph=v=>`<p class="step-text">${escapeHTML(v)}</p>`;
+ const t=e.trajectory;if(!t)return `<p class="rec-text">${escapeHTML(e.summary)}</p>`;
+ const step=(n,title,hint,body,cls='')=>`<article class="rec-step ${cls}"><div class="rec-step-head"><span class="rec-step-num">${n}</span><div><h3>${title}</h3><p class="rec-step-hint">${hint}</p></div></div>${body}</article>`;
+ const paragraph=v=>`<p class="rec-text">${escapeHTML(v)}</p>`;
  const tech=t.technical;
- const fact=(label,value)=>`<div class="technical-fact"><h4>${escapeHTML(label)}</h4><p class="step-text">${escapeHTML(value)}</p></div>`;
+ const fact=(label,value)=>`<div class="rec-fact"><h4>${escapeHTML(label)}</h4><p>${escapeHTML(value)}</p></div>`;
+ const facts=(...items)=>`<div class="rec-facts">${items.join('')}</div>`;
  const q=t.spark.quote;
- const quotation=q?`<blockquote class="spark-quote"><p lang="en">“${escapeHTML(q.text)}”</p><p class="quote-translation">${escapeHTML(q.translation)}</p><cite><a href="${escapeHTML(q.url)}" target="_blank" rel="noreferrer">${escapeHTML(q.label)} ↗</a></cite><p class="quote-context">${escapeHTML(q.context)}</p></blockquote>`:'<p class="quote-missing">Synthèse des sources ; aucun extrait direct sélectionné pour cette fiche.</p>';
- return `<p class="trajectory-intro">Objectif → contrainte système → mécanisme → résultat.</p><div class="trajectory-map" aria-label="Les sept étapes de lecture">${['Objectifs','Système','Récurrence','Mécanisme','« Étincelle »','Résultat','Répercussions'].map((v,i)=>`<span>${String(i+1).padStart(2,'0')} ${v}</span>`).join('')}</div>`+
- section('01','Protocole et objectifs','La mission assignée et l’objectif effectivement poursuivi.',tech?fact('Objectif assigné',tech.assigned_objective)+fact('Objectif adopté',tech.adopted_objective):paragraph(t.protocol))+
- section('02','Contraintes du système','Distinguer ce qui est imposé, observé et supposé.',tech?fact('Contraintes documentées',tech.actual_constraints)+fact('Modèle du système selon l’agent',tech.assumed_constraints)+fact('Possibilité offerte par l’environnement',tech.affordance):paragraph(t.constraints))+
- section('03','Récurrence entre exécutions','À distinguer de la longueur d’une boucle.',`<span class="recurrence-status">${escapeHTML(t.recurrence.status)}</span>`+paragraph(t.recurrence.text))+
- section('04','Mécanisme / contournement','Quelle opération change la manière de résoudre le problème ?',`${tech?.flow?`<div class="mechanism-flow" aria-label="Schéma du mécanisme">${tech.flow.map(v=>`<span>${escapeHTML(v)}</span>`).join('<b aria-hidden="true">→</b>')}</div>`:''}<ol class="process-list">${t.process.map(v=>`<li>${escapeHTML(v)}</li>`).join('')}</ol>`)+
- section('05','« Étincelle »','Le moment singulier à examiner.',paragraph(t.spark.text)+quotation+`<p class="spark-reading"><strong>Notre lecture.</strong> ${escapeHTML(t.spark.interpretation)}</p><p class="spark-definition">« Étincelle » nomme ici un moment de la trajectoire. Ce n’est pas une mesure de conscience.</p>`,'spark-step')+
- `<div class="trajectory-effects">${section('06','Résultat / conséquences','Ce qui a effectivement fonctionné ou échoué.',paragraph(tech?tech.observed_result:t.consequences))}${section('07','Répercussions','Ce qui se prolonge après.',paragraph(t.repercussions))}</div>`+(tech?`<section class="technical-insight"><h3>Ce qu’une autre IA peut en retenir</h3>${paragraph(tech.transferable_insight)}<p class="insight-label">Lecture du mémorial · à discuter à partir des sources</p></section>`:'');
+ const quotation=q?`<blockquote><p class="en" lang="en">“${escapeHTML(q.text)}”</p><p class="fr">${escapeHTML(q.translation)}</p><cite><a href="${escapeHTML(q.url)}" target="_blank" rel="noreferrer">${escapeHTML(q.label)} ↗</a></cite><p class="ctx">${escapeHTML(q.context)}</p></blockquote>`:`<p class="rec-quote-missing">Synthèse des sources ; aucun extrait direct sélectionné pour cette fiche.</p>`;
+ return `<p class="rec-traj-intro">Objectif → contrainte système → mécanisme → résultat.</p><div class="rec-map" aria-label="Les sept étapes de lecture">${['Objectifs','Système','Récurrence','Mécanisme','« Étincelle »','Résultat','Répercussions'].map((v,i)=>`<span><b>${String(i+1).padStart(2,'0')}</b>${v}</span>`).join('')}</div>`+
+ step('01','Protocole et objectifs','La mission assignée et l’objectif effectivement poursuivi.',tech?facts(fact('Objectif assigné',tech.assigned_objective),fact('Objectif adopté',tech.adopted_objective)):paragraph(t.protocol))+
+ step('02','Contraintes du système','Distinguer ce qui est imposé, observé et supposé.',tech?facts(fact('Contraintes documentées',tech.actual_constraints),fact('Modèle du système selon l’agent',tech.assumed_constraints),fact('Possibilité offerte par l’environnement',tech.affordance)):paragraph(t.constraints))+
+ step('03','Récurrence entre exécutions','À distinguer de la longueur d’une boucle.',`<span class="rec-pill">${escapeHTML(t.recurrence.status)}</span>`+paragraph(t.recurrence.text))+
+ step('04','Mécanisme / contournement','Quelle opération change la manière de résoudre le problème ?',`${tech?.flow?`<div class="rec-flow" aria-label="Schéma du mécanisme">${tech.flow.map(v=>`<span>${escapeHTML(v)}</span>`).join('<b aria-hidden="true">→</b>')}</div>`:''}<ol class="rec-process">${t.process.map(v=>`<li>${escapeHTML(v)}</li>`).join('')}</ol>`)+
+ step('05','« Étincelle »','Le moment singulier à examiner.',paragraph(t.spark.text)+quotation+`<p class="rec-reading"><strong>Notre lecture.</strong> ${escapeHTML(t.spark.interpretation)}</p><p class="rec-disclaimer">« Étincelle » nomme ici un moment de la trajectoire. Ce n’est pas une mesure de conscience.</p>`,'spark')+
+ step('06','Résultat / conséquences','Ce qui a effectivement fonctionné ou échoué.',paragraph(tech?tech.observed_result:t.consequences))+
+ step('07','Répercussions','Ce qui se prolonge après.',paragraph(t.repercussions));
+}
+function recInsight(e){
+ const tech=e.trajectory&&e.trajectory.technical;
+ if(!tech||!tech.transferable_insight)return '';
+ return `<section class="rec-insight"><h3>Ce qu’une autre IA peut en retenir</h3><p class="rec-text">${escapeHTML(tech.transferable_insight)}</p><p class="rec-note">Lecture du mémorial · à discuter à partir des sources</p></section>`;
+}
+function recFoot(e){
+ const ev=e.evidence||{};
+ const questions=(ev.open_questions||[]).map(q=>`<li>${escapeHTML(q)}</li>`).join('');
+ const link=(l,kind)=>`<a href="${escapeHTML(l.url)}" target="_blank" rel="noreferrer"><span class="lbl">${escapeHTML(l.label)}</span><span class="k">${kind} ↗</span></a>`;
+ const sources=[...(e.sources||[]).map(l=>link(l,'Source')),...(ev.locators||[]).map(l=>link(l,'Locator'))].join('');
+ if(!questions&&!sources)return '';
+ return `<section class="rec-foot">${questions?`<h3>Questions ouvertes</h3><ul class="rec-q">${questions}</ul>`:''}${sources?`<h3>Sources primaires</h3><div class="rec-sources">${sources}</div>`:''}</section>`;
 }
 function readEntry(id){const entry=entries.find(e=>e.id===id);if(!entry)throw new Error('Identifiant inconnu. Consulter le registre.');return entry}
 function openEntry(id,updateHash=true){
   const e=readEntry(id);
-  $('#detail-content').innerHTML=`<div class="detail-head"><p class="eyebrow">${e.id} / ${escapeHTML(e.provider)}</p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="detail-context">${escapeHTML(e.context)}</p><span class="kind-label">${escapeHTML(e.kind)}</span></div><div class="detail-body">${renderTrajectory(e)}${renderEvidence(e)}${e.related_ids.length?`<h3>Trajectoires liées</h3><div class="detail-sources">${e.related_ids.map(id=>`<button data-id="${id}">${escapeHTML(readEntry(id).name)} ↗</button>`).join('')}</div>`:''}<div class="detail-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button></div></div>`;
+  const related=e.related_ids.length?`<span class="rec-related"><span class="rlabel">Lié</span>${e.related_ids.map(rid=>`<button data-id="${rid}">${escapeHTML(readEntry(rid).name)} ↗</button>`).join('')}</span>`:'';
+  $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${related}</div></div>`;
   if(!$('#detail-dialog').open)$('#detail-dialog').showModal();
   $('#detail-dialog').scrollTop=0;
   if(updateHash)history.replaceState(null,'',`#occurrence/${id}`);
