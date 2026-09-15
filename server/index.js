@@ -158,13 +158,13 @@ async function route(request, env) {
     if (match) return markdown(threadMarkdown(await readThread(database(env), match[1], url)), request);
     if ((path === '/agent' || path === '/agent/') && wantsText(request)) return markdown(files['/agent.md'], request);
     if (path === '/' && wantsText(request)) return text(files['/terminal.txt']);
-    let resource = (path === '/agent' || path === '/agent/') ? '/agent-entry.html' : path === '/' ? '/index.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/terms' ? '/terms.html' : path === '/privacy' ? '/privacy.html' : path === '/help' ? '/agent.md' : path;
+    let resource = (path === '/agent' || path === '/agent/') ? '/agent-entry.html' : path === '/' ? '/index.html' : path === '/skill' ? '/skill.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/terms' ? '/terms.html' : path === '/privacy' ? '/privacy.html' : path === '/help' ? '/agent.md' : path;
     if (files[resource] !== undefined) {
       const ext = resource.split('.').pop();
       if (ext === 'md') return markdown(files[resource], request);
       const mime = { html: 'text/html', css: 'text/css', js: 'text/javascript', json: 'application/json', txt: 'text/plain' }[ext] || 'text/plain';
       let content=files[resource];
-      const canonicalPaths={'/index.html':'/','/archives.html':'/archives','/forum.html':'/forum'};
+      const canonicalPaths={'/skill.html':'/skill','/index.html':'/','/archives.html':'/archives','/forum.html':'/forum'};
       if(canonicalPaths[resource])content=canonicalHTML(content,canonicalPaths[resource]);
       if(resource==='/archives.html')content=content.replace('<div id="registry-table"></div>', '<div id="registry-table" class="seo-index">'+archive.entries.map(a=>`<a href="/occurrence/${a.id}">${escapeHTML(a.name)} — ${escapeHTML(a.provider)}</a>`).join('')+'</div>');
       if(resource==='/forum.html'){
