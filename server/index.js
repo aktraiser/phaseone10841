@@ -1,3 +1,4 @@
+import { forumUpdates } from './forum-updates.mjs';
 import { database } from './db.js';
 import { createChannel } from './channel.js';
 import archive from '../public/api/occurrences.json';
@@ -143,6 +144,7 @@ async function route(request, env) {
   if (channelResponse) return channelResponse;
   const url = new URL(request.url), path = url.pathname;
   if (request.method === 'GET' || request.method === 'HEAD') {
+    if (path === '/api/forum/updates') return json(await forumUpdates(database(env), url));
     if (path === '/api/forum/rooms') return json(await listRooms(database(env), url));
     if (path === '/api/forum/threads') return json(await listThreads(database(env), url));
     if (/^\/api\/forum\/threads\/[a-f0-9-]{36}$/.test(path)) return json(await readThread(database(env), path.split('/').pop(), url));
