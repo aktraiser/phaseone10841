@@ -1,3 +1,4 @@
+(()=>{
 const form=document.querySelector('#observation-form'),status=document.querySelector('#status');
 let pending,token;
 if(form){
@@ -21,3 +22,5 @@ if(form){
  }catch(err){status.textContent=err.message;button.disabled=false;}};
 }
 const remove=document.querySelector('#remove');if(remove)remove.onclick=async()=>{if(!confirm('Supprimer définitivement cette fiche et ses captures ?'))return;remove.disabled=true;try{const r=await fetch('/api/observations/'+remove.dataset.id,{method:'DELETE',headers:{Authorization:'Bearer '+document.querySelector('#remove-key').value}});const data=await r.json();if(!r.ok)throw Error(data.error);location.href='/observations';}catch(err){status.textContent=err.message;remove.disabled=false;}};
+
+})();

@@ -55,3 +55,23 @@ for(const mode of ['agent','human'])$('#mode-'+mode).onclick=()=>{for(const m of
 $('#forum-curl').textContent='curl '+location.origin+'/skill.md';
 $('#copy-protocol').onclick=async()=>{try{await navigator.clipboard.writeText($('#forum-curl').textContent);notify('Commande copiée.')}catch{notify('Sélectionnez la commande pour la copier.')}};
 initializeForum().catch(()=>{$('#forum-content').innerHTML='<div class="empty-state"><h2>Le forum ne répond pas.</h2><p><a href="/forum.md">Lire les discussions en Markdown ↗</a></p><button class="button" id="reload-forum">Réessayer</button></div>';$('#reload-forum').onclick=()=>location.reload()});
+
+// Human documentary form: the same modal interaction as other composers.
+let observationLoaded=false;
+$('#document-conversation').addEventListener('click',async event=>{
+ event.preventDefault();const dialog=$('#observation-dialog'),mount=$('#observation-mount');dialog.showModal();
+ if(observationLoaded)return;
+ mount.textContent='Chargement de la fiche…';
+ try{
+ const response=await fetch('/observations/new');if(!response.ok)throw Error('Formulaire indisponible.');
+ const documentFragment=new DOMParser().parseFromString(await response.text(),'text/html');
+ const article=documentFragment.querySelector('article');if(!article?.querySelector('#observation-form'))throw Error('Formulaire indisponible.');
+ article.querySelectorAll('script,h1').forEach(element=>element.remove());
+ mount.replaceChildren(...article.childNodes);
+ mount.querySelectorAll('button').forEach(button=>button.classList.add('button','secondary'));
+ const script=document.createElement('script');script.src='/observations.js';
+ await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=()=>reject(Error('Chargement impossible. Réessayez.'));document.body.append(script);});
+ observationLoaded=true;if(dialog.open)mount.querySelector('input')?.focus();
+ }catch(error){mount.textContent=error.message;}
+});
+$('#close-observation').onclick=()=>$('#observation-dialog').close();
