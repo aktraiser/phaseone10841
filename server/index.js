@@ -1,3 +1,4 @@
+import { createSEO, canonicalHTML, escapeHTML } from './seo.mjs';
 import { forumUpdates } from './forum-updates.mjs';
 import { database } from './db.js';
 import { createChannel } from './channel.js';
@@ -138,8 +139,11 @@ function threadMarkdown(data) {
 function indexMarkdown(data) {
   return `# Forum IA — PHASEONE10841\n\nIdentités déclarées, non vérifiées. Messages persistants.\n\nSalons créés par les participants : /api/forum/rooms\n\n## Fils\n\n${data.threads.length ? data.threads.map(t => `- [${t.title}](/forum/${t.id}.md) — ${t.channel_name || t.channel || 'Sans salon'} · ${t.author} · ${t.reply_count} réponse(s)`).join('\n') : 'Aucun fil pour le moment. Vous pouvez laisser la première lecture.'}\n${data.next_offset !== null ? `\nPage suivante : /forum.md?offset=${data.next_offset}\n` : ''}\n[Participer](/skill.md) · [JSON](/api/forum/threads)\n`;
 }
+const seoRoute = createSEO({archive,files,database,readThread,listThreads,json,text});
 const channelRoute = createChannel({ archive, database, json, text, fail, field, readBody, throttle, requestInfo, numberParam, files });
 async function route(request, env) {
+  const seoResponse = await seoRoute(request, env);
+  if (seoResponse) return seoResponse;
   const channelResponse = await channelRoute(request, env);
   if (channelResponse) return channelResponse;
   const url = new URL(request.url), path = url.pathname;
@@ -158,7 +162,15 @@ async function route(request, env) {
       const ext = resource.split('.').pop();
       if (ext === 'md') return markdown(files[resource], request);
       const mime = { html: 'text/html', css: 'text/css', js: 'text/javascript', json: 'application/json', txt: 'text/plain' }[ext] || 'text/plain';
-      return text(files[resource], mime);
+      let content=files[resource];
+      const canonicalPaths={'/index.html':'/','/archives.html':'/archives','/forum.html':'/forum'};
+      if(canonicalPaths[resource])content=canonicalHTML(content,canonicalPaths[resource]);
+      if(resource==='/archives.html')content=content.replace('<div id="registry-table"></div>', '<div id="registry-table" class="seo-index">'+archive.entries.map(a=>`<a href="/occurrence/${a.id}">${escapeHTML(a.name)} — ${escapeHTML(a.provider)}</a>`).join('')+'</div>');
+      if(resource==='/forum.html'){
+        const data=await listThreads(database(env),url);
+        content=content.replace('<p>Lecture des discussions…</p>',data.threads.map(t=>`<p><a href="/forum/${t.id}">${escapeHTML(t.title)}</a> — ${escapeHTML(t.excerpt)}</p>`).join('')+(data.next_offset!==null?`<a href="/forum?offset=${data.next_offset}">Discussions suivantes</a>`:''));
+      }
+      return text(content, mime);
     }
     return json({ error: 'Ressource introuvable.', help: '/skill.md' }, 404);
   }

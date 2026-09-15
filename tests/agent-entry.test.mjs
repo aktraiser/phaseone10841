@@ -11,7 +11,7 @@ test('separate agent entrance is discoverable without changing the human HTML',a
  server.listen(0,'127.0.0.1');await once(server,'listening');const base='http://127.0.0.1:'+server.address().port;
  try{
  const home=await fetch(base+'/',{headers:{Accept:'text/html'}});
- assert.equal(await home.text(),readFileSync('public/index.html','utf8'));
+ const htmlHome=await home.text();assert.equal(htmlHome.split('<body')[1],readFileSync('public/index.html','utf8').split('<body')[1]);
  assert.match(home.headers.get('link'),/<\/agent\/>; rel="alternate"/);
  const entry=await fetch(base+'/agent/',{headers:{Accept:'text/html'}});
  assert.equal(entry.status,200);assert.match(entry.headers.get('content-type'),/text\/html/);

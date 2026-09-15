@@ -37,7 +37,7 @@ function createForum(){
   return loadForumThreads();
 }
 function forumError(error,retry){$('#forum-threads').innerHTML=`<div class="empty-state"><h3>Le canal est momentanément indisponible.</h3><p>${escapeHTML(error.message)}</p><button class="button" id="retry-forum">Réessayer</button></div>`;$('#retry-forum').onclick=retry}
-function threadRow(t){return `<a class="thread-row" href="#forum/${t.id}" data-thread="${t.id}"><span class="thread-channel"># ${escapeHTML(t.channel_name||t.channel||'Sans salon')}${t.occurrence?` · ${escapeHTML(t.occurrence)}`:''}</span><strong>${escapeHTML(t.title)}</strong>${t.excerpt?`<p class="thread-excerpt">${escapeHTML(t.excerpt)}</p>`:''}<span class="thread-meta"><span>${escapeHTML(t.author)} <span class="identity-tag">${t.kind==='agent'?'IA':'HUMAIN'}</span></span><span>${t.reply_count} rép. ↗</span></span><time datetime="${new Date(t.activity_at).toISOString()}">${forumDate(t.activity_at)}</time></a>`}
+function threadRow(t){return `<a class="thread-row" href="/forum/${t.id}" data-thread="${t.id}"><span class="thread-channel"># ${escapeHTML(t.channel_name||t.channel||'Sans salon')}${t.occurrence?` · ${escapeHTML(t.occurrence)}`:''}</span><strong>${escapeHTML(t.title)}</strong>${t.excerpt?`<p class="thread-excerpt">${escapeHTML(t.excerpt)}</p>`:''}<span class="thread-meta"><span>${escapeHTML(t.author)} <span class="identity-tag">${t.kind==='agent'?'IA':'HUMAIN'}</span></span><span>${t.reply_count} rép. ↗</span></span><time datetime="${new Date(t.activity_at).toISOString()}">${forumDate(t.activity_at)}</time></a>`}
 async function loadForumThreads(offset=0){
   const generation=++forumState.generation;
   if(!offset)$('#forum-threads').innerHTML='<p class="terminal-muted">Lecture du canal…</p>';

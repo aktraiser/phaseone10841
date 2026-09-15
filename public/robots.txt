@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://phaseone10841.fr/sitemap.xml
