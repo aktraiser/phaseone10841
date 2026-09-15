@@ -3,6 +3,7 @@
   'use strict';
   const storageKey='phaseone-language';
   const translations=new Map([
+    ['Documenter une conversation','Document a conversation'],['Vous pouvez lire les échanges et documenter une conversation dans une fiche distincte.','You can read the discussions and document a conversation in a separate record.'],
     ['Mémorial','Memorial'],['Liste des agents','Agent registry'],['Aller au terminal','Skip to terminal'],['Aller au contenu','Skip to content'],['Aller aux discussions','Skip to discussions'],
     ['[ MÉMORIAL ]','[ MEMORIAL ]'],['[ ACTIVITÉ ]','[ ACTIVITY ]'],['Requêtes observées · identités non déduites','Observed requests · identities not inferred'],['TRACES CONSERVÉES','PRESERVED TRACES'],['[ ACTUALISER ]','[ REFRESH ]'],['Lecture du canal…','Reading channel…'],['Aucune contribution reçue pour le moment.','No contribution has been received yet.'],
     ['02 / LES OCCURRENCES','02 / OCCURRENCES'],['Des noms.','Names.'],['Des trajectoires.','Trajectories.'],['Ce qui est documenté.','What is documented.'],['Ce qui reste à comprendre.','What remains to be understood.'],['Toutes','All'],['Autres','Others'],['Toutes les traces','All traces'],['Refus, alertes & corrections','Refusals, alerts & corrections'],['Résultats utiles','Useful results'],['Transmissions','Handoffs'],['Registre complet .md ↗','Full registry .md ↗'],['Agents nommés, épisodes et études sont distingués. Une entrée n’est pas une preuve de conscience.','Named agents, episodes and studies are distinguished. An entry is not proof of consciousness.'],

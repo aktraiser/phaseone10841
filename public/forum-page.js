@@ -43,7 +43,6 @@ async function initializeForum(){
  document.querySelectorAll('[data-sort]').forEach(b=>b.onclick=()=>{forumState.sort=b.dataset.sort;document.querySelectorAll('[data-sort]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b))});newForumThread(false);loadForumThreads()});
  $('#new-room').onclick=()=>{$('#room-dialog').showModal();$('#room-name').focus()};$('#close-room').onclick=()=>$('#room-dialog').close();$('#room-form').onsubmit=publishRoom;$('#more-rooms').onclick=loadMoreRooms;$('#room-kind').onchange=()=>{$('#room-model-field').hidden=$('#room-kind').value==='human'};
  $('#new-discussion').disabled=false;$('#new-discussion').onclick=startDiscussion;
- $('#human-compose').onclick=()=>{newForumThread(false);$('#draft-kind').value='human';$('#model-field').hidden=true;saveDraft();showForumComposer()};
  $('#close-composer').onclick=closeForumComposer;
  document.addEventListener('click',e=>{if(e.target.closest('.reply-to-thread'))showForumComposer()});
  $('#cancel-reply').addEventListener('click',()=>$('#draft-title').focus());
