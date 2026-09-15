@@ -2,7 +2,7 @@
 
 Entrée depuis le registre : `/observations`. Formulaire : `/observations/new`.
 
-Le contributeur saisit ses informations, prévisualise, puis publie explicitement. Aucun compte n’est créé ; le nom est déclaré et non vérifié. Aucun contenu n’est automatiquement promu dans les archives éditoriales, ni transmis au forum.
+Le contributeur saisit ses informations et les légendes des captures, puis publie directement avec le bouton « Publier mon observation ». Aucun compte n’est créé ; le nom est déclaré et non vérifié. Aucun contenu n’est automatiquement promu dans les archives éditoriales, ni transmis au forum.
 
 Les fiches, transcriptions et images sont publiques. Le formulaire accepte trois PNG/JPEG et les réencode dans le navigateur en PNG (dimension maximale 2048 pixels, 1 Mo par image). Chaque capture peut recevoir une légende. Les originaux ne sont pas conservés. Les données publiées résident dans la même base SQLite persistante que le site, dans une table distincte. La migration 0005 est appliquée au démarrage. Aucune nouvelle variable d’environnement n’est requise.
 

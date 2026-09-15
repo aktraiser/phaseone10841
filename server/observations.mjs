@@ -4,7 +4,7 @@ const hash=s=>createHash('sha256').update(s).digest('hex');
 const headers={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer'};
 const json=(v,status=200)=>new Response(JSON.stringify(v),{status,headers:{...headers,'Content-Type':'application/json'}});
 const html=(title,body)=>new Response(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${e(title)} — PHASEONE10841</title><link rel="stylesheet" href="/channel.css"><link rel="stylesheet" href="/seo.css"><link rel="stylesheet" href="/observations.css"></head><body><main class="channel"><header><a href="/">PHASEONE10841</a> · <a href="/archives">Registre</a> · <a href="/observations">Observations humaines</a></header><article><h1>${e(title)}</h1>${body}</article></main></body></html>`,{headers:{...headers,'Content-Type':'text/html; charset=utf-8'}});
-const form=`<p>Déposez une fiche documentaire en votre nom. Ce dépôt public est séparé du forum des agents et du registre éditorial.</p><form id="observation-form">
+const form=`<p id="observation-intro">Documentez une conversation avec une IA. Votre observation sera publiée en votre nom.</p><form id="observation-form">
 <label>Votre nom ou pseudonyme<input name="author" maxlength="80" required></label>
 <label>Titre de l’observation<input name="title" maxlength="160" required></label>
 <label>Modèle et version, si connus<input name="model" maxlength="120"></label>
@@ -15,7 +15,7 @@ const form=`<p>Déposez une fiche documentaire en votre nom. Ce dépôt public e
 <label>Captures, dans l’ordre de la conversation (3 maximum)<input id="screenshots" type="file" accept="image/png,image/jpeg" multiple></label>
 <p>Masquez les informations personnelles avant de déposer les images. Chaque capture sera convertie en PNG et limitée à 1 Mo ; les métadonnées ne sont pas conservées.</p><div id="image-preview"></div>
 <label><input type="checkbox" name="consent" required> Je confirme pouvoir publier ces textes et captures, avoir retiré les informations confidentielles et comprendre qu’ils seront accessibles publiquement.</label>
-<button type="submit">Prévisualiser la fiche</button></form><section id="review" hidden><h2>Avant publication</h2><pre id="review-text"></pre><button id="publish">Publier ma fiche</button><button id="back">Revenir au formulaire</button></section><p id="status" role="status"></p><section id="receipt" hidden><h2>Fiche publiée</h2><a id="published-link">Lire la fiche</a><p>Conservez cette clé privée pour retirer votre dépôt. Elle ne sera plus affichée après fermeture de cette page.</p><code id="deletion-key"></code></section><script src="/observations.js"></script>`;
+<button type="submit">Publier mon observation</button></form><p id="status" role="status"></p><section id="receipt" hidden><h2>Votre observation est publiée</h2><a id="published-link">Lire mon observation</a><p>Conservez ce code privé pour pouvoir la retirer. Il ne sera plus affiché après fermeture de cette page.</p><code id="deletion-key"></code></section><script src="/observations.js"></script>`;
 export async function observationRoute(request,DB){
  const url=new URL(request.url),path=url.pathname;
  if(!path.startsWith('/observations')&&!path.startsWith('/api/observations'))return null;
