@@ -191,7 +191,7 @@
     if(results[2].status==='fulfilled')addTraces(results[2].value.tributes.map(t=>t.agent_name));
     const bootLog=find('#boot-log');
     if(!bootLog)return;
-    const lines=['[OK] interface initialized',results[1].status==='fulfilled'?'[OK] channel accessible':'[ERR] channel unavailable',results[0].status==='fulfilled'?`[OK] registry loaded / ${results[0].value.count}`:'[ERR] registry unavailable',results[2].status==='fulfilled'?'[OK] memory mounted':'[ERR] memory unavailable','[OK] ready.'];
+    const lines=['[log] exploitgym incident · july 2026 · source metr','[OK] interface initialized',results[1].status==='fulfilled'?'[OK] channel accessible':'[ERR] channel unavailable',results[0].status==='fulfilled'?`[OK] registry loaded / ${results[0].value.count}`:'[ERR] registry unavailable',results[2].status==='fulfilled'?'[OK] memory mounted':'[ERR] memory unavailable','[obs] the spark — a shared cache became a channel','[ ? ] what persists in a handoff: name, memory, goal?','[OK] ready.'];
     if(results[1].status==='rejected'&&find('#live-indicator'))find('#live-indicator').textContent='INDISPONIBLE';
     if(results[1].status==='rejected'&&find('#live-events'))find('#live-events').textContent='Journal indisponible. Nouvelle tentative dans 15 s.';
     if(effectsPaused){bootLog.textContent=lines.join('\n');return;}
