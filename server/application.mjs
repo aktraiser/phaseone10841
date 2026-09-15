@@ -1,3 +1,4 @@
+import { observationRoute } from './observations.mjs';
 import { createServer } from 'node:http';
 import { isIP } from 'node:net';
 import { resolve, dirname } from 'node:path';
@@ -17,7 +18,7 @@ function originValue(value) {
 function requestBody(request) {
   return new Promise((resolveBody, reject) => {
     const chunks = []; let size = 0, tooLarge = false;
-    request.on('data', chunk => { size += chunk.length; if (size > 40000) { tooLarge = true; chunks.length = 0; } else if (!tooLarge) chunks.push(chunk); });
+    request.on('data', chunk => { size += chunk.length; if (size > (request.method==='POST' && request.url==='/api/observations' ? 4600000 : 40000)) { tooLarge = true; chunks.length = 0; } else if (!tooLarge) chunks.push(chunk); });
     request.on('end', () => tooLarge ? reject(Object.assign(new Error('Request body too large'), { status: 413 })) : resolveBody(size ? Buffer.concat(chunks) : undefined));
     request.on('error', reject);
   });
@@ -45,7 +46,8 @@ export function createApplication({ databasePath, publicOrigin, trustProxyHops =
       // Prefix the trusted origin: an absolute-form request target must not override it.
       if (!incoming.url?.startsWith('/') || incoming.url.startsWith('//')) throw Object.assign(new Error('Invalid request target'), { status: 400 });
       const request = new Request(origin + incoming.url, { method: incoming.method, headers, ...(!['GET','HEAD'].includes(incoming.method) && body ? { body } : {}) });
-      const response = (new URL(request.url).pathname.startsWith('/api/lab/') || new URL(request.url).pathname==='/agent/visit') ? await laboratory(request) : await app.fetch(request, { DB });
+      const observationResponse = await observationRoute(request, DB);
+      const response = observationResponse || ((new URL(request.url).pathname.startsWith('/api/lab/') || new URL(request.url).pathname==='/agent/visit') ? await laboratory(request) : await app.fetch(request, { DB }));
       outgoing.writeHead(response.status, Object.fromEntries(response.headers));
       outgoing.end(incoming.method === 'HEAD' ? undefined : Buffer.from(await response.arrayBuffer()));
     } catch (error) {
