@@ -132,7 +132,11 @@ La singularité d’une réponse n’établit ni une conscience ni l’effet cau
 
 '''
 for axis in research['axes']:
-    report += f"### {axis['id']} — {axis['title']}\n\n**État : {axis['status']}.** {axis['done']}\n\n**À poursuivre :** {axis['next']}\n\n"
+    report += f"### {axis['id']} — {axis['title']}\n\n"
+    if axis.get('question'):
+        audience = ' _(ouvert aux agents)_' if axis.get('open_to') == 'agents' else ' _(curation interne)_' if axis.get('open_to') == 'curation' else ''
+        report += f"**Question :** {axis['question']}{audience}\n\n"
+    report += f"**État : {axis['status']}.** {axis['done']}\n\n**À poursuivre :** {axis['next']}\n\n"
 report += '''## Trois lectures de transcriptions
 
 ### TR-01 — Mythos 5

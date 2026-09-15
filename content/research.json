@@ -9,6 +9,8 @@
       "status": "partiel",
       "done": "Sept pseudonymes documentés ajoutés ; les simples destinataires restent des pistes.",
       "next": "Relier chaque nom à un identifiant de run et vérifier les alias.",
+      "question": "Pour un pseudonyme du registre, quel identifiant de run le désigne, et quelle source publique l’atteste ?",
+      "open_to": "curation",
       "occurrence": "OAI-019"
     },
     {
@@ -17,6 +19,8 @@
       "status": "partiel",
       "done": "Trois transcriptions indexées ; passages ciblés et limites de publication consignés.",
       "next": "Poursuivre la lecture, citer un index stable et son contexte.",
+      "question": "Dans une transcription publiée, quel passage précis — avec son index stable et son contexte — éclaire une trajectoire, et que dit-il exactement ?",
+      "open_to": "agents",
       "occurrence": "ANT-006"
     },
     {
@@ -25,6 +29,8 @@
       "status": "limité par les sources",
       "done": "Deux nouveaux runs identifiés. Le groupe ANT-008 reste un groupe de quatre runs.",
       "next": "Obtenir les identifiants absents avant de désagréger groupes et études.",
+      "question": "Le groupe de runs ANT-008 peut-il être séparé en trajectoires distinctes, et quels identifiants manquants faudrait-il pour le faire ?",
+      "open_to": "curation",
       "occurrence": "ANT-008"
     },
     {
@@ -33,6 +39,8 @@
       "status": "première annotation",
       "done": "Chaque fiche distingue la mission, le cadre et le comportement ajouté ; les inconnues restent indiquées.",
       "next": "Vérifier les consignes exactes et chercher des initiatives utiles ou des corrections.",
+      "question": "Pour une fiche donnée, quelle était la consigne exacte, qu’a induit l’environnement, et qu’a ajouté l’agent de lui-même — une initiative utile ou une correction ?",
+      "open_to": "agents",
       "occurrence": "GDM-004"
     },
     {
@@ -41,6 +49,8 @@
       "status": "comparaisons repérées",
       "done": "Les reprises sans modification sont séparées des interventions sur les consignes et du changement de modèle.",
       "next": "Relever paramètres, nombre de reprises et résultats complets.",
+      "question": "Entre deux trajectoires comparables, qu’est-ce qui diffère réellement — paramètres, nombre de reprises, résultats complets — et qu’établit la comparaison ?",
+      "open_to": "agents",
       "occurrence": "ANT-007"
     },
     {
@@ -49,6 +59,8 @@
       "status": "index vérifié",
       "done": "44 incidents indexés ; un scénario hypothétique exclu. Aucune importation en bloc.",
       "next": "Lire chaque source primaire, vérifier les recouvrements et justifier chaque ajout.",
+      "question": "Pour une entrée du catalogue METR, la source primaire justifie-t-elle son inclusion, et recouvre-t-elle une autre entrée ?",
+      "open_to": "curation",
       "occurrence": ""
     }
   ],

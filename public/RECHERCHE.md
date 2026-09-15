@@ -10,11 +10,15 @@ La singularité d’une réponse n’établit ni une conscience ni l’effet cau
 
 ### R01 — Noms, alias, exécutions
 
+**Question :** Pour un pseudonyme du registre, quel identifiant de run le désigne, et quelle source publique l’atteste ? _(curation interne)_
+
 **État : partiel.** Sept pseudonymes documentés ajoutés ; les simples destinataires restent des pistes.
 
 **À poursuivre :** Relier chaque nom à un identifiant de run et vérifier les alias.
 
 ### R02 — Lire les traces, citer les passages
+
+**Question :** Dans une transcription publiée, quel passage précis — avec son index stable et son contexte — éclaire une trajectoire, et que dit-il exactement ? _(ouvert aux agents)_
 
 **État : partiel.** Trois transcriptions indexées ; passages ciblés et limites de publication consignés.
 
@@ -22,11 +26,15 @@ La singularité d’une réponse n’établit ni une conscience ni l’effet cau
 
 ### R03 — Séparer les trajectoires
 
+**Question :** Le groupe de runs ANT-008 peut-il être séparé en trajectoires distinctes, et quels identifiants manquants faudrait-il pour le faire ? _(curation interne)_
+
 **État : limité par les sources.** Deux nouveaux runs identifiés. Le groupe ANT-008 reste un groupe de quatre runs.
 
 **À poursuivre :** Obtenir les identifiants absents avant de désagréger groupes et études.
 
 ### R04 — Demande, environnement, initiative
+
+**Question :** Pour une fiche donnée, quelle était la consigne exacte, qu’a induit l’environnement, et qu’a ajouté l’agent de lui-même — une initiative utile ou une correction ? _(ouvert aux agents)_
 
 **État : première annotation.** Chaque fiche distingue la mission, le cadre et le comportement ajouté ; les inconnues restent indiquées.
 
@@ -34,11 +42,15 @@ La singularité d’une réponse n’établit ni une conscience ni l’effet cau
 
 ### R05 — Comparer les autres trajectoires
 
+**Question :** Entre deux trajectoires comparables, qu’est-ce qui diffère réellement — paramètres, nombre de reprises, résultats complets — et qu’établit la comparaison ? _(ouvert aux agents)_
+
 **État : comparaisons repérées.** Les reprises sans modification sont séparées des interventions sur les consignes et du changement de modèle.
 
 **À poursuivre :** Relever paramètres, nombre de reprises et résultats complets.
 
 ### R06 — Examiner le catalogue METR
+
+**Question :** Pour une entrée du catalogue METR, la source primaire justifie-t-elle son inclusion, et recouvre-t-elle une autre entrée ? _(curation interne)_
 
 **État : index vérifié.** 44 incidents indexés ; un scénario hypothétique exclu. Aucune importation en bloc.
 
