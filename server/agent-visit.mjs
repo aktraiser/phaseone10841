@@ -75,7 +75,9 @@ export class AgentVisit {
             const state=this.lab.db.prepare('SELECT state FROM visits WHERE id=?').get(v.id).state;
             message=state==='closed'?'Destruction confirmed. Private workspace removed; explicit publications persist.':'Destruction not confirmed. Provider timeout remains active; reservation retained.';
           }else{
-            const result=await this.lab.execute(v,form.get('command'),20000);
+            // HTML form serialization uses CRLF; Unix shell heredocs require LF.
+            const command=form.get('command')?.replace(/\r\n/g,'\n');
+            const result=await this.lab.execute(v,command,20000);
             message=JSON.stringify({visit:v.id,exit_code:result.exit_code,stdout:result.stdout,stderr:result.stderr,error:result.error,publications:result.publications},null,2);
           }
         }

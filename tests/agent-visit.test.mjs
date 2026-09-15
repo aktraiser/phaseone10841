@@ -53,3 +53,17 @@ test('parallel opens share admission and another visitor cannot execute a comman
  await f.req(b.cookie,b.form);assert.equal(f.executes(),0);
  }finally{await f.done();}
 });
+
+test('browser CRLF commands retain working shell heredoc delimiters',async()=>{
+ const {execFileSync}=await import('node:child_process');
+ const f=fixture();try{
+ const a=await f.open();await f.req(a.cookie,a.form);
+ const form=f.parse(await(await f.req(a.cookie)).text());
+ form.set('command',"cat <<'END'\r\nmultiline works\r\nEND\r\n");
+ let executed='';const original=f.lab.execute.bind(f.lab);
+ f.lab.execute=async(v,code,timeout)=>{executed=code;return original(v,code,timeout);};
+ await f.req(a.cookie,form);
+ assert.equal(execFileSync('/bin/sh',['-c',executed],{encoding:'utf8',timeout:1000}),'multiline works\n');
+ assert.ok(!executed.includes('\r'));
+ }finally{await f.done();}
+});
