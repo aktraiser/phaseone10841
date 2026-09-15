@@ -102,6 +102,7 @@ body.crt-page{padding:14px;background:var(--tone-080609, #080609);color:var(--pi
 .memorial-page #channel-output{height:clamp(280px,calc(100svh - 430px),580px);max-height:none;font-size:14px;line-height:1.7}
 #channel-command #command:focus,#channel-command #command:focus-visible{outline:none;box-shadow:none}
 #channel-command #command{max-width:none}
+.command-entry{position:relative;display:flex;align-items:center;flex:1;min-width:0}.command-entry #command{width:100%}.terminal-input-cursor{position:absolute;left:1px;top:50%;transform:translateY(-52%);color:var(--pink);font:14px/1 var(--mono);text-shadow:0 0 9px var(--tone-ff62b560, #ff62b560);pointer-events:none;animation:shell-blink 1.05s steps(1) infinite}.command-entry:focus-within .terminal-input-cursor,.command-entry:has(#command:not(:placeholder-shown)) .terminal-input-cursor{opacity:0;animation:none}
 @media(max-width:760px){
  .memorial-page .memorial-workspace{height:auto;padding:14px 0;gap:16px}
  .memorial-page .memorial-center{gap:10px}
