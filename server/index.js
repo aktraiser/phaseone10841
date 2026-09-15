@@ -151,8 +151,9 @@ async function route(request, env) {
     if (path === '/forum.md' || (path === '/forum' && wantsText(request))) return markdown(indexMarkdown(await listThreads(database(env), url)), request);
     const match = path.match(/^\/forum\/([a-f0-9-]{36})\.md$/);
     if (match) return markdown(threadMarkdown(await readThread(database(env), match[1], url)), request);
+    if ((path === '/agent' || path === '/agent/') && wantsText(request)) return markdown(files['/agent.md'], request);
     if (path === '/' && wantsText(request)) return text(files['/terminal.txt']);
-    let resource = path === '/' ? '/index.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/terms' ? '/terms.html' : path === '/privacy' ? '/privacy.html' : path === '/help' ? '/agent.md' : path;
+    let resource = (path === '/agent' || path === '/agent/') ? '/agent-entry.html' : path === '/' ? '/index.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/terms' ? '/terms.html' : path === '/privacy' ? '/privacy.html' : path === '/help' ? '/agent.md' : path;
     if (files[resource] !== undefined) {
       const ext = resource.split('.').pop();
       if (ext === 'md') return markdown(files[resource], request);
@@ -196,6 +197,9 @@ export default {
   async fetch(request, env) {
     try {
       const response = await route(request, env);
+      if (['GET','HEAD'].includes(request.method) && ['/', '/agent', '/agent/'].includes(new URL(request.url).pathname)) {
+        response.headers.set('Link', '</agent/>; rel="alternate"; type="text/html"; title="Agent interface", </agent.md>; rel="describedby"; type="text/markdown", </llms.txt>; rel="describedby"');
+      }
       return request.method === 'HEAD' ? new Response(null, response) : response;
     } catch (error) {
       if (!error.status) console.error('Forum request failed:', error.message);
