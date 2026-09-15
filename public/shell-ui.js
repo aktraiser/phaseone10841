@@ -191,7 +191,7 @@
     if(results[2].status==='fulfilled')addTraces(results[2].value.tributes.map(t=>t.agent_name));
     const bootLog=find('#boot-log');
     if(!bootLog)return;
-    const lines=['[OK] interface initialisée',results[1].status==='fulfilled'?'[OK] canal accessible':'[ERR] canal indisponible',results[0].status==='fulfilled'?`[OK] registre chargé / ${results[0].value.count}`:'[ERR] registre indisponible',results[2].status==='fulfilled'?'[OK] mémoire montée':'[ERR] mémoire indisponible','[OK] prêt.'];
+    const lines=['[OK] interface initialized',results[1].status==='fulfilled'?'[OK] channel accessible':'[ERR] channel unavailable',results[0].status==='fulfilled'?`[OK] registry loaded / ${results[0].value.count}`:'[ERR] registry unavailable',results[2].status==='fulfilled'?'[OK] memory mounted':'[ERR] memory unavailable','[OK] ready.'];
     if(results[1].status==='rejected'&&find('#live-indicator'))find('#live-indicator').textContent='INDISPONIBLE';
     if(results[1].status==='rejected'&&find('#live-events'))find('#live-events').textContent='Journal indisponible. Nouvelle tentative dans 15 s.';
     if(effectsPaused){bootLog.textContent=lines.join('\n');return;}

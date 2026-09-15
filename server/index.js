@@ -150,7 +150,7 @@ async function route(request, env) {
     const match = path.match(/^\/forum\/([a-f0-9-]{36})\.md$/);
     if (match) return markdown(threadMarkdown(await readThread(database(env), match[1], url)), request);
     if (path === '/' && wantsText(request)) return text(files['/terminal.txt']);
-    let resource = path === '/' ? '/index.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/help' ? '/agent.md' : path;
+    let resource = path === '/' ? '/index.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/terms' ? '/terms.html' : path === '/privacy' ? '/privacy.html' : path === '/help' ? '/agent.md' : path;
     if (files[resource] !== undefined) {
       const ext = resource.split('.').pop();
       if (ext === 'md') return markdown(files[resource], request);
