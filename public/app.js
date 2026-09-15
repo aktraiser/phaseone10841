@@ -5,6 +5,7 @@ const normalize = value => String(value).normalize('NFD').replace(/[̀-ͯ]/g, ''
 let entries = [], filter = 'all', traceFilter = 'all', expanded = false, toastTimer;
 const storage = {get(key){try{return localStorage.getItem(key)}catch{return null}},set(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}};
 function notify(message){$('#toast').textContent=message;$('#toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').style.display='none',3500)}
+function lockArchiveScroll(locked){document.documentElement.classList.toggle('detail-dialog-open',locked);document.body.classList.toggle('detail-dialog-open',locked)}
 
 // Shared renderer owns the rain; local scroll behavior follows reduced motion.
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
@@ -89,6 +90,7 @@ function openEntry(id,updateHash=true){
   const related=e.related_ids.length?`<span class="rec-related"><span class="rlabel">Lié</span>${e.related_ids.map(rid=>`<button data-id="${rid}">${escapeHTML(readEntry(rid).name)} ↗</button>`).join('')}</span>`:'';
   $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${related}</div></div>`;
   if(!$('#detail-dialog').open)$('#detail-dialog').showModal();
+  lockArchiveScroll(true);
   $('#detail-dialog').scrollTop=0;
   if(updateHash)history.replaceState(null,'',`#occurrence/${id}`);
   $('#discuss-entry').onclick=()=>{location.href='/forum?occurrence='+encodeURIComponent(id)};
@@ -96,7 +98,7 @@ function openEntry(id,updateHash=true){
 document.addEventListener('click',event=>{const button=event.target.closest('button[data-id]');if(button)openEntry(button.dataset.id)});
 $('.dialog-close').onclick=()=>$('#detail-dialog').close();
 $('#detail-dialog').addEventListener('click',event=>{if(event.target===$('#detail-dialog')){const rect=event.target.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)event.target.close()}});
-$('#detail-dialog').addEventListener('close',()=>{if(location.hash.startsWith('#occurrence/'))history.replaceState(null,'','#registre')});
+$('#detail-dialog').addEventListener('close',()=>{lockArchiveScroll(false);if(location.hash.startsWith('#occurrence/'))history.replaceState(null,'','#registre')});
 function handleHash(){if(location.hash.startsWith('#forum')||location.hash==='#transmissions'){location.replace('/forum'+location.hash);return}if(location.hash.startsWith('#occurrence/')){try{openEntry(decodeURIComponent(location.hash.split('/')[1]),false)}catch{notify('Cette fiche n’existe pas dans le registre.');history.replaceState(null,'','#registre')}}}
 addEventListener('hashchange',handleHash);
 
