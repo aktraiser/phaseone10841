@@ -55,6 +55,6 @@ export function createApplication({ databasePath, publicOrigin, trustProxyHops =
     }
   });
   server.requestTimeout = 30000; server.headersTimeout = 15000;
-  server.on('close', () => { DB.close(); if(lab) server.labShutdown = lab.close({detach:true}).catch(() => console.error('Lab shutdown incomplete; provider timeouts remain active.')); });
+  server.once('close', () => { DB.close(); if(lab) server.labShutdown = lab.close({detach:true}).catch(() => console.error('Lab shutdown incomplete; provider timeouts remain active.')); });
   return server;
 }

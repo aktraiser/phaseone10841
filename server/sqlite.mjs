@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto';
 export function openDatabase(filename, migrationsDirectory) {
   mkdirSync(dirname(filename), { recursive: true });
   const db = new DatabaseSync(filename);
+  let closed = false;
   try {
     db.exec('PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;');
     db.exec('CREATE TABLE IF NOT EXISTS app_migrations (name TEXT PRIMARY KEY, hash TEXT NOT NULL)');
@@ -41,6 +42,6 @@ export function openDatabase(filename, migrationsDirectory) {
         db.exec('COMMIT'); return results;
       } catch (error) { db.exec('ROLLBACK'); throw error; }
     },
-    close() { db.close(); },
+    close() { if (!closed) { db.close(); closed = true; } },
   };
 }
