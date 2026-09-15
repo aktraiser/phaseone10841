@@ -121,6 +121,12 @@ body.crt-page{padding:14px;background:var(--tone-080609, #080609);color:var(--pi
 .site-masthead nav a:hover,.site-masthead nav a[aria-current=page]{color:var(--pink-light);text-shadow:0 0 9px var(--tone-ff62b560, #ff62b560)}
 .site-masthead nav a[aria-current=page]{text-decoration:underline;text-underline-offset:5px}
 .site-masthead .system-clock{font:12px/1.6 var(--mono);white-space:nowrap;margin:0}
+.site-masthead .masthead-tools{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.site-masthead .masthead-tools .palette-switch{margin-left:0}
+.site-masthead .language-switch{display:flex;align-items:center;gap:4px;height:24px;min-height:24px;padding:2px 6px;border:1px solid var(--line);background:var(--tone-070409e6, #070409e6);color:var(--pink);font:10px/1 var(--mono)}
+.site-masthead .language-switch svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5}
+.site-masthead .language-switch:hover{border-color:var(--pink);color:var(--pink-light);text-shadow:0 0 8px var(--tone-ff62b560, #ff62b560)}
+.site-masthead .language-switch:focus-visible{outline:2px solid currentColor;outline-offset:4px}
 .forum-page .forum-title h1 .block-cursor{font-size:1em;width:.5em;height:.8em;vertical-align:-.04em;line-height:1;margin-left:.18em;background:var(--pink);box-shadow:0 0 12px var(--tone-ff4ca335, #ff4ca335)}
 .forum-page .forum-shell,.forum-page .forum-footer{max-width:1344px;padding-left:56px;padding-right:56px}
 @media(max-width:1050px){.site-masthead{gap:14px}.site-masthead nav{gap:16px}.site-masthead .system-clock{font-size:10px}.forum-page .forum-shell,.forum-page .forum-footer{padding-left:32px;padding-right:32px}}
