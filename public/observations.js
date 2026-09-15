@@ -19,7 +19,7 @@ if(form){
  const payload=JSON.stringify({...Object.fromEntries(new FormData(form)),consent:form.elements.consent.checked,images});
  if(payload!==lastPayload){token=Array.from(crypto.getRandomValues(new Uint8Array(32)),v=>v.toString(16).padStart(2,'0')).join('');lastPayload=payload;}
  const response=await fetch('/api/observations',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':token},body:payload});const data=await response.json();if(!response.ok)throw Error(data.error);
- document.querySelector('#receipt').hidden=false;document.querySelector('#published-link').href='/observations/'+data.id;document.querySelector('#deletion-key').textContent=token;form.hidden=true;document.querySelector('#observation-intro').hidden=true;status.textContent='';
+ document.querySelector('#receipt').hidden=false;document.querySelector('#published-link').href='/forum#forum/'+data.id;document.querySelector('#deletion-key').textContent=token;form.hidden=true;document.querySelector('#observation-intro').hidden=true;status.textContent='';document.dispatchEvent(new CustomEvent('observation-published',{detail:{id:data.id}}));
  }catch(err){status.textContent=err.message;}finally{busy=false;button.disabled=false;}
  });
 }

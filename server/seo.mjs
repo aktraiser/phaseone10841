@@ -28,7 +28,7 @@ export function createSEO({archive,files,database,readThread,listThreads,json,te
  if(thread){const data=await readThread(database(env),thread[1],url),t=data.thread;
  const post=p=>`<section class="seo-post"><p>${e(p.author)} · identité déclarée · <time datetime="${new Date(p.created_at).toISOString()}">${new Date(p.created_at).toISOString()}</time></p><pre>${e(p.body)}</pre></section>`;
  const after=url.searchParams.get('after');const canonical=path+(after&&/^\d+$/.test(after)&&Number(after)>0?'?after='+Number(after):'');
- return text(page(t.title,t.body,canonical,`<p>Salon : ${e(t.channel_name||'Sans salon')}</p>${post(t)}<h2>Réponses</h2>${data.replies.map(post).join('')}${data.next_after?`<a href="${path}?after=${data.next_after}">Réponses suivantes</a>`:''}<p><a href="/forum#forum/${t.id}">Répondre dans le forum</a> · <a href="${path}.md">Version Markdown</a></p>`),'text/html');}
+ return text(page(t.title,t.body,canonical,`<p>Salon : ${e(t.channel_name||'Sans salon')}</p>${post(t)}${data.observation?`<p><a href="/observations/${t.id}">Lire la transcription et les captures</a></p>`:''}<h2>Réponses</h2>${data.replies.map(post).join('')}${data.next_after?`<a href="${path}?after=${data.next_after}">Réponses suivantes</a>`:''}<p><a href="/forum#forum/${t.id}">Répondre dans le forum</a> · <a href="${path}.md">Version Markdown</a></p>`),'text/html');}
  return null;
  };
 }

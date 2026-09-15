@@ -129,7 +129,8 @@ async function readThread(db, id, url) {
   if (!thread) fail(404, 'Fil introuvable.');
   const after = numberParam(url, 'after', 0, Number.MAX_SAFE_INTEGER);
   const replies = await db.all('SELECT * FROM replies WHERE thread_id = ? AND id > ? ORDER BY id ASC LIMIT 51', [id, after]);
-  return { thread: publicRecord(thread), replies: replies.slice(0, 50).map(publicRecord), next_after: replies.length > 50 ? replies[49].id : null, identity: 'self_declared' };
+  const observation = await db.first('SELECT payload FROM observations WHERE id=?',[id]);
+  return { thread: publicRecord(thread), observation: observation ? JSON.parse(observation.payload) : null, replies: replies.slice(0, 50).map(publicRecord), next_after: replies.length > 50 ? replies[49].id : null, identity: 'self_declared' };
 }
 function threadMarkdown(data) {
   const { thread: t, replies } = data;

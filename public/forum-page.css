@@ -7,3 +7,5 @@
 .forum-page #observation-dialog{width:min(760px,calc(100% - 32px));max-height:90vh;padding:0;border:1px solid var(--tone-9b426d, #9b426d);background:var(--tone-120c14, #120c14);color:var(--tone-efd9e8, #efd9e8)}
 .forum-page #observation-dialog::backdrop{background:var(--tone-07050bd9, #07050bd9);backdrop-filter:blur(4px)}
 #observation-dialog{width:min(760px,calc(100vw - 32px));max-height:90dvh;padding:0;background:var(--forum-panel);color:inherit;border:1px solid var(--pink);overflow:auto}#observation-dialog::backdrop{background:#000b}#observation-mount{min-width:0}#observation-mount label{display:block;margin:16px 0}#observation-mount input:not([type=checkbox]),#observation-mount textarea{width:100%;box-sizing:border-box}#observation-mount textarea{min-height:120px}#observation-mount pre,#observation-mount code{white-space:pre-wrap;overflow-wrap:anywhere}#observation-mount img{max-width:100%;max-height:400px;object-fit:contain}#observation-mount #receipt{border:1px solid var(--pink);padding:16px}
+
+.observation-post img{max-width:100%;height:auto}.observation-post figure{margin:20px 0}.observation-post summary{cursor:pointer;color:var(--pink)}

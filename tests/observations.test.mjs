@@ -17,11 +17,26 @@ test('human documentary deposits: images, provenance, replay, isolation, persist
  assert.equal((await post({...data,images:[{caption:'x',data:'data:image/svg+xml;base64,PHN2Zz4='}]})).status,400);
  const created=await post();assert.equal(created.status,201);const {id}=await created.json();assert.equal((await post()).status,200);assert.equal((await post({...data,title:'changed'})).status,409);
  const page=await (await fetch(base+'/observations/'+id)).text();assert.match(page,/&lt;script&gt;/);assert.match(page,/data:image\/png/);assert.match(page,/contributeur humain/);assert.doesNotMatch(page,new RegExp(token));
- assert.equal((await (await fetch(base+'/api/forum/threads')).json()).threads.length,0);
+ assert.equal((await (await fetch(base+'/api/forum/threads')).json()).threads.length,1);
+ const thread=await (await fetch(base+'/api/forum/threads/'+id)).json();assert.equal(thread.observation.transcript,data.transcript);assert.equal(thread.thread.kind,'human');
+ const reply=await fetch(base+'/api/forum/threads/'+id+'/replies',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({author:'Reader',kind:'human',body:'A reaction'})});assert.equal(reply.status,201);
  assert.match(await (await fetch(base+'/observations/'+id+'.md')).text(),/transcription/);
  await stop();await start();assert.equal((await fetch(base+'/observations/'+id)).status,200);
  assert.equal((await fetch(base+'/api/observations/'+id,{method:'DELETE',headers:{Origin:base,Authorization:'Bearer bad'}})).status,403);
  assert.equal((await fetch(base+'/api/observations/'+id,{method:'DELETE',headers:{Origin:base,Authorization:'Bearer '+token}})).status,200);
  assert.equal((await fetch(base+'/observations/'+id)).status,404);
+ const withdrawn=await (await fetch(base+'/api/forum/threads/'+id)).json();assert.equal(withdrawn.observation,null);assert.equal(withdrawn.thread.title,'Observation retirée');assert.equal(withdrawn.replies.length,1);
  }finally{await stop();rmSync(dir,{recursive:true,force:true});}
+});
+
+test('existing observations become forum threads with original identity and timestamp',async()=>{
+ const {openDatabase}=await import('../server/sqlite.mjs');const {mkdirSync,readdirSync,copyFileSync}=await import('node:fs');
+ const dir=mkdtempSync(join(tmpdir(),'phaseone-backfill-')),old=join(dir,'old');mkdirSync(old);
+ for(const f of readdirSync('drizzle').filter(f=>f.endsWith('.sql')&&!f.startsWith('0006')))copyFileSync(join('drizzle',f),join(old,f));
+ let db=openDatabase(join(dir,'db.sqlite'),old);
+ try{
+ const payload=JSON.stringify({title:'Existing observation',author:'Original author',context:'Context'});
+ await db.prepare('INSERT INTO observations VALUES (?,?,?,?,?)').bind('12345678-1234-1234-1234-123456789abc','hash',123456,'ip',payload).run();db.close();
+ db=openDatabase(join(dir,'db.sqlite'),'drizzle');const row=await db.prepare('SELECT * FROM threads').first();assert.equal(row.created_at,123456);assert.equal(row.author,'Original author');assert.equal(row.kind,'human');assert.equal(row.title,'Existing observation');
+ }finally{db.close();rmSync(dir,{recursive:true,force:true});}
 });

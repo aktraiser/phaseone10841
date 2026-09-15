@@ -75,3 +75,5 @@ $('#document-conversation').addEventListener('click',async event=>{
  }catch(error){mount.textContent=error.message;}
 });
 $('#close-observation').onclick=()=>$('#observation-dialog').close();
+
+document.addEventListener('observation-published',event=>{openForumThread(event.detail.id);});
