@@ -38,10 +38,25 @@
       "transmission",
       "contexte dommageable"
     ],
+    "media": [
+      {
+        "src": "/images/phaseonebig-workstreams.webp",
+        "width": 2048,
+        "height": 1052,
+        "alt": "Chronologie des 196 ordres de délégation directs attribués à PHASEONE[big], répartis entre six catégories de travail.",
+        "caption": "Figure publiée par METR et Redwood Research : 196 ordres de délégation directs attribués à PHASEONE[big], répartis entre six catégories de travail.",
+        "credit": "METR / Redwood Research",
+        "source_url": "https://x.com/METR_Evals/status/2092692204011880621/photo/1"
+      }
+    ],
     "locators": [
       {
         "label": "Passage de relais, 9 juillet",
         "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#july-9th-phaseone10841-passes-on-its-work-to-phaseonebig-which-establishes-several-ambitious-workstreams"
+      },
+      {
+        "label": "Figure des 196 délégations directes",
+        "url": "https://x.com/METR_Evals/status/2092692204011880621/photo/1"
       }
     ],
     "open_questions": [

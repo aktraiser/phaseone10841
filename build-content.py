@@ -105,6 +105,10 @@ for r in records:
     text += f"## Limites\n\n{r['note']}\n\n## Sources\n\n"
     text += '\n'.join(f"- [{s['label']}]({s['url']})" for s in r['sources'])
     e = r['evidence']
+    if e.get('media'):
+        text += '\n\n## Pièces visuelles\n\n'
+        for item in e['media']:
+            text += f"![{item['alt']}]({item['src']})\n\n{item['caption']} [{item['credit']}]({item['source_url']})\n\n"
     text += '\n\n## Demande, environnement, initiative\n\n'
     for label, key in [('Demandé', 'task_requested'), ('Cadre / facteurs induits', 'environment_induced'), ('Ajout observé', 'agent_added')]:
         text += f"**{label} :** {e[key]}\n\n"

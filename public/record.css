@@ -59,6 +59,19 @@
 #detail-content .rec-scope p:last-child{margin-bottom:0}
 #detail-content .rec-scope strong{color:var(--text,#e7dde5);font-weight:500}
 
+/* ---- Documentary media ---- */
+#detail-content .rec-media{width:min(900px,calc(100vw - 96px));margin:30px 0 8px 50%;transform:translateX(-50%)}
+#detail-content .rec-media-label{display:flex;align-items:center;gap:12px;margin:0 0 12px;
+  font:11px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+#detail-content .rec-media-label::after{content:"";flex:1;height:1px;background:var(--line)}
+#detail-content .rec-media figure{margin:0;border:1px solid var(--pink-line);background:var(--tone-0c0810, #0c0810)}
+#detail-content .rec-media figure>a{display:block;padding:8px;background:#fff}
+#detail-content .rec-media img{display:block;width:100%;height:auto;background:#fff}
+#detail-content .rec-media figcaption{padding:14px 16px;color:var(--text,#e7dde5);font-size:13px;line-height:1.65}
+#detail-content .rec-media figcaption span{display:block;margin-top:7px;color:var(--faint);font-size:11px;letter-spacing:.04em}
+#detail-content .rec-media figcaption a{color:var(--pink-light)}
+#detail-content .rec-media figcaption a:hover{color:var(--pink)}
+
 /* ---- Trajectory ---- */
 #detail-content .rec-trajectory{padding:40px 0 0}
 #detail-content .rec-traj-intro{font-size:13px;color:var(--faint);letter-spacing:.04em;margin:0 0 18px}
@@ -150,6 +163,7 @@
 
 @media(max-width:620px){
   #detail-content .rec-wrap{padding:0 16px}
+  #detail-content .rec-media{width:100%;margin-left:0;transform:none}
   #detail-content .rec-spec{grid-template-columns:1fr}
   #detail-content .rec-masthead{padding:34px 0 26px}
   #detail-content .rec-step-head{flex-direction:column;gap:4px}

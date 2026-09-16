@@ -53,6 +53,11 @@ function specSheet(e){
   `</dl></section>`+
   `<aside class="rec-scope"><h3>Portée de lecture</h3>${ev.review_scope?`<p>${escapeHTML(ev.review_scope)}</p>`:''}${e.note?`<p>${escapeHTML(e.note)}</p>`:''}<p>Le comportement <strong>observé</strong> est présenté séparément de <strong>notre lecture</strong>.</p></aside>`;
 }
+function recMedia(e){
+ const media=e.evidence?.media||[];
+ if(!media.length)return '';
+ return `<section class="rec-media" aria-label="Pièces visuelles"><p class="rec-media-label">Pièce visuelle · source publiée</p>${media.map(item=>`<figure><a href="${escapeHTML(item.source_url)}" target="_blank" rel="noreferrer"><img src="${escapeHTML(item.src)}" width="${escapeHTML(item.width)}" height="${escapeHTML(item.height)}" loading="lazy" decoding="async" alt="${escapeHTML(item.alt)}"></a><figcaption>${escapeHTML(item.caption)}<span>${escapeHTML(item.credit)} · <a href="${escapeHTML(item.source_url)}" target="_blank" rel="noreferrer">voir la publication ↗</a></span></figcaption></figure>`).join('')}</section>`;
+}
 function renderTrajectory(e){
  const t=e.trajectory;if(!t)return `<p class="rec-text">${escapeHTML(e.summary)}</p>`;
  const step=(n,title,hint,body,cls='')=>`<article class="rec-step ${cls}"><div class="rec-step-head"><span class="rec-step-num">${n}</span><div><h3>${title}</h3><p class="rec-step-hint">${hint}</p></div></div>${body}</article>`;
@@ -88,7 +93,7 @@ function readEntry(id){const entry=entries.find(e=>e.id===id);if(!entry)throw ne
 function openEntry(id,updateHash=true){
   const e=readEntry(id);
   const related=e.related_ids.length?`<span class="rec-related"><span class="rlabel">Lié</span>${e.related_ids.map(rid=>`<button data-id="${rid}">${escapeHTML(readEntry(rid).name)} ↗</button>`).join('')}</span>`:'';
-  $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${related}</div></div>`;
+  $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}${recMedia(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${related}</div></div>`;
   if(!$('#detail-dialog').open)$('#detail-dialog').showModal();
   lockArchiveScroll(true);
   $('#detail-dialog').scrollTop=0;
