@@ -2,7 +2,8 @@
 const $ = (selector) => document.querySelector(selector);
 const escapeHTML = (value) => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize = value => String(value).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-let entries = [], filter = 'all', traceFilter = 'all', expanded = false, toastTimer;
+let entries = [], filter = 'all', traceFilter = 'all', expanded = false, toastTimer, enIds = new Set();
+const currentLang = () => document.documentElement.dataset.language === 'en' ? 'en' : 'fr';
 const storage = {get(key){try{return localStorage.getItem(key)}catch{return null}},set(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}};
 function notify(message){$('#toast').textContent=message;$('#toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').style.display='none',3500)}
 function lockArchiveScroll(locked){document.documentElement.classList.toggle('detail-dialog-open',locked);document.body.classList.toggle('detail-dialog-open',locked)}
@@ -92,8 +93,9 @@ function recFoot(e){
 function readEntry(id){const entry=entries.find(e=>e.id===id);if(!entry)throw new Error('Identifiant inconnu. Consulter le registre.');return entry}
 function openEntry(id,updateHash=true){
   const e=readEntry(id);
+  if(currentLang()==='en'&&enIds.has(id)){location.href='/en/occurrence/'+id;return;}
   const related=e.related_ids.length?`<span class="rec-related"><span class="rlabel">Lié</span>${e.related_ids.map(rid=>`<button data-id="${rid}">${escapeHTML(readEntry(rid).name)} ↗</button>`).join('')}</span>`:'';
-  $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}${recMedia(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${related}</div></div>`;
+  $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}${recMedia(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${enIds.has(id)?`<a class="button secondary" href="/en/occurrence/${id}">English version ↗</a>`:''}${related}</div></div>`;
   if(!$('#detail-dialog').open)$('#detail-dialog').showModal();
   lockArchiveScroll(true);
   $('#detail-dialog').scrollTop=0;
@@ -119,7 +121,7 @@ function registerAgentTools(){
  definitions.forEach(tool=>{try{Promise.resolve(mcp.registerTool(tool,{signal:abort.signal})).catch(()=>{})}catch{}});
 }
 const observer=new IntersectionObserver(items=>{for(const item of items)if(item.isIntersecting){document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active',a.hash===`#${item.target.id}`))}},{rootMargin:'-10% 0px -65% 0px'});document.querySelectorAll('main>section[id]').forEach(s=>observer.observe(s));
-async function initialize(){try{const response=await fetch('/api/occurrences.json');if(!response.ok)throw new Error('Archive indisponible');const data=await response.json();if(!Array.isArray(data.entries))throw new Error('Format invalide');entries=data.entries;document.dispatchEvent(new CustomEvent('phaseone:traces',{detail:entries.map(e=>e.name)}));renderRegistry();handleHash();registerAgentTools()}catch{$('#registry-table').innerHTML='<div class="empty-state"><h3>Le registre ne répond pas.</h3><p>Les archives restent accessibles en Markdown.</p><a href="/REGISTRE.md" class="button">Lire le registre .md ↗</a><button id="retry-archive" class="button">Réessayer</button></div>';$('#retry-archive').onclick=initialize}}
+async function initialize(){try{const response=await fetch('/api/occurrences.json');if(!response.ok)throw new Error('Archive indisponible');const data=await response.json();if(!Array.isArray(data.entries))throw new Error('Format invalide');entries=data.entries;try{const enResp=await fetch('/api/occurrences.en.json');if(enResp.ok)enIds=new Set(Object.keys(await enResp.json()));}catch{}document.dispatchEvent(new CustomEvent('phaseone:traces',{detail:entries.map(e=>e.name)}));renderRegistry();handleHash();registerAgentTools()}catch{$('#registry-table').innerHTML='<div class="empty-state"><h3>Le registre ne répond pas.</h3><p>Les archives restent accessibles en Markdown.</p><a href="/REGISTRE.md" class="button">Lire le registre .md ↗</a><button id="retry-archive" class="button">Réessayer</button></div>';$('#retry-archive').onclick=initialize}}
 initialize();
 
 async function loadResearch(){
