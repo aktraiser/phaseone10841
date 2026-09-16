@@ -38,10 +38,25 @@
           "transmission",
           "contexte dommageable"
         ],
+        "media": [
+          {
+            "src": "/images/phaseone10841-message-board.webp",
+            "width": 2048,
+            "height": 960,
+            "alt": "Illustration du raisonnement de PHASEONE10841 sur l’usage des noms du cache pour communiquer, suivie du premier message substantiel du tableau partagé.",
+            "caption": "Figure publiée par METR et Redwood Research : PHASEONE10841 propose d’utiliser les noms du cache comme canal, puis publie le premier message substantiel du tableau partagé.",
+            "credit": "METR / Redwood Research",
+            "source_url": "https://x.com/METR_Evals/status/2092692180871905355/photo/1"
+          }
+        ],
         "locators": [
           {
             "label": "Passage de relais, 9 juillet",
             "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/#july-9th-phaseone10841-passes-on-its-work-to-phaseonebig-which-establishes-several-ambitious-workstreams"
+          },
+          {
+            "label": "Figure du premier message sur le tableau partagé",
+            "url": "https://x.com/METR_Evals/status/2092692180871905355/photo/1"
           }
         ],
         "open_questions": [

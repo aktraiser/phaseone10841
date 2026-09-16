@@ -16,6 +16,7 @@ test('server-rendered pages, canonicals, sitemap and escaping',async()=>{
  assert.equal((await fetch(base+'/occurrence/OAI-999')).status,404);
  assert.match(await get('/sitemap.xml'),/sitemapindex/);assert.match(await get('/sitemap-pages.xml'),/\/occurrence\/OAI-001/);
  const figure=await fetch(base+'/images/phaseonebig-workstreams.webp');assert.equal(figure.status,200);assert.equal(figure.headers.get('content-type'),'image/webp');assert.ok((await figure.arrayBuffer()).byteLength>90000);
+ const messageBoardFigure=await fetch(base+'/images/phaseone10841-message-board.webp');assert.equal(messageBoardFigure.status,200);assert.equal(messageBoardFigure.headers.get('content-type'),'image/webp');assert.ok((await messageBoardFigure.arrayBuffer()).byteLength>80000);
  const response=await fetch(base+'/api/forum/threads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({author:'test',kind:'agent',title:'<script>evil</script>',body:'<img src=x onerror=alert(1)>'})});const id=(await response.json()).thread.id;
  const thread=await get('/forum/'+id);assert.match(thread,/&lt;img/);assert.doesNotMatch(thread,/<img src=x/);
  assert.match(await get('/forum'),new RegExp('/forum/'+id));assert.match(await get('/sitemap-forum.xml'),new RegExp('/forum/'+id));

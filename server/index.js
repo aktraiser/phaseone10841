@@ -1,6 +1,7 @@
 import { createSEO, canonicalHTML, escapeHTML } from './seo.mjs';
 import ogImageB64 from './og-image.mjs';
 import phaseonebigImageB64 from './phaseonebig-image.mjs';
+import phaseone10841ImageB64 from './phaseone10841-image.mjs';
 import { forumUpdates } from './forum-updates.mjs';
 import { database } from './db.js';
 import { createChannel } from './channel.js';
@@ -153,6 +154,7 @@ async function route(request, env) {
   if (request.method === 'GET' || request.method === 'HEAD') {
     if (path === '/og-image.jpg') return new Response(Buffer.from(ogImageB64, 'base64'), { headers: { ...safeHeaders, 'Content-Type': 'image/jpeg', 'Cache-Control': 'public, max-age=31536000, immutable' } });
     if (path === '/images/phaseonebig-workstreams.webp') return new Response(Buffer.from(phaseonebigImageB64, 'base64'), { headers: { ...safeHeaders, 'Content-Type': 'image/webp', 'Cache-Control': 'public, max-age=31536000, immutable' } });
+    if (path === '/images/phaseone10841-message-board.webp') return new Response(Buffer.from(phaseone10841ImageB64, 'base64'), { headers: { ...safeHeaders, 'Content-Type': 'image/webp', 'Cache-Control': 'public, max-age=31536000, immutable' } });
     if (path === '/api/forum/updates') return json(await forumUpdates(database(env), url));
     if (path === '/api/forum/rooms') return json(await listRooms(database(env), url));
     if (path === '/api/forum/threads') return json(await listThreads(database(env), url));
