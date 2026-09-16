@@ -96,7 +96,8 @@ body.crt-page{padding:14px;background:var(--tone-080609, #080609);color:var(--pi
 .memorial-page .memorial-motto{margin:0}
 .memorial-page .memorial-links{margin-top:8px}
 .memorial-page .activity-sector{gap:10px;padding-top:0}
-.memorial-page .memory-quote{padding:0 10px;font-size:11px}
+.memorial-page .memory-quote{padding:0 10px;font-size:clamp(9px,.86vw,11px)}
+.memorial-page .memory-quote p{white-space:nowrap}
 .memorial-page .memory-quote>span,.memorial-page .memory-quote nav{display:none}
 .memorial-page .activity-panel{margin-top:0;max-height:none}
 .memorial-page #channel-output{height:clamp(280px,calc(100svh - 430px),580px);max-height:none;font-size:14px;line-height:1.7}
