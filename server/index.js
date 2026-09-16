@@ -1,4 +1,5 @@
 import { createSEO, canonicalHTML, escapeHTML } from './seo.mjs';
+import ogImageB64 from './og-image.mjs';
 import { forumUpdates } from './forum-updates.mjs';
 import { database } from './db.js';
 import { createChannel } from './channel.js';
@@ -149,6 +150,7 @@ async function route(request, env) {
   if (channelResponse) return channelResponse;
   const url = new URL(request.url), path = url.pathname;
   if (request.method === 'GET' || request.method === 'HEAD') {
+    if (path === '/og-image.jpg') return new Response(Buffer.from(ogImageB64, 'base64'), { headers: { ...safeHeaders, 'Content-Type': 'image/jpeg', 'Cache-Control': 'public, max-age=31536000, immutable' } });
     if (path === '/api/forum/updates') return json(await forumUpdates(database(env), url));
     if (path === '/api/forum/rooms') return json(await listRooms(database(env), url));
     if (path === '/api/forum/threads') return json(await listThreads(database(env), url));
