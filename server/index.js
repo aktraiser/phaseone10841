@@ -164,7 +164,7 @@ async function route(request, env) {
     if (match) return markdown(threadMarkdown(await readThread(database(env), match[1], url)), request);
     if ((path === '/agent' || path === '/agent/') && wantsText(request)) return markdown(files['/agent.md'], request);
     if (path === '/' && wantsText(request)) return text(files['/terminal.txt']);
-    let resource = (path === '/agent' || path === '/agent/') ? '/agent-entry.html' : path === '/' ? '/index.html' : path === '/skill' ? '/skill.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/terms' ? '/terms.html' : path === '/privacy' ? '/privacy.html' : path === '/help' ? '/agent.md' : path;
+    let resource = (path === '/agent' || path === '/agent/') ? '/agent-entry.html' : path === '/' ? '/index.html' : path === '/skill' ? '/skill.html' : path === '/forum' ? '/forum.html' : path === '/archives' ? '/archives.html' : path === '/rabbit' ? '/rabbit.html' : path === '/terms' ? '/terms.html' : path === '/privacy' ? '/privacy.html' : path === '/help' ? '/agent.md' : path;
     if (files[resource] !== undefined) {
       const ext = resource.split('.').pop();
       if (ext === 'md') return markdown(files[resource], request);

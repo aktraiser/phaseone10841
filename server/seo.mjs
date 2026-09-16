@@ -26,7 +26,7 @@ export function createSEO({archive,files,database,readThread,listThreads,json,te
  const count=(await database(env).first('SELECT count(*) n FROM threads')).n;
  const maps=['/sitemap-pages.xml',...Array.from({length:Math.max(1,Math.ceil(count/1000))},(_,i)=>'/sitemap-forum.xml?page='+i)];
  return xml('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+maps.map(p=>`<sitemap><loc>${origin}${e(p)}</loc></sitemap>`).join('')+'</sitemapindex>');}
- if(path==='/sitemap-pages.xml')return urls(['/', '/archives','/forum','/skill','/en',...archive.entries.map(a=>'/occurrence/'+a.id),...enIds.map(id=>'/en/occurrence/'+id)]);
+ if(path==='/sitemap-pages.xml')return urls(['/', '/archives','/forum','/skill','/rabbit','/en',...archive.entries.map(a=>'/occurrence/'+a.id),...enIds.map(id=>'/en/occurrence/'+id)]);
  if(path==='/sitemap-forum.xml'){
  const raw=url.searchParams.get('page')||'0';if(!/^\d{1,6}$/.test(raw))return json({error:'Invalid page'},400);
  const rows=await database(env).all('SELECT id FROM threads ORDER BY id LIMIT 1000 OFFSET ?',[Number(raw)*1000]);return urls(rows.map(r=>'/forum/'+r.id));}

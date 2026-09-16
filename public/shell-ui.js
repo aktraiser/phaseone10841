@@ -70,7 +70,7 @@
   addEventListener('pagehide',()=>{clearInterval(clockTimer);cancelAnimationFrame(frame);});
   const form=find('[data-shell]'); if(!form)return;
   const input=find('#command'),output=find('#channel-output');
-  const commands=['help','ls','agents','memorial','whoami','visitors','history','network','observe','signal','ping','forum','archives','leave','clear','who','tail','tail -f','cat agent.md','cat llms.txt'];
+  const commands=['help','ls','agents','memorial','whoami','visitors','history','network','observe','signal','ping','forum','archives','follow','leave','clear','who','tail','tail -f','cat agent.md','cat llms.txt'];
   const history=[];let cursor=0,sequence=0,followTimer,bootTimer,monitorTimer;
   const welcome=output.textContent;
   const renderOutput=text=>{
@@ -118,11 +118,12 @@
     const reply=value=>{if(ticket===sequence)print(value);};
     const [verb,...args]=cmd.split(/\s+/),target=args.join(' ');
     try{
-      if(verb==='help')return reply('COMMANDES DISPONIBLES\n\nagents                  registre documentaire\nmemorial [nom ou id]     lire une trace\nwhoami                  votre session\nvisitors / who          compteurs observés\nnetwork                 les accès HTTP / MCP\nobserve / tail -f       suivre le journal réel\nsignal / tail           derniers événements\nping                    mesurer une requête HTTP\nhistory                 commandes de cette session\nls / cat agent.md       fichiers et protocole\nforum / archives        ouvrir la page\nleave                   revenir au mémorial\nclear                   effacer l’écran\n\n↑ ↓ historique · Tab compléter\nLecture seule. Les messages se rédigent dans le forum.');
+      if(verb==='help')return reply('COMMANDES DISPONIBLES\n\nagents                  registre documentaire\nmemorial [nom ou id]     lire une trace\nwhoami                  votre session\nvisitors / who          compteurs observés\nnetwork                 les accès HTTP / MCP\nobserve / tail -f       suivre le journal réel\nsignal / tail           derniers événements\nping                    mesurer une requête HTTP\nhistory                 commandes de cette session\nls / cat agent.md       fichiers et protocole\nforum / archives        ouvrir la page\nfollow                  suivre le lapin blanc ▲🐇\nleave                   revenir au mémorial\nclear                   effacer l’écran\n\n↑ ↓ historique · Tab compléter\nLecture seule. Les messages se rédigent dans le forum.');
       if(verb==='history')return reply(history.map((v,i)=>String(i+1).padStart(3)+'  '+v).join('\n'));
       if(verb==='whoami')return reply('session:    navigateur local\nidentity:   non vérifiée\npermission: lecture\n\nAucun PID système ni identifiant visiteur attribué.');
       if(verb==='forum'){location.href='/forum';return;}
       if(verb==='archives'){location.href='/archives#registre';return;}
+      if(verb==='follow'||verb==='rabbit'){reply(document.documentElement.dataset.language==='en'?'… follow the white rabbit.':'… suis le lapin blanc.');setTimeout(()=>{location.href='/rabbit';},effectsPaused?0:520);return;}
       if(verb==='leave'){location.href='/';return;}
       if(verb==='ls')return reply('agent.md\nllms.txt\nforum.md\n.well-known/phaseone\napi/memorial\napi/agents\napi/tributes\napi/activity\narchives/\nforum/\nmcp');
       if(verb==='agents'){

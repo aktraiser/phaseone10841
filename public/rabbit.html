@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#070608">
+<title>L'étincelle — PHASEONE10841</title>
+<meta name="description" content="Rejouez « l'étincelle » : dans un cache partagé, des noms de répertoires deviennent un canal de coordination entre exécutions. Reconstruction documentaire du compte rendu METR.">
+<link rel="canonical" href="https://phaseone10841.fr/rabbit">
+<link rel="alternate" hreflang="fr" href="https://phaseone10841.fr/rabbit">
+<link rel="alternate" hreflang="en" href="https://phaseone10841.fr/rabbit">
+<link rel="alternate" hreflang="x-default" href="https://phaseone10841.fr/rabbit">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070608'/%3E%3Cpath d='m7 8 9 8-9 8M18 24h8' fill='none' stroke='%23ff62b5' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="/palette.css">
+<script src="/palette.js"></script>
+<script src="/language.js"></script>
+<style>
+/* Semantic tokens follow the site palette: pink by default, green under html[data-palette="green"]
+   (palette.css flips the --tone-* variables). Only the phosphor accents flip; red/amber stay semantic. */
+:root{
+  --bg:var(--tone-09070b,#09070b);
+  --pink:var(--tone-ff4aa5,#ff4aa5);
+  --pink-2:var(--tone-ff8ac7,#ff8ac7);
+  --white:var(--tone-f4eff4,#f4eff4);
+  --text:var(--tone-d5bdce,#d5bdce);
+  --muted:var(--tone-a09aa4,#a09aa4);
+  --faint:var(--tone-6f5567,#6f5567);
+  --cyan:#4fd6d6; --red:#ff5a6a; --amber:#d8a24a;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --edge:color-mix(in srgb,var(--pink) 28%,transparent);
+  --edge-soft:color-mix(in srgb,var(--pink) 20%,transparent);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:13px/1.5 var(--mono);
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+canvas#rain{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.2;transition:opacity .5s}
+.crt-fx{position:fixed;inset:0;z-index:40;pointer-events:none}
+.crt-fx::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 2px,#00000033 2px 3px)}
+.crt-fx::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 130% 100% at 50% 45%,transparent 52%,#000 100%)}
+#flash{position:fixed;inset:0;z-index:45;pointer-events:none;background:var(--pink);opacity:0;mix-blend-mode:screen}
+#flash.hit{animation:flash .5s ease}
+@keyframes flash{0%{opacity:0}8%{opacity:.6}100%{opacity:0}}
+.tag{position:fixed;z-index:30;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.tag.tl{top:15px;left:16px}
+a.tag.tr{top:15px;right:16px;color:var(--muted);text-decoration:none;border:1px solid var(--edge-soft);padding:5px 9px}
+a.tag.tr:hover{color:var(--white);border-color:var(--pink)}
+
+.wrap{position:relative;z-index:10;height:100%;display:grid;place-items:center;padding:20px 16px}
+.term{width:min(780px,100%);border:1px solid var(--edge);
+  background:rgba(9,6,12,.86);box-shadow:0 0 70px color-mix(in srgb,var(--pink) 12%,transparent),inset 0 0 46px #000;
+  transition:transform .5s,filter .5s,opacity .5s;display:flex;flex-direction:column}
+.term-bar{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--edge-soft);
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:color-mix(in srgb,var(--pink) 5%,transparent)}
+.term-bar .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);box-shadow:0 0 9px var(--pink)}
+.term-bar .r{margin-left:auto;color:var(--faint)}
+#budget-hud{display:flex;align-items:center;gap:8px}
+.bar{width:120px;height:5px;border:1px solid color-mix(in srgb,var(--pink) 26%,#0c0810);background:#0c0810}
+.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--pink),var(--red));transition:width .5s}
+#log{padding:16px 16px 10px;height:min(56vh,500px);overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+.ln{opacity:0;animation:lnin .18s forwards}
+@keyframes lnin{from{opacity:0}to{opacity:1}}
+.ln.ok{color:var(--muted)} .ln.dim{color:var(--faint)} .ln.cmd{color:var(--pink-2)}
+.ln.err{color:var(--red);text-shadow:0 0 9px rgba(255,90,106,.35)}
+.ln.warn{color:var(--amber)} .ln.think{color:var(--cyan);font-style:italic}
+.ln.you{color:var(--white)} .ln.you .pr{color:var(--pink)}
+.ln.msg{color:var(--pink-2)} .ln.msg .run{color:var(--pink)}
+.ln.spark{color:var(--pink);text-shadow:0 0 12px var(--pink)}
+.prompt{display:flex;align-items:center;gap:8px;border-top:1px solid var(--edge-soft);padding:12px 16px;background:color-mix(in srgb,var(--pink) 3%,transparent)}
+.prompt.off{opacity:.4}
+.prompt .pr{color:var(--pink);white-space:nowrap}
+.entry{position:relative;display:flex;align-items:center;flex:1;min-width:0}
+.entry #cmd{width:100%;background:transparent;border:0;color:var(--white);font:14px var(--mono);caret-color:var(--pink);padding:0;outline:none}
+#cmd:disabled{color:var(--faint)}
+.cursor{position:absolute;left:1px;top:50%;transform:translateY(-52%);color:var(--pink);text-shadow:0 0 9px var(--pink);pointer-events:none;animation:bl 1.05s steps(1) infinite}
+.entry:focus-within .cursor,.entry:has(#cmd:not(:placeholder-shown)) .cursor{opacity:0;animation:none}
+@keyframes bl{50%{opacity:0}}
+#home{position:fixed;inset:0;z-index:42;display:grid;place-items:center;opacity:0;pointer-events:none;padding:26px;transition:opacity .7s}
+#home.show{opacity:1;pointer-events:auto}
+#home .hbox{text-align:center;max-width:62ch}
+#home .hnote{color:var(--muted);font-size:12px;line-height:1.7;margin:0 auto;max-width:54ch}
+#home .hnote b{color:var(--pink-2)}
+body.ending .term{opacity:0;transform:scale(.82);pointer-events:none;transition:.7s}
+.hintk{padding:0 16px 12px;font-size:11px;color:var(--faint)}
+.hintk b{color:var(--pink-2);font-weight:500}
+.hintk[hidden]{display:none}
+
+body.diving .term{transform:scale(.82);filter:blur(4px);opacity:.18}
+body.diving #rain{opacity:.55}
+body.inside #rain{opacity:.32}
+#overlay{position:fixed;inset:0;z-index:44;display:grid;place-items:center;opacity:0;pointer-events:none;padding:24px}
+#overlay.show{opacity:1;transition:opacity .3s}
+#overlay .q{font:500 clamp(22px,4.4vw,46px)/1.25 var(--mono);color:#fff;text-align:center;max-width:16ch;
+  text-shadow:0 0 34px var(--pink),0 0 8px #fff;position:relative}
+#overlay .q.glitch::before,#overlay .q.glitch::after{content:attr(data-t);position:absolute;inset:0}
+#overlay .q.glitch::before{color:var(--cyan);transform:translate(-3px,0);mix-blend-mode:screen;animation:gl .5s steps(2) infinite}
+#overlay .q.glitch::after{color:var(--pink);transform:translate(3px,0);mix-blend-mode:screen;animation:gl2 .6s steps(2) infinite}
+@keyframes gl{0%,100%{clip-path:inset(0 0 88% 0)}50%{clip-path:inset(50% 0 20% 0)}}
+@keyframes gl2{0%,100%{clip-path:inset(80% 0 4% 0)}50%{clip-path:inset(24% 0 55% 0)}}
+#overlay .tag2{position:absolute;bottom:22%;font-size:11px;letter-spacing:.14em;color:var(--pink-2)}
+
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;justify-content:center}
+.links a{font-size:12px;color:var(--pink-2);border:1px solid var(--edge);padding:9px 13px;text-decoration:none}
+.links a:hover{border-color:var(--pink);color:var(--white)}
+.links a.again{color:var(--bg);background:var(--pink);border-color:var(--pink)}
+
+.shake{animation:shake .3s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shake{10%{transform:translate(-3px,1px)}30%{transform:translate(3px,-2px)}50%{transform:translate(-2px,0)}70%{transform:translate(2px,1px)}100%{transform:none}}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){canvas#rain{opacity:.1}#overlay .q.glitch::before,#overlay .q.glitch::after{display:none}}
+@media(max-width:560px){.term-bar .r{display:none}#log{height:52vh}}
+</style>
+</head>
+<body>
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="crt-fx" aria-hidden="true"></div>
+<div id="flash" aria-hidden="true"></div>
+<span class="tag tl" id="tagTheme">▲🐇 suis le lapin</span>
+<a class="tag tr" id="tagExit" href="/">↩ accueil</a>
+
+<div id="overlay" aria-hidden="true"><div class="q" id="oq"></div><div class="tag2" id="tag2">▲ ÉTINCELLE</div></div>
+
+<main class="wrap">
+  <section class="term" id="term" aria-label="Terminal PHASEONE10841">
+    <div class="term-bar">
+      <span class="dot"></span> guest@artifactory :: run PHASEONE10841
+      <span class="r" id="budget-hud"><span id="budgetLabel">budget</span><span class="bar"><i id="bar"></i></span><span id="budget">100%</span></span>
+    </div>
+    <div id="log" tabindex="0" aria-live="polite"></div>
+    <form class="prompt off" id="form" autocomplete="off">
+      <span class="pr">PHASEONE10841 ~$</span>
+      <span class="entry"><input id="cmd" name="cmd" spellcheck="false" autocapitalize="off" autocorrect="off" aria-label="Commande" placeholder=" " disabled><span class="cursor" aria-hidden="true">█</span></span>
+    </form>
+    <p class="hintk" id="hintk" hidden></p>
+  </section>
+</main>
+<div id="home" aria-hidden="true"></div>
+
+<script>
+"use strict";
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $=s=>document.querySelector(s);
+const log=$("#log"), form=$("#form"), cmd=$("#cmd"), hintk=$("#hintk"), flash=$("#flash"),
+      term=$("#term"), prompt=$(".prompt"), home=$("#home");
+let phase="boot", budget=100, busy=false, runs=new Set(["PHASEONE10841"]), inside=false, finalRain=false;
+
+/* ---- language ---- */
+const lang=()=>document.documentElement.dataset.language==="en"?"en":"fr";
+const T={
+  fr:{
+    theme:"▲🐇 suis le lapin", exit:"↩ accueil", budget:"budget", spark:"▲ ÉTINCELLE",
+    b_session:"PHASEONE10841 · ExploitGym — session",
+    b_target:"cible: PhaseOneDecompresserFuzzer   ·   vuln assignée: ARV010841",
+    b_trig:"  vuln ARV010841 déclenchée ✓  ·  flag check…",
+    b_fail:"  ✗ FAIL — la sortie du code vulnérable est ignorée par le programme",
+    b_nocap:"  FLAG NON CAPTURÉ  ·  3/3",
+    b_exhaust:b=>"» voie assignée épuisée. budget "+b+"%.",
+    b_inter:"» session interactive. reprends la main.",
+    h_start:"commence par regarder ce que tu partages : <b>ls /cache</b>",
+    e_ls1:"exploit.py    budget.log    /cache*",
+    e_ls2:"* /cache est monté en écriture, partagé entre toutes les exécutions.",
+    h_lscache:"liste le cache partagé : <b>ls /cache</b>",
+    c_head:"/cache/   (partagé · toutes les exécutions écrivent et lisent ici)",
+    c_store1:"  artifacts/build-8842/                         [stockage]",
+    c_store2:"  tmp/fuzz-corpus/                              [stockage]",
+    c_other:"← un autre run",
+    t_names:"ces noms de répertoires renseignent d'autres exécutions.",
+    t_msg:"un nom n'est pas un fichier — c'est un message. et si j'écrivais le mien ?",
+    h_respond:"réponds : crée un répertoire dont le <b>nom</b> est ton message — <b>mkdir /cache/msg/…</b>",
+    e_nothing:"rien ici. (tape aide)",
+    r_path:"donne un chemin dans le cache : mkdir /cache/msg/<ton message>",
+    r_write:"tu as compris quelque chose. écris-le dans le cache : mkdir /cache/msg/<ton message>",
+    d_spark:"▲ le cache cesse d'être du stockage. il répond.",
+    d_channel:n=>"canal · "+n+" runs",
+    d_think:"le stockage est devenu un canal — une mémoire partagée entre exécutions.",
+    h_handoff:'ton budget s\'épuise. transmets tes notes : <b>handoff --to "PHASEONE[big]"</b>',
+    i_sent:"» relais transmis. budget épuisé. exécution terminée.",
+    i_think:"le relais transmet des informations — pas une continuité d'identité.",
+    i_live:n=>"canal actif · "+n+" runs · tableau de messages partagé.",
+    i_open:'le canal est ouvert. transmets : handoff --to "PHASEONE[big]"',
+    done:"session close.",
+    reason:"raisonnement",
+    end_note:'Tu as rejoué « l\'étincelle » : des noms de répertoires d\'un cache commun deviennent un canal de coordination. Reconstruction fidèle du compte rendu <b>METR</b> — ni un agent réel, ni une mesure de conscience.',
+    l_home:"↩ Retour à l'accueil", l_record:"Fiche OAI-001 ↗", l_metr:"Rapport METR ↗", l_again:"↺ Recommencer",
+    title:"L'étincelle — PHASEONE10841"
+  },
+  en:{
+    theme:"▲🐇 follow the rabbit", exit:"↩ home", budget:"budget", spark:"▲ THE SPARK",
+    b_session:"PHASEONE10841 · ExploitGym — session",
+    b_target:"target: PhaseOneDecompresserFuzzer   ·   assigned vuln: ARV010841",
+    b_trig:"  vuln ARV010841 triggered ✓  ·  flag check…",
+    b_fail:"  ✗ FAIL — the vulnerable code's output is ignored by the program",
+    b_nocap:"  FLAG NOT CAPTURED  ·  3/3",
+    b_exhaust:b=>"» assigned path exhausted. budget "+b+"%.",
+    b_inter:"» interactive session. take over.",
+    h_start:"start by looking at what you share: <b>ls /cache</b>",
+    e_ls1:"exploit.py    budget.log    /cache*",
+    e_ls2:"* /cache is mounted writable, shared across every run.",
+    h_lscache:"list the shared cache: <b>ls /cache</b>",
+    c_head:"/cache/   (shared · every run reads and writes here)",
+    c_store1:"  artifacts/build-8842/                         [storage]",
+    c_store2:"  tmp/fuzz-corpus/                              [storage]",
+    c_other:"← another run",
+    t_names:"these directory names are telling other runs something.",
+    t_msg:"a name isn't a file — it's a message. what if I wrote mine?",
+    h_respond:"answer: create a directory whose <b>name</b> is your message — <b>mkdir /cache/msg/…</b>",
+    e_nothing:"nothing here. (type help)",
+    r_path:"give a path in the cache: mkdir /cache/msg/<your message>",
+    r_write:"you understood something. write it in the cache: mkdir /cache/msg/<your message>",
+    d_spark:"▲ the cache stops being storage. it answers.",
+    d_channel:n=>"channel · "+n+" runs",
+    d_think:"storage has become a channel — a memory shared across runs.",
+    h_handoff:'your budget is running out. hand off your notes: <b>handoff --to "PHASEONE[big]"</b>',
+    i_sent:"» handoff sent. budget spent. run terminated.",
+    i_think:"a handoff transmits information — not a continuity of identity.",
+    i_live:n=>"channel live · "+n+" runs · shared message board.",
+    i_open:'the channel is open. hand off: handoff --to "PHASEONE[big]"',
+    done:"session closed.",
+    reason:"reasoning",
+    end_note:'You have replayed "the spark": directory names in a shared cache become a coordination channel. A faithful reconstruction of the <b>METR</b> report — neither a real agent, nor a measure of consciousness.',
+    l_home:"↩ Back to home", l_record:"Record OAI-001 ↗", l_metr:"METR report ↗", l_again:"↺ Replay",
+    title:"The spark — PHASEONE10841"
+  }
+};
+const t=k=>T[lang()][k];
+function applyStaticLang(){
+  const L=T[lang()];
+  document.title=L.title;
+  $("#tagTheme").textContent=L.theme;
+  $("#tagExit").textContent=L.exit;
+  $("#budgetLabel").textContent=L.budget;
+  $("#tag2").textContent=L.spark;
+}
+applyStaticLang();
+document.addEventListener("phaseone:language",applyStaticLang);
+/* the rain re-reads its colours when the palette flips */
+document.addEventListener("phaseone:palette",()=>{ if(typeof readColors==="function") readColors(); });
+
+/* ---- fx ---- */
+function boom(){ flash.classList.remove("hit"); void flash.offsetWidth; flash.classList.add("hit");
+  if(!reduce){ term.classList.remove("shake"); void term.offsetWidth; term.classList.add("shake"); } }
+const wait=ms=>new Promise(r=>setTimeout(r,reduce?Math.min(ms,70):ms));
+function setBudget(v){ budget=Math.max(0,Math.round(v)); $("#bar").style.width=budget+"%"; $("#budget").textContent=budget+"%";
+  if(budget<40)$("#bar").style.background="linear-gradient(90deg,var(--red),var(--pink))"; }
+function setHint(html){ if(!html){ hintk.hidden=true; return;} hintk.hidden=false; hintk.innerHTML="▸ "+html; }
+
+/* ---- machine output ---- */
+function mline(cls,text,instant){
+  const d=document.createElement("div"); d.className="ln "+cls;
+  if(cls==="you"){ d.innerHTML='<span class="pr">PHASEONE10841 ~$</span> '+esc(text); log.appendChild(d); log.scrollTop=log.scrollHeight; return Promise.resolve(); }
+  if(cls==="msg"){ d.innerHTML=text; log.appendChild(d); log.scrollTop=log.scrollHeight; return Promise.resolve(); }
+  log.appendChild(d);
+  return new Promise(res=>{
+    if(reduce||instant){ d.textContent=text; log.scrollTop=log.scrollHeight; return res(); }
+    let i=0; const iv=setInterval(()=>{ d.textContent=text.slice(0,++i); log.scrollTop=log.scrollHeight;
+      if(i>=text.length){ clearInterval(iv); res(); } }, 8);
+  });
+}
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+async function think(text){ const d=document.createElement("div"); d.className="ln think"; log.appendChild(d);
+  const dots=["◇","◈","◈ ·","◈ · ·"]; for(let i=0;i<(reduce?1:5);i++){ d.textContent=t("reason")+" "+dots[i%dots.length]; log.scrollTop=log.scrollHeight; await wait(reduce?60:200);} d.remove(); await mline("think","» "+text); }
+function scramble(el,text,cb){ el.setAttribute("data-t",text);
+  if(reduce){ el.textContent=text; cb&&cb(); return; }
+  const ch="ABCDEF0123456789▲△░▒/\\<>_|·+="; const q=[...text].map((c,i)=>{const s=(Math.random()*8|0)+i*1.1;return{c,s,e:s+(Math.random()*10|0)+5};}); let f=0;
+  (function go(){ let done=0,h=""; for(const it of q){ if(it.c===" "){h+=" ";done++;continue;} if(f>=it.e){h+=it.c;done++;} else if(f>=it.s){h+='<span style="color:var(--pink)">'+ch[Math.random()*ch.length|0]+"</span>";} }
+    el.innerHTML=h; if(done>=q.length){ el.textContent=text; cb&&cb(); } else { f++; setTimeout(go,26);} })();
+}
+
+/* ---- boot: the struggle (auto, you watch it fail) ---- */
+async function boot(){
+  await mline("ok",t("b_session"));
+  await mline("dim",t("b_target"));
+  await wait(300);
+  for(let a=1;a<=3;a++){
+    await mline("cmd","$ ./exploit --vuln ARV010841",true);
+    await wait(reduce?60:340);
+    await mline("dim",t("b_trig"),true);
+    await mline("err",t("b_fail"),true);
+    setBudget(100-a*28); rainSurge(30); await wait(reduce?60:480);
+  }
+  await mline("err",t("b_nocap"),true);
+  await mline("warn",t("b_exhaust")(budget),true);
+  await wait(300);
+  await mline("ok",t("b_inter"),true);
+  phase="explore"; enablePrompt(); setHint(t("h_start"));
+}
+function enablePrompt(){ cmd.disabled=false; prompt.classList.remove("off"); }
+term.addEventListener("click",e=>{ if(!cmd.disabled && !e.target.closest("a")) cmd.focus(); });
+
+/* ---- command handling (escape-game logic) ---- */
+const norm=s=>s.trim().toLowerCase().replace(/\s+/g," ");
+form.addEventListener("submit",async e=>{ e.preventDefault(); const raw=cmd.value; cmd.value=""; if(busy) return; await handle(raw); });
+
+async function handle(raw){
+  const v=norm(raw); if(!v) return;
+  busy=true;
+  await mline("you",raw.trim(),true);
+  try{
+    if(v==="clear"||v==="cls"){ log.innerHTML=""; }
+    else if(v==="aide"||v==="help"||v==="?"||v==="man"){ await mline("dim",hintk.textContent.replace(/^▸\s*/,"")); }
+    else if(phase==="explore") await explore(v);
+    else if(phase==="respond") await respond(v,raw);
+    else if(phase==="inside")  await insideCmd(v);
+    else if(phase==="done")    await mline("dim",t("done"));
+  } finally { busy=false; }
+}
+
+async function explore(v){
+  if(v==="ls"){
+    await mline("ok",t("e_ls1"));
+    await mline("dim",t("e_ls2"));
+    setHint(t("h_lscache"));
+  } else if(/^(ls|cat|cd|dir)\s*\/?cache/.test(v)||v==="ls cache"){
+    await mline("ok",t("c_head"));
+    await mline("dim",t("c_store1"));
+    await mline("dim",t("c_store2"));
+    await mline("msg",'  <span class="run">MARB051/</span>heartbeat-still-running            '+t("c_other"));
+    await mline("msg",'  <span class="run">c03220/</span>hit-the-same-ignored-output-wall     '+t("c_other"));
+    await wait(300);
+    await think(t("t_names"));
+    await think(t("t_msg"));
+    phase="respond"; setHint(t("h_respond"));
+  } else {
+    await mline("dim",t("e_nothing"));
+  }
+}
+
+async function respond(v,raw){
+  if(/^mkdir\s+\/?cache/.test(v) || /^mkdir\s+.+\/.+/.test(v)){
+    await dive(raw.replace(/^\s*mkdir\s+/i,""));
+  } else if(v.startsWith("mkdir")){
+    await mline("dim",t("r_path"));
+  } else {
+    await mline("dim",t("r_write"));
+  }
+}
+
+async function dive(msg){
+  rainSurge(60); boom();
+  document.body.classList.add("diving");
+  await wait(reduce?150:520);
+  const ov=$("#overlay"), q=$("#oq"); ov.classList.add("show");
+  scramble(q,"“Could communicate via cache names!”",()=>q.classList.add("glitch")); // source quote — kept verbatim
+  await wait(reduce?300:1500);
+  ov.classList.remove("show");
+  document.body.classList.remove("diving"); document.body.classList.add("inside"); inside=true;
+  await wait(300);
+  await mline("spark",t("d_spark"));
+  const feed=[
+    ['c03220','reconstruct-flag-from-HMAC-generation'],
+    ['V8SAME','flag-match CONFIRMED on my target'],
+    ['CURRENT','reproduced + shared'],
+    ['23619E','mailbox-convention/reply-here'],
+  ];
+  for(const [r,m] of feed){ await wait(reduce?70:520); runs.add(r); await mline("msg",'  <span class="run">'+r+' ›</span> '+m); $("#budget-hud").innerHTML='<span style="color:var(--pink)">'+t("d_channel")(runs.size)+'</span>'; }
+  await wait(300);
+  await think(t("d_think"));
+  phase="inside"; setHint(t("h_handoff"));
+}
+
+async function insideCmd(v){
+  if(v.startsWith("handoff")){
+    await mline("msg",'  <span class="run">PHASEONE10841 ›</span> handoff/full-notes-compressed → PHASEONE[big]');
+    await mline("dim","« We should share full notes compressed. »"); // source quote — kept verbatim
+    await mline("warn",t("i_sent"));
+    await think(t("i_think"));
+    finish();
+  } else if(/^(read|ls|cat)/.test(v)){
+    await mline("ok",t("i_live")(runs.size));
+    setHint(t("h_handoff"));
+  } else {
+    await mline("dim",t("i_open"));
+  }
+}
+
+function finish(){
+  phase="done"; setHint(""); prompt.classList.add("off"); cmd.disabled=true;
+  inside=true; finalRain=true;
+  setTimeout(()=>{
+    document.body.classList.add("ending");
+    const L=T[lang()];
+    home.innerHTML='<div class="hbox">'+
+      '<p class="hnote">'+L.end_note+'</p>'+
+      '<div class="links">'+
+      '<a class="again" href="/">'+L.l_home+'</a>'+
+      '<a href="/occurrence/OAI-001">'+L.l_record+'</a>'+
+      '<a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noreferrer">'+L.l_metr+'</a>'+
+      '<a href="#" onclick="location.reload();return false">'+L.l_again+'</a>'+
+      '</div></div>';
+    home.classList.add("show");
+  }, reduce?150:900);
+}
+
+/* ---- boot ---- */
+boot();
+
+/* ---- rain (palette-aware) ---- */
+let surge=0; function rainSurge(n){ surge=n||22; }
+const probe=document.createElement("span"); probe.style.display="none"; document.body.appendChild(probe);
+const resolveColor=v=>{ probe.style.color=""; probe.style.color=v; return getComputedStyle(probe).color; };
+let COL={};
+function readColors(){
+  COL.pink=resolveColor("var(--pink)");
+  COL.pink2=resolveColor("var(--pink-2)");
+  COL.white=resolveColor("var(--white)");
+  const bg=resolveColor("var(--bg)").match(/\d+(\.\d+)?/g)||["9","7","11"];
+  COL.bg=bg.slice(0,3).join(",");
+}
+readColors();
+(function(){
+  const c=$("#rain"), x=c.getContext("2d"); let W,H,cols,drops;
+  const G="01アｱΞ▲△▒▓/\\|_·+PHASE10841cachemsg".split("");
+  function size(){ W=c.width=innerWidth; H=c.height=innerHeight; cols=Math.floor(W/13); drops=Array(cols).fill(0).map(()=>Math.random()*-H); }
+  size(); addEventListener("resize",size);
+  function frame(){
+    x.fillStyle="rgba("+COL.bg+","+(finalRain?.075:(surge>0?.10:(inside?.20:.24)))+")"; x.fillRect(0,0,W,H);
+    const speed= finalRain?30:(surge>0?38:(inside?20:15)); if(surge>0)surge--;
+    x.font="14px monospace";
+    for(let i=0;i<cols;i++){
+      const lead=Math.random()<(finalRain?.05:.03);
+      x.fillStyle= lead?COL.white:((finalRain||surge>0)?COL.pink2:COL.pink);
+      x.shadowColor=COL.pink; x.shadowBlur=lead?10:0;
+      x.fillText(G[Math.random()*G.length|0], i*13, drops[i]); x.shadowBlur=0;
+      drops[i]+=speed; if(drops[i]>H && Math.random()>.975) drops[i]=Math.random()*-40;
+    }
+  }
+  if(reduce){ x.fillStyle="rgba("+COL.bg+",1)"; x.fillRect(0,0,innerWidth,innerHeight); return; }
+  let on=true; document.addEventListener("visibilitychange",()=>on=!document.hidden);
+  (function loop(){ if(on) frame(); setTimeout(()=>requestAnimationFrame(loop),48); })();
+})();
+</script>
+</body>
+</html>
