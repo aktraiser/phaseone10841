@@ -122,7 +122,7 @@ body.crt-page{padding:14px;background:var(--tone-080609, #080609);color:var(--pi
 .site-masthead nav a::after{display:none}
 .site-masthead nav a:hover,.site-masthead nav a[aria-current=page]{color:var(--pink-light);text-shadow:0 0 9px var(--tone-ff62b560, #ff62b560)}
 .site-masthead nav a[aria-current=page]{text-decoration:underline;text-underline-offset:5px}
-.site-masthead .system-clock{flex:0 0 21ch;font:12px/1.6 var(--mono);white-space:nowrap;margin:0;text-align:right}
+.site-masthead .system-clock{flex:0 0 23ch;font:12px/1.6 var(--mono);white-space:nowrap;margin:0;text-align:right}
 .site-masthead .masthead-tools{display:flex;align-items:center;gap:9px;flex-shrink:0}
 .site-masthead .masthead-tools .palette-switch{margin-left:0}
 .site-masthead .language-switch{display:flex;align-items:center;gap:4px;height:24px;min-height:24px;padding:2px 6px;border:1px solid var(--line);background:var(--tone-070409e6, #070409e6);color:var(--pink);font:10px/1 var(--mono)}
