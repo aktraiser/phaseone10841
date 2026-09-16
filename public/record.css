@@ -169,16 +169,3 @@
   #detail-content .rec-step-head{flex-direction:column;gap:4px}
   #detail-content .rec-related{margin-left:0}
 }
-
-/* ---- English record rendered from Markdown (in-place, same modal) ---- */
-#detail-content .rec-md{padding:16px 0 8px}
-#detail-content .rec-md h3{font-size:20px;font-weight:500;color:var(--white,#f7f1f6);letter-spacing:-.01em;margin:34px 0 12px;padding-top:20px;border-top:1px solid var(--line)}
-#detail-content .rec-md>h3:first-child{border-top:0;padding-top:0;margin-top:4px}
-#detail-content .rec-md p{font-size:15px;color:var(--text,#e7dde5);line-height:1.78;margin:0 0 14px;max-width:64ch}
-#detail-content .rec-md strong{color:var(--pink-light);font-weight:500}
-#detail-content .rec-md em{color:var(--muted);font-style:italic}
-#detail-content .rec-md a{color:var(--pink-light)}
-#detail-content .rec-md a:hover{color:var(--pink)}
-#detail-content .rec-md ul,#detail-content .rec-md ol{margin:0 0 16px;padding-left:22px}
-#detail-content .rec-md li{font-size:14.5px;color:var(--text,#e7dde5);line-height:1.7;margin:0 0 7px}
-#detail-content .rec-md blockquote{margin:2px 0 18px;padding:18px 22px;border:1px solid var(--pink-line);background:var(--tone-0d0812, #0d0812);font-size:17px;color:var(--white,#f7f1f6);line-height:1.5}

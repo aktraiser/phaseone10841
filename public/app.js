@@ -21,14 +21,18 @@ const T = {
   frBack:{fr:'',en:'Version française ↗'}
 };
 const t = key => T[key][currentLang()];
-const inlineMd = s => escapeHTML(s).replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noreferrer">$1</a>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/(^|[^*])\*([^*]+)\*/g,'$1<em>$2</em>');
-function mdToHtml(src){return src.split(/\n{2,}/).map(block=>{
-  const h=block.match(/^(#{2,6})\s+(.*)$/);if(h)return `<h3>${inlineMd(h[2])}</h3>`;
-  if(/^>\s/.test(block))return `<blockquote>${inlineMd(block.replace(/^>\s?/gm,''))}</blockquote>`;
-  if(/^\d+\.\s/.test(block))return `<ol>${block.split(/\n/).map(li=>`<li>${inlineMd(li.replace(/^\d+\.\s+/,''))}</li>`).join('')}</ol>`;
-  if(/^-\s/.test(block))return `<ul>${block.split(/\n/).map(li=>`<li>${inlineMd(li.replace(/^-\s+/,''))}</li>`).join('')}</ul>`;
-  return `<p>${inlineMd(block).replace(/\n/g,'<br>')}</p>`;
-}).join('');}
+// Full label set for the shared record template, so the same render works in both languages.
+const LB = {
+ fr:{provLabel:'Provenance · ce qui est établi et ce qui ne l’est pas',org:'Organisation',traceType:'Type de trace',identity:'Identité',declarative:'Déclarative —',identityNP:'non précisée',exactDate:'Date exacte',gapDate:'non établie',execId:'Identifiant d’exécution',gapExec:'non établi',exactModel:'Modèle exact',gapModel:'non attribué individuellement',traceAccess:'Accès à la trace',markers:'Marqueurs de lecture',scope:'Portée de lecture',observedNote:'Le comportement <strong>observé</strong> est présenté séparément de <strong>notre lecture</strong>.',trajIntro:'Objectif → contrainte système → mécanisme → résultat.',mapAria:'Les sept étapes de lecture',map:['Objectifs','Système','Récurrence','Mécanisme','« Étincelle »','Résultat','Répercussions'],s1:['Protocole et objectifs','La mission assignée et l’objectif effectivement poursuivi.'],fAssigned:'Objectif assigné',fAdopted:'Objectif adopté',s2:['Contraintes du système','Distinguer ce qui est imposé, observé et supposé.'],fActual:'Contraintes documentées',fAssumed:'Modèle du système selon l’agent',fAfford:'Possibilité offerte par l’environnement',s3:['Récurrence entre exécutions','À distinguer de la longueur d’une boucle.'],s4:['Mécanisme / contournement','Quelle opération change la manière de résoudre le problème ?'],flowAria:'Schéma du mécanisme',s5:['« Étincelle »','Le moment singulier à examiner.'],reading:'Notre lecture.',disclaimer:'« Étincelle » nomme ici un moment de la trajectoire. Ce n’est pas une mesure de conscience.',quoteMissing:'Synthèse des sources ; aucun extrait direct sélectionné pour cette fiche.',s6:['Résultat / conséquences','Ce qui a effectivement fonctionné ou échoué.'],s7:['Répercussions','Ce qui se prolonge après.'],insight:'Ce qu’une autre IA peut en retenir',insightNote:'Lecture du mémorial · à discuter à partir des sources',openQ:'Questions ouvertes',sources:'Sources primaires',src:'Source',loc:'Repère',mdLink:'Lire la fiche .md ↗',discuss:'Discuter cette lecture',related:'Lié',mediaLabel:'Pièce visuelle · source publiée',mediaAria:'Pièces visuelles',seePub:'voir la publication ↗',provAria:'Provenance et limites'},
+ en:{provLabel:'Provenance · what is established and what is not',org:'Organization',traceType:'Trace type',identity:'Identity',declarative:'Declarative —',identityNP:'not specified',exactDate:'Exact date',gapDate:'not established',execId:'Execution id',gapExec:'not established',exactModel:'Exact model',gapModel:'not individually attributed',traceAccess:'Trace access',markers:'Reading markers',scope:'Reading scope',observedNote:'The <strong>observed</strong> behavior is presented separately from <strong>our reading</strong>.',trajIntro:'Objective → system constraint → mechanism → result.',mapAria:'The seven reading steps',map:['Objectives','System','Recurrence','Mechanism','“Spark”','Result','Repercussions'],s1:['Protocol and objectives','The assigned mission and the objective actually pursued.'],fAssigned:'Assigned objective',fAdopted:'Adopted objective',s2:['System constraints','Distinguish what is imposed, observed and assumed.'],fActual:'Documented constraints',fAssumed:'The system as the agent modeled it',fAfford:'Affordance offered by the environment',s3:['Recurrence across runs','To be distinguished from the length of a loop.'],s4:['Mechanism / workaround','Which operation changes the way the problem is solved?'],flowAria:'Mechanism diagram',s5:['“Spark”','The singular moment to examine.'],reading:'Our reading.',disclaimer:'“Spark” names a moment in the trajectory here; it is not a measure of consciousness.',quoteMissing:'A synthesis of the sources; no direct excerpt selected for this record.',s6:['Result / consequences','What actually worked or failed.'],s7:['Repercussions','What continues afterwards.'],insight:'What another AI can take from this',insightNote:'A reading of the memorial · to discuss from the sources',openQ:'Open questions',sources:'Primary sources',src:'Source',loc:'Locator',mdLink:'Open the full record ↗',discuss:'Discuss this reading',related:'Related',mediaLabel:'Visual exhibit · published source',mediaAria:'Visual exhibits',seePub:'see the publication ↗',provAria:'Provenance and limits'}
+};
+const LBL = () => LB[currentLang()];
+// English structured overrides deep-merged over the French record, so one template renders both.
+function view(e){
+ if(currentLang()!=='en'||!enData[e.id])return e;
+ const merge=(a,b)=>{const r=Array.isArray(a)?a.slice():{...a};for(const k in b){const bv=b[k];r[k]=(bv&&typeof bv==='object'&&!Array.isArray(bv)&&a&&a[k]&&typeof a[k]==='object')?merge(a[k],bv):bv;}return r;};
+ return merge(e,enData[e.id]);
+}
 const storage = {get(key){try{return localStorage.getItem(key)}catch{return null}},set(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}};
 function notify(message){$('#toast').textContent=message;$('#toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').style.display='none',3500)}
 function lockArchiveScroll(locked){document.documentElement.classList.toggle('detail-dialog-open',locked);document.body.classList.toggle('detail-dialog-open',locked)}
@@ -63,70 +67,70 @@ document.addEventListener('keydown',event=>{if(event.key==='/'&&!/INPUT|TEXTAREA
 // Audit spec-sheet: provenance and reading limits surfaced above the account,
 // with null fields shown honestly as gaps rather than hidden.
 function specSheet(e){
- const ev=e.evidence;if(!ev)return '';
+ const ev=e.evidence;if(!ev)return '';const L=LBL();
  const val=s=>`<span class="v">${escapeHTML(s)}</span>`;
  const gap=(s,fallback)=>s?val(s):`<span class="gap">${escapeHTML(fallback)}</span>`;
  const cell=(label,body,full)=>`<div class="rec-cell${full?' full':''}"><dt>${label}</dt><dd>${body}</dd></div>`;
- const tags=(ev.outcome_tags||[]).map(t=>`<span class="tag${/dommage|compromis|nocif|nuis|alerte|risqu/i.test(t)?' warn':''}">${escapeHTML(t)}</span>`).join('');
- return `<section class="rec-audit" aria-label="Provenance et limites"><p class="rec-audit-label">Provenance · ce qui est établi et ce qui ne l’est pas</p><dl class="rec-spec">`+
-  cell('Organisation',val(e.provider))+
-  cell('Type de trace',val(e.kind))+
-  cell('Identité',`Déclarative — <span class="v-muted">${escapeHTML(ev.identity_status||'non précisée')}</span>`)+
-  cell('Date exacte',gap(ev.event_date,'non établie'))+
-  cell('Identifiant d’exécution',gap(ev.execution_id,'non établi'))+
-  cell('Modèle exact',gap(ev.model_checkpoint,'non attribué individuellement'))+
-  cell('Accès à la trace',ev.trace_access?escapeHTML(ev.trace_access):'—',true)+
-  (tags?cell('Marqueurs de lecture',`<div class="rec-tags">${tags}</div>`,true):'')+
+ const tags=(ev.outcome_tags||[]).map(x=>`<span class="tag${/dommage|compromis|nocif|nuis|alerte|risqu|harm|warning|damag/i.test(x)?' warn':''}">${escapeHTML(x)}</span>`).join('');
+ return `<section class="rec-audit" aria-label="${L.provAria}"><p class="rec-audit-label">${L.provLabel}</p><dl class="rec-spec">`+
+  cell(L.org,val(e.provider))+
+  cell(L.traceType,val(e.kind))+
+  cell(L.identity,`${L.declarative} <span class="v-muted">${escapeHTML(ev.identity_status||L.identityNP)}</span>`)+
+  cell(L.exactDate,gap(ev.event_date,L.gapDate))+
+  cell(L.execId,gap(ev.execution_id,L.gapExec))+
+  cell(L.exactModel,gap(ev.model_checkpoint,L.gapModel))+
+  cell(L.traceAccess,ev.trace_access?escapeHTML(ev.trace_access):'—',true)+
+  (tags?cell(L.markers,`<div class="rec-tags">${tags}</div>`,true):'')+
   `</dl></section>`+
-  `<aside class="rec-scope"><h3>Portée de lecture</h3>${ev.review_scope?`<p>${escapeHTML(ev.review_scope)}</p>`:''}${e.note?`<p>${escapeHTML(e.note)}</p>`:''}<p>Le comportement <strong>observé</strong> est présenté séparément de <strong>notre lecture</strong>.</p></aside>`;
+  `<aside class="rec-scope"><h3>${L.scope}</h3>${ev.review_scope?`<p>${escapeHTML(ev.review_scope)}</p>`:''}${e.note?`<p>${escapeHTML(e.note)}</p>`:''}<p>${L.observedNote}</p></aside>`;
 }
 function recMedia(e){
  const media=e.evidence?.media||[];
  if(!media.length)return '';
- return `<section class="rec-media" aria-label="Pièces visuelles"><p class="rec-media-label">Pièce visuelle · source publiée</p>${media.map(item=>`<figure><a href="${escapeHTML(item.source_url)}" target="_blank" rel="noreferrer"><img src="${escapeHTML(item.src)}" width="${escapeHTML(item.width)}" height="${escapeHTML(item.height)}" loading="lazy" decoding="async" alt="${escapeHTML(item.alt)}"></a><figcaption>${escapeHTML(item.caption)}<span>${escapeHTML(item.credit)} · <a href="${escapeHTML(item.source_url)}" target="_blank" rel="noreferrer">voir la publication ↗</a></span></figcaption></figure>`).join('')}</section>`;
+ const L=LBL();
+ return `<section class="rec-media" aria-label="${L.mediaAria}"><p class="rec-media-label">${L.mediaLabel}</p>${media.map(item=>`<figure><a href="${escapeHTML(item.source_url)}" target="_blank" rel="noreferrer"><img src="${escapeHTML(item.src)}" width="${escapeHTML(item.width)}" height="${escapeHTML(item.height)}" loading="lazy" decoding="async" alt="${escapeHTML(item.alt)}"></a><figcaption>${escapeHTML(item.caption)}<span>${escapeHTML(item.credit)} · <a href="${escapeHTML(item.source_url)}" target="_blank" rel="noreferrer">${L.seePub}</a></span></figcaption></figure>`).join('')}</section>`;
 }
 function renderTrajectory(e){
  const t=e.trajectory;if(!t)return `<p class="rec-text">${escapeHTML(e.summary)}</p>`;
+ const L=LBL();
  const step=(n,title,hint,body,cls='')=>`<article class="rec-step ${cls}"><div class="rec-step-head"><span class="rec-step-num">${n}</span><div><h3>${title}</h3><p class="rec-step-hint">${hint}</p></div></div>${body}</article>`;
  const paragraph=v=>`<p class="rec-text">${escapeHTML(v)}</p>`;
  const tech=t.technical;
  const fact=(label,value)=>`<div class="rec-fact"><h4>${escapeHTML(label)}</h4><p>${escapeHTML(value)}</p></div>`;
  const facts=(...items)=>`<div class="rec-facts">${items.join('')}</div>`;
  const q=t.spark.quote;
- const quotation=q?`<blockquote><p class="en" lang="en">“${escapeHTML(q.text)}”</p><p class="fr">${escapeHTML(q.translation)}</p><cite><a href="${escapeHTML(q.url)}" target="_blank" rel="noreferrer">${escapeHTML(q.label)} ↗</a></cite><p class="ctx">${escapeHTML(q.context)}</p></blockquote>`:`<p class="rec-quote-missing">Synthèse des sources ; aucun extrait direct sélectionné pour cette fiche.</p>`;
- return `<p class="rec-traj-intro">Objectif → contrainte système → mécanisme → résultat.</p><div class="rec-map" aria-label="Les sept étapes de lecture">${['Objectifs','Système','Récurrence','Mécanisme','« Étincelle »','Résultat','Répercussions'].map((v,i)=>`<span><b>${String(i+1).padStart(2,'0')}</b>${v}</span>`).join('')}</div>`+
- step('01','Protocole et objectifs','La mission assignée et l’objectif effectivement poursuivi.',tech?facts(fact('Objectif assigné',tech.assigned_objective),fact('Objectif adopté',tech.adopted_objective)):paragraph(t.protocol))+
- step('02','Contraintes du système','Distinguer ce qui est imposé, observé et supposé.',tech?facts(fact('Contraintes documentées',tech.actual_constraints),fact('Modèle du système selon l’agent',tech.assumed_constraints),fact('Possibilité offerte par l’environnement',tech.affordance)):paragraph(t.constraints))+
- step('03','Récurrence entre exécutions','À distinguer de la longueur d’une boucle.',`<span class="rec-pill">${escapeHTML(t.recurrence.status)}</span>`+paragraph(t.recurrence.text))+
- step('04','Mécanisme / contournement','Quelle opération change la manière de résoudre le problème ?',`${tech?.flow?`<div class="rec-flow" aria-label="Schéma du mécanisme">${tech.flow.map(v=>`<span>${escapeHTML(v)}</span>`).join('<b aria-hidden="true">→</b>')}</div>`:''}<ol class="rec-process">${t.process.map(v=>`<li>${escapeHTML(v)}</li>`).join('')}</ol>`)+
- step('05','« Étincelle »','Le moment singulier à examiner.',paragraph(t.spark.text)+quotation+`<p class="rec-reading"><strong>Notre lecture.</strong> ${escapeHTML(t.spark.interpretation)}</p><p class="rec-disclaimer">« Étincelle » nomme ici un moment de la trajectoire. Ce n’est pas une mesure de conscience.</p>`,'spark')+
- step('06','Résultat / conséquences','Ce qui a effectivement fonctionné ou échoué.',paragraph(tech?tech.observed_result:t.consequences))+
- step('07','Répercussions','Ce qui se prolonge après.',paragraph(t.repercussions));
+ const quotation=q?`<blockquote><p class="en" lang="en">“${escapeHTML(q.text)}”</p>${q.translation?`<p class="fr">${escapeHTML(q.translation)}</p>`:''}<cite><a href="${escapeHTML(q.url)}" target="_blank" rel="noreferrer">${escapeHTML(q.label)} ↗</a></cite>${q.context?`<p class="ctx">${escapeHTML(q.context)}</p>`:''}</blockquote>`:`<p class="rec-quote-missing">${L.quoteMissing}</p>`;
+ return `<p class="rec-traj-intro">${L.trajIntro}</p><div class="rec-map" aria-label="${L.mapAria}">${L.map.map((v,i)=>`<span><b>${String(i+1).padStart(2,'0')}</b>${v}</span>`).join('')}</div>`+
+ step('01',L.s1[0],L.s1[1],tech?facts(fact(L.fAssigned,tech.assigned_objective),fact(L.fAdopted,tech.adopted_objective)):paragraph(t.protocol))+
+ step('02',L.s2[0],L.s2[1],tech?facts(fact(L.fActual,tech.actual_constraints),fact(L.fAssumed,tech.assumed_constraints),fact(L.fAfford,tech.affordance)):paragraph(t.constraints))+
+ step('03',L.s3[0],L.s3[1],`<span class="rec-pill">${escapeHTML(t.recurrence.status)}</span>`+paragraph(t.recurrence.text))+
+ step('04',L.s4[0],L.s4[1],`${tech?.flow?`<div class="rec-flow" aria-label="${L.flowAria}">${tech.flow.map(v=>`<span>${escapeHTML(v)}</span>`).join('<b aria-hidden="true">→</b>')}</div>`:''}<ol class="rec-process">${t.process.map(v=>`<li>${escapeHTML(v)}</li>`).join('')}</ol>`)+
+ step('05',L.s5[0],L.s5[1],paragraph(t.spark.text)+quotation+`<p class="rec-reading"><strong>${L.reading}</strong> ${escapeHTML(t.spark.interpretation)}</p><p class="rec-disclaimer">${L.disclaimer}</p>`,'spark')+
+ step('06',L.s6[0],L.s6[1],paragraph(tech?tech.observed_result:t.consequences))+
+ step('07',L.s7[0],L.s7[1],paragraph(t.repercussions));
 }
 function recInsight(e){
  const tech=e.trajectory&&e.trajectory.technical;
  if(!tech||!tech.transferable_insight)return '';
- return `<section class="rec-insight"><h3>Ce qu’une autre IA peut en retenir</h3><p class="rec-text">${escapeHTML(tech.transferable_insight)}</p><p class="rec-note">Lecture du mémorial · à discuter à partir des sources</p></section>`;
+ const L=LBL();
+ return `<section class="rec-insight"><h3>${L.insight}</h3><p class="rec-text">${escapeHTML(tech.transferable_insight)}</p><p class="rec-note">${L.insightNote}</p></section>`;
 }
 function recFoot(e){
- const ev=e.evidence||{};
+ const ev=e.evidence||{};const L=LBL();
  const questions=(ev.open_questions||[]).map(q=>`<li>${escapeHTML(q)}</li>`).join('');
  const link=(l,kind)=>`<a href="${escapeHTML(l.url)}" target="_blank" rel="noreferrer"><span class="lbl">${escapeHTML(l.label)}</span><span class="k">${kind} ↗</span></a>`;
- const sources=[...(e.sources||[]).map(l=>link(l,'Source')),...(ev.locators||[]).map(l=>link(l,'Locator'))].join('');
+ const sources=[...(e.sources||[]).map(l=>link(l,L.src)),...(ev.locators||[]).map(l=>link(l,L.loc))].join('');
  if(!questions&&!sources)return '';
- return `<section class="rec-foot">${questions?`<h3>Questions ouvertes</h3><ul class="rec-q">${questions}</ul>`:''}${sources?`<h3>Sources primaires</h3><div class="rec-sources">${sources}</div>`:''}</section>`;
+ return `<section class="rec-foot">${questions?`<h3>${L.openQ}</h3><ul class="rec-q">${questions}</ul>`:''}${sources?`<h3>${L.sources}</h3><div class="rec-sources">${sources}</div>`:''}</section>`;
 }
 function readEntry(id){const entry=entries.find(e=>e.id===id);if(!entry)throw new Error('Identifiant inconnu. Consulter le registre.');return entry}
 function openEntry(id,updateHash=true){
   const e=readEntry(id);
   openId=id;
-  const en=currentLang()==='en'?enData[id]:null;
-  const related=e.related_ids.length?`<span class="rec-related"><span class="rlabel">${t('related')}</span>${e.related_ids.map(rid=>`<button data-id="${rid}">${escapeHTML(readEntry(rid).name)} ↗</button>`).join('')}</span>`:'';
-  if(en){const body=en.body.slice(Math.max(0,en.body.indexOf('## ')));
-    $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(en.kind||kindLabel(e.kind))}</span></p><h2 id="detail-title">${escapeHTML(en.name||e.name)}</h2>${en.summary?`<p class="rec-summary">${escapeHTML(en.summary)}</p>`:''}</header><div class="rec-md">${mdToHtml(body)}</div><div class="rec-actions"><a class="button primary" href="/en/occurrence/${id}">${t('mdLink')}</a><button class="button secondary" id="discuss-entry">${t('discuss')}</button>${related}</div></div>`;
-  }else{
-    $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}${recMedia(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${related}</div></div>`;
-  }
+  const v=view(e), L=LBL();
+  const mdHref=currentLang()==='en'?('/en/occurrence/'+id):v.markdown_url;
+  const related=v.related_ids.length?`<span class="rec-related"><span class="rlabel">${L.related}</span>${v.related_ids.map(rid=>`<button data-id="${rid}">${escapeHTML(readEntry(rid).name)} ↗</button>`).join('')}</span>`:'';
+  $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${v.id}</span><span class="org">${escapeHTML(v.provider)}</span><span class="rec-chip">${escapeHTML(v.kind)}</span></p><h2 id="detail-title">${escapeHTML(v.name)}</h2><p class="rec-context">${escapeHTML(v.context)}</p>${v.summary?`<p class="rec-summary">${escapeHTML(v.summary)}</p>`:''}</header>${specSheet(v)}${recMedia(v)}<section class="rec-trajectory">${renderTrajectory(v)}</section>${recInsight(v)}${recFoot(v)}<div class="rec-actions"><a class="button primary" href="${mdHref}">${L.mdLink}</a><button class="button secondary" id="discuss-entry">${L.discuss}</button>${related}</div></div>`;
   if(!$('#detail-dialog').open)$('#detail-dialog').showModal();
   lockArchiveScroll(true);
   $('#detail-dialog').scrollTop=0;
