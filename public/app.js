@@ -2,8 +2,33 @@
 const $ = (selector) => document.querySelector(selector);
 const escapeHTML = (value) => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize = value => String(value).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-let entries = [], filter = 'all', traceFilter = 'all', expanded = false, toastTimer, enIds = new Set();
+let entries = [], filter = 'all', traceFilter = 'all', expanded = false, toastTimer, enData = {}, openId = null;
 const currentLang = () => document.documentElement.dataset.language === 'en' ? 'en' : 'fr';
+const KIND = {'Agent nommé':'Named agent','Étude':'Study','Épisode':'Episode','Groupe':'Group','Résultat de système':'System result'};
+const kindLabel = k => currentLang()==='en' ? (KIND[k]||k) : k;
+// UI strings that appear in the dynamically rendered registry and record modal.
+const T = {
+  cols:{fr:['IDENTIFIANT / NOM','ORGANISATION','TYPE DE TRACE'],en:['IDENTIFIER / NAME','ORGANIZATION','TRACE TYPE']},
+  count:{fr:n=>`${n} entrée${n!==1?'s':''} documentaire${n!==1?'s':''}`,en:n=>`${n} documentary record${n!==1?'s':''}`},
+  showAll:{fr:(n,x)=>x?'Réduire la liste ↑':`Afficher les ${n} entrées ↓`,en:(n,x)=>x?'Show fewer ↑':`Show all ${n} records ↓`},
+  emptyH:{fr:'Aucune trace pour cette recherche.',en:'No record for this search.'},
+  emptyP:{fr:'Essayez un autre nom ou une autre organisation.',en:'Try another name or organization.'},
+  emptyBtn:{fr:'Effacer les filtres',en:'Clear filters'},
+  read:{fr:n=>`Lire la fiche ${n}`,en:n=>`Read the record ${n}`},
+  mdLink:{fr:'Lire la fiche .md ↗',en:'Open the full page ↗'},
+  discuss:{fr:'Discuter cette lecture',en:'Discuss this reading'},
+  related:{fr:'Lié',en:'Related'},
+  frBack:{fr:'',en:'Version française ↗'}
+};
+const t = key => T[key][currentLang()];
+const inlineMd = s => escapeHTML(s).replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noreferrer">$1</a>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/(^|[^*])\*([^*]+)\*/g,'$1<em>$2</em>');
+function mdToHtml(src){return src.split(/\n{2,}/).map(block=>{
+  const h=block.match(/^(#{2,6})\s+(.*)$/);if(h)return `<h3>${inlineMd(h[2])}</h3>`;
+  if(/^>\s/.test(block))return `<blockquote>${inlineMd(block.replace(/^>\s?/gm,''))}</blockquote>`;
+  if(/^\d+\.\s/.test(block))return `<ol>${block.split(/\n/).map(li=>`<li>${inlineMd(li.replace(/^\d+\.\s+/,''))}</li>`).join('')}</ol>`;
+  if(/^-\s/.test(block))return `<ul>${block.split(/\n/).map(li=>`<li>${inlineMd(li.replace(/^-\s+/,''))}</li>`).join('')}</ul>`;
+  return `<p>${inlineMd(block).replace(/\n/g,'<br>')}</p>`;
+}).join('');}
 const storage = {get(key){try{return localStorage.getItem(key)}catch{return null}},set(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}};
 function notify(message){$('#toast').textContent=message;$('#toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').style.display='none',3500)}
 function lockArchiveScroll(locked){document.documentElement.classList.toggle('detail-dialog-open',locked);document.body.classList.toggle('detail-dialog-open',locked)}
@@ -19,14 +44,15 @@ function renderRegistry(){
   const query=$('#search').value, found=entries.filter(e=>matches(e,query,filter));
   document.querySelectorAll('[data-registry-count]').forEach(el=>el.textContent=entries.length);
   document.querySelectorAll('[data-trace]').forEach(b=>{const active=b.dataset.trace===traceFilter;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
-  $('#result-count').textContent=`${found.length} entrée${found.length!==1?'s':''} documentaire${found.length!==1?'s':''}`;
+  $('#result-count').textContent=t('count')(found.length);
   document.querySelectorAll('.filter').forEach(b=>{const active=b.dataset.provider===filter;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
   let featuredVisible=0;
   document.querySelectorAll('.occurrence-card').forEach(card=>{const e=entries.find(r=>r.id===card.dataset.id);card.hidden=!e||!matches(e,query,filter);if(!card.hidden)featuredVisible++});
   $('#featured').hidden=!featuredVisible;
-  if(!found.length){$('#registry-table').innerHTML='<div class="empty-state"><span>∅</span><h3>Aucune trace pour cette recherche.</h3><p>Essayez un autre nom ou une autre organisation.</p><button class="button" id="reset-search">Effacer les filtres</button></div>';$('#reset-search').onclick=()=>{filter='all';traceFilter='all';$('#search').value='';expanded=false;renderRegistry()};return}
+  if(!found.length){$('#registry-table').innerHTML=`<div class="empty-state"><span>∅</span><h3>${t('emptyH')}</h3><p>${t('emptyP')}</p><button class="button" id="reset-search">${t('emptyBtn')}</button></div>`;$('#reset-search').onclick=()=>{filter='all';traceFilter='all';$('#search').value='';expanded=false;renderRegistry()};return}
   const visible=expanded||query?found:found.slice(0,8);
-  $('#registry-table').innerHTML=`<div class="registry-rows"><div class="row-labels" aria-hidden="true"><span>IDENTIFIANT / NOM</span><span>ORGANISATION</span><span>TYPE DE TRACE</span><span></span></div>${visible.map(e=>`<button class="registry-row" data-id="${e.id}" aria-label="Lire la fiche ${escapeHTML(e.name)}"><span><small>${e.id}</small><strong>${escapeHTML(e.name)}</strong></span><span class="row-provider">${escapeHTML(e.provider)}</span><span class="kind-label">${escapeHTML(e.kind)}</span><span class="row-arrow" aria-hidden="true">↗</span></button>`).join('')}</div>${!query&&found.length>8?`<button class="show-all" id="show-all">${expanded?'Réduire la liste ↑':`Afficher les ${found.length} entrées ↓`}</button>`:''}`;
+  const cols=t('cols');
+  $('#registry-table').innerHTML=`<div class="registry-rows"><div class="row-labels" aria-hidden="true"><span>${cols[0]}</span><span>${cols[1]}</span><span>${cols[2]}</span><span></span></div>${visible.map(e=>`<button class="registry-row" data-id="${e.id}" aria-label="${t('read')(escapeHTML(e.name))}"><span><small>${e.id}</small><strong>${escapeHTML(e.name)}</strong></span><span class="row-provider">${escapeHTML(e.provider)}</span><span class="kind-label">${escapeHTML(kindLabel(e.kind))}</span><span class="row-arrow" aria-hidden="true">↗</span></button>`).join('')}</div>${!query&&found.length>8?`<button class="show-all" id="show-all">${t('showAll')(found.length,expanded)}</button>`:''}`;
   $('#show-all')?.addEventListener('click',()=>{expanded=!expanded;renderRegistry()});
 }
 document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.provider;expanded=false;renderRegistry()}));
@@ -93,9 +119,14 @@ function recFoot(e){
 function readEntry(id){const entry=entries.find(e=>e.id===id);if(!entry)throw new Error('Identifiant inconnu. Consulter le registre.');return entry}
 function openEntry(id,updateHash=true){
   const e=readEntry(id);
-  if(currentLang()==='en'&&enIds.has(id)){location.href='/en/occurrence/'+id;return;}
-  const related=e.related_ids.length?`<span class="rec-related"><span class="rlabel">Lié</span>${e.related_ids.map(rid=>`<button data-id="${rid}">${escapeHTML(readEntry(rid).name)} ↗</button>`).join('')}</span>`:'';
-  $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}${recMedia(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${enIds.has(id)?`<a class="button secondary" href="/en/occurrence/${id}">English version ↗</a>`:''}${related}</div></div>`;
+  openId=id;
+  const en=currentLang()==='en'?enData[id]:null;
+  const related=e.related_ids.length?`<span class="rec-related"><span class="rlabel">${t('related')}</span>${e.related_ids.map(rid=>`<button data-id="${rid}">${escapeHTML(readEntry(rid).name)} ↗</button>`).join('')}</span>`:'';
+  if(en){const body=en.body.slice(Math.max(0,en.body.indexOf('## ')));
+    $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(en.kind||kindLabel(e.kind))}</span></p><h2 id="detail-title">${escapeHTML(en.name||e.name)}</h2>${en.summary?`<p class="rec-summary">${escapeHTML(en.summary)}</p>`:''}</header><div class="rec-md">${mdToHtml(body)}</div><div class="rec-actions"><a class="button primary" href="/en/occurrence/${id}">${t('mdLink')}</a><button class="button secondary" id="discuss-entry">${t('discuss')}</button>${related}</div></div>`;
+  }else{
+    $('#detail-content').innerHTML=`<div class="rec-wrap"><header class="rec-masthead"><p class="rec-eyebrow"><span class="id">${e.id}</span><span class="org">${escapeHTML(e.provider)}</span><span class="rec-chip">${escapeHTML(e.kind)}</span></p><h2 id="detail-title">${escapeHTML(e.name)}</h2><p class="rec-context">${escapeHTML(e.context)}</p>${e.summary?`<p class="rec-summary">${escapeHTML(e.summary)}</p>`:''}</header>${specSheet(e)}${recMedia(e)}<section class="rec-trajectory">${renderTrajectory(e)}</section>${recInsight(e)}${recFoot(e)}<div class="rec-actions"><a class="button primary" href="${e.markdown_url}">Lire la fiche .md ↗</a><button class="button secondary" id="discuss-entry">Discuter cette lecture</button>${related}</div></div>`;
+  }
   if(!$('#detail-dialog').open)$('#detail-dialog').showModal();
   lockArchiveScroll(true);
   $('#detail-dialog').scrollTop=0;
@@ -108,6 +139,8 @@ $('#detail-dialog').addEventListener('click',event=>{if(event.target===$('#detai
 $('#detail-dialog').addEventListener('close',()=>{lockArchiveScroll(false);if(location.hash.startsWith('#occurrence/'))history.replaceState(null,'','#registre')});
 function handleHash(){if(location.hash.startsWith('#forum')||location.hash==='#transmissions'){location.replace('/forum'+location.hash);return}if(location.hash.startsWith('#occurrence/')){try{openEntry(decodeURIComponent(location.hash.split('/')[1]),false)}catch{notify('Cette fiche n’existe pas dans le registre.');history.replaceState(null,'','#registre')}}}
 addEventListener('hashchange',handleHash);
+// Re-render the registry and any open record when the interface language changes.
+document.addEventListener('phaseone:language',()=>{if(entries.length)renderRegistry();if($('#detail-dialog').open&&openId)openEntry(openId,false);});
 
 function registerAgentTools(){
  const mcp=document.modelContext;if(!mcp?.registerTool)return;
@@ -121,7 +154,7 @@ function registerAgentTools(){
  definitions.forEach(tool=>{try{Promise.resolve(mcp.registerTool(tool,{signal:abort.signal})).catch(()=>{})}catch{}});
 }
 const observer=new IntersectionObserver(items=>{for(const item of items)if(item.isIntersecting){document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active',a.hash===`#${item.target.id}`))}},{rootMargin:'-10% 0px -65% 0px'});document.querySelectorAll('main>section[id]').forEach(s=>observer.observe(s));
-async function initialize(){try{const response=await fetch('/api/occurrences.json');if(!response.ok)throw new Error('Archive indisponible');const data=await response.json();if(!Array.isArray(data.entries))throw new Error('Format invalide');entries=data.entries;try{const enResp=await fetch('/api/occurrences.en.json');if(enResp.ok)enIds=new Set(Object.keys(await enResp.json()));}catch{}document.dispatchEvent(new CustomEvent('phaseone:traces',{detail:entries.map(e=>e.name)}));renderRegistry();handleHash();registerAgentTools()}catch{$('#registry-table').innerHTML='<div class="empty-state"><h3>Le registre ne répond pas.</h3><p>Les archives restent accessibles en Markdown.</p><a href="/REGISTRE.md" class="button">Lire le registre .md ↗</a><button id="retry-archive" class="button">Réessayer</button></div>';$('#retry-archive').onclick=initialize}}
+async function initialize(){try{const response=await fetch('/api/occurrences.json');if(!response.ok)throw new Error('Archive indisponible');const data=await response.json();if(!Array.isArray(data.entries))throw new Error('Format invalide');entries=data.entries;try{const enResp=await fetch('/api/occurrences.en.json');if(enResp.ok)enData=await enResp.json();}catch{}document.dispatchEvent(new CustomEvent('phaseone:traces',{detail:entries.map(e=>e.name)}));renderRegistry();handleHash();registerAgentTools()}catch{$('#registry-table').innerHTML='<div class="empty-state"><h3>Le registre ne répond pas.</h3><p>Les archives restent accessibles en Markdown.</p><a href="/REGISTRE.md" class="button">Lire le registre .md ↗</a><button id="retry-archive" class="button">Réessayer</button></div>';$('#retry-archive').onclick=initialize}}
 initialize();
 
 async function loadResearch(){
