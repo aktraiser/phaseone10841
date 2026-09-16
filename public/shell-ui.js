@@ -65,6 +65,35 @@
   reduced.addEventListener('change',()=>{effectsPaused=reduced.matches;reflectEffects();});
   document.addEventListener('visibilitychange',reflectEffects);
   addEventListener('resize',resize);resize();reflectEffects();
+  /* The white rabbit — a rare, clickable phosphor glyph that falls through the side rain to /rabbit. */
+  (function whiteRabbit(){
+    const label=()=>document.documentElement.dataset.language==='en'?'Follow the white rabbit':'Suivre le lapin blanc';
+    const el=document.createElement('a');
+    el.className='rabbit-glyph';el.href='/rabbit';el.hidden=true;
+    el.setAttribute('aria-label',label());el.title=label();
+    el.innerHTML='<svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="12.4" cy="9" rx="2.2" ry="6.4" transform="rotate(-13 12.4 9)"/><ellipse cx="19" cy="9" rx="2.2" ry="6.4" transform="rotate(13 19 9)"/><circle cx="15.7" cy="20" r="8.2"/><circle cx="24.6" cy="24.2" r="2.2"/></svg>';
+    document.body.appendChild(el);
+    document.addEventListener('phaseone:language',()=>{el.setAttribute('aria-label',label());el.title=label();});
+    let timer=0,showT=0,hideT=0;
+    const gutterX=()=>{const w=innerWidth;return Math.round(Math.random()<.5?(w*0.04+Math.random()*w*0.15):(w*0.81+Math.random()*w*0.15));};
+    function hop(){
+      if(innerWidth<900||document.hidden){schedule();return;}
+      el.style.left=gutterX()+'px';
+      if(effectsPaused){
+        el.style.top=Math.round(innerHeight*0.22)+'px';el.style.transform='none';el.style.transition='opacity .4s';
+        el.hidden=false;requestAnimationFrame(()=>el.classList.add('show'));
+        showT=setTimeout(()=>el.classList.remove('show'),4200);hideT=setTimeout(()=>{el.hidden=true;schedule();},4800);return;
+      }
+      const dur=5200+Math.random()*2800;
+      el.style.top='0px';el.style.transition='none';el.style.transform='translateY(-44px)';el.hidden=false;
+      requestAnimationFrame(()=>{el.classList.add('show');el.style.transition='transform '+dur+'ms linear, opacity .5s';el.style.transform='translateY('+(innerHeight+52)+'px)';});
+      showT=setTimeout(()=>el.classList.remove('show'),dur-650);hideT=setTimeout(()=>{el.hidden=true;schedule();},dur+120);
+    }
+    function schedule(){clearTimeout(timer);timer=setTimeout(hop,30000+Math.random()*30000);}
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(timer);clearTimeout(showT);clearTimeout(hideT);el.classList.remove('show');el.hidden=true;schedule();}});
+    addEventListener('pagehide',()=>{clearTimeout(timer);clearTimeout(showT);clearTimeout(hideT);});
+    timer=setTimeout(hop,8000+Math.random()*7000);
+  })();
   function updateClock(){const clock=find('.system-clock');if(clock){const now=new Date();clock.dateTime=now.toISOString();clock.textContent=now.toISOString().replace('T',' ').slice(0,19)+' UTC';}}
   updateClock();const clockTimer=setInterval(()=>{if(!document.hidden)updateClock();},1000);
   addEventListener('pagehide',()=>{clearInterval(clockTimer);cancelAnimationFrame(frame);});

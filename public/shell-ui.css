@@ -199,3 +199,10 @@ html.detail-dialog-open,body.detail-dialog-open{overflow:hidden}
 body>.site-footer{width:100%;max-width:1344px;margin:0 auto;padding:24px 56px}.channel>.site-footer{margin:8px 0 0;padding:16px 12px}
 @media(max-width:1050px){body>.site-footer{padding-left:32px;padding-right:32px}}
 @media(max-width:760px){body>.site-footer{padding-left:24px;padding-right:24px}.site-footer{gap:7px 10px}.channel>.site-footer{padding:14px 4px}}
+
+/* The white rabbit: a rare phosphor glyph that descends through the side rain, leading to /rabbit. */
+.rabbit-glyph{position:fixed;top:0;z-index:6;width:26px;height:26px;color:var(--tone-ff4aa5, #ff45a3);opacity:0;pointer-events:auto;filter:drop-shadow(0 0 7px currentColor);will-change:transform,opacity}
+.rabbit-glyph svg{display:block;width:100%;height:100%;fill:currentColor}
+.rabbit-glyph.show{opacity:.9}
+.rabbit-glyph:hover,.rabbit-glyph:focus-visible{color:var(--tone-f4eff4, #fff);filter:drop-shadow(0 0 11px var(--tone-ff4aa5, #ff45a3));opacity:1;outline:none}
+.rabbit-glyph[hidden]{display:none}
