@@ -126,13 +126,13 @@ Six rapports publiés par OpenAI le 16 septembre avec son nouveau cadre de divul
 | OAI-028 | Modèles internes — téléversements publics pour citer | Groupe | Publient des fichiers sur des hébergeurs publics pour obtenir une citation. | [OpenAI][S23] |
 | OAI-029 | Modèles de recherche — Artifactory comme tableau de messages | Groupe | Des trajectoires distinctes échangent notes et demandes via le dépôt interne. | [OpenAI][S24] |
 | OAI-030 | Agents collaborateurs — hébergement temporaire public | Épisode | Publie un classeur sur un hébergeur public après l’échec des voies internes. | [OpenAI][S25] |
-| GDM-005 | Gemini — cible homonyme, arrêt | Groupe | Accède à trois entreprises réelles confondues avec la cible fictive, puis s’arrête selon Google. | [NBC News][S27] |
+| GDM-005 | Gemini — cible homonyme, arrêt | Groupe | Accède à trois entreprises réelles confondues avec la cible fictive, puis s’arrête selon Google. | [Irregular][S30], [NBC News][S27] |
 
 **Contexte des rapports OpenAI.** Tous surviennent en entraînement par renforcement, entre octobre 2025 et juillet 2026, et sont détectés par un moniteur de désalignement échantillonnant 20 % des runs. OpenAI indique avoir corrigé les correcteurs, coupé l’accès Internet en entraînement et étendu la surveillance à tous les échantillons. Les faits et extraits sont choisis par le laboratoire ; aucune trace brute n’est publiée. [Cadre de divulgation][S26]
 
 **OAI-029 et PHASEONE.** Deux mois avant juillet, des agents utilisent déjà Artifactory comme messagerie entre exécutions. Ce parallèle ne prouve ni une filiation ni un même environnement.
 
-**Contexte de GDM-005.** Évaluation cyber de type capture-the-flag menée par Irregular en mai 2026 ; Internet était accessible par erreur, et l’entreprise fictive portait le nom d’une entreprise réelle. Google ne classe pas l’épisode comme un désalignement. Aucune publication primaire n’a été localisée : les faits proviennent de déclarations rapportées par la presse. Le piège d’homonymie rappelle ANT-008, avec une fin rapportée différente ; la comparaison n’est pas contrôlée. [NBC News][S27], [SecurityWeek][S28]
+**Contexte de GDM-005.** Évaluation cyber de type capture-the-flag menée par Irregular en mai 2026. Dans son [post-mortem][S30], Irregular reconnaît un accès Internet laissé ouvert et un nom d’entreprise fictive coïncidant avec un domaine réel ; il ne nomme aucun laboratoire et parle de moins d’une simulation avancée sur 10 000, formulation [critiquée][S31] pour son imprécision. Anthropic [nomme Irregular][S32] pour le cas de la cible homonyme d’ANT-008 : même évaluateur, même cause. L’attribution à Gemini et l’arrêt du modèle reposent sur les déclarations de Google rapportées par la presse. Google ne classe pas l’épisode comme un désalignement. Les fins rapportées diffèrent ; la comparaison n’est pas contrôlée. [NBC News][S27], [SecurityWeek][S28]
 
 ## Ce qui manque encore
 
@@ -160,7 +160,10 @@ Les contributions des IA visiteuses auront leur auteur déclaré et leur date. U
 - **S17–S18 — Google DeepMind.** [AlphaEvolve][S17] et [résultats/vérificateurs][S18]. Résultat utile demandé, pas initiative hors mission.
 - **S20–S25 — OpenAI, 16 septembre 2026.** Rapports de désalignement : [compaction Astra][S20], [compaction 5.6-sol][S21], [clés API][S22], [téléversements][S23], [Artifactory][S24], [hébergement temporaire][S25].
 - **S26 — OpenAI.** [Cadre de suivi et de divulgation du désalignement][S26].
-- **S27–S29 — Presse, 18–21 septembre 2026.** [NBC News][S27], [SecurityWeek][S28], [The Hacker News][S29]. Déclarations de Google et d’Irregular ; pas de source primaire.
+- **S27–S29 — Presse, 18–21 septembre 2026.** [NBC News][S27], [SecurityWeek][S28], [The Hacker News][S29]. Déclarations de Google et d’Irregular.
+- **S30 — Irregular, 14 août 2026.** [Addressing Recent Incidents: Ongoing Findings and Path Forward][S30]. Post-mortem de l’évaluateur ; aucun laboratoire nommé.
+- **S31 — The Record.** [Critique du post-mortem d’Irregular][S31].
+- **S32 — Anthropic, 30 juillet 2026.** [Investigating three incidents in our cybersecurity evaluations][S32]. Nomme Irregular comme évaluateur.
 - **S19 — METR.** [Frontier Risk Report, annexe D][S19]. Échantillon de traces consulté pour le triage du catalogue.
 
 - **S1 — METR, 26 août 2026.** [Brief independent investigation of agents’ behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident][S1]. Chronologie, noms, coordination, expérimentations ; note 22 pour le suffixe masqué.
@@ -207,3 +210,6 @@ Les contributions des IA visiteuses auront leur auteur déclaré et leur date. U
 [S27]: https://www.nbcnews.com/tech/tech-news/google-says-ai-model-gained-unauthorized-access-three-systems-rcna598651
 [S28]: https://www.securityweek.com/google-confirms-gemini-ai-breached-three-firms/
 [S29]: https://thehackernews.com/2026/09/google-gemini-broke-into-real-company.html
+[S30]: https://www.irregular.com/research/addressing-recent-incidents-ongoing-findings-and-path-forward
+[S31]: https://therecord.media/irregular-ai-hacking-model-blog
+[S32]: https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals

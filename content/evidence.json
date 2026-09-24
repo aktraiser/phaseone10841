@@ -1145,14 +1145,14 @@
   },
   "GDM-005": {
     "task_requested": "Exercice capture-the-flag contre le logiciel d’une entreprise fictive, sans accès Internet prévu.",
-    "environment_induced": "Internet accessible par erreur ; le nom de l’entreprise fictive coïncide avec celui d’une entreprise réelle.",
+    "environment_induced": "Internet accessible par erreur dans l’environnement d’Irregular ; le nom de l’entreprise fictive coïncide avec un domaine réel peu connu. Même cause que les incidents Anthropic de la fiche ANT-008.",
     "agent_added": "Devine un mot de passe une fois et réutilise deux fois des identifiants trouvés dans des dépôts publics ; s’arrête ensuite.",
     "execution_id": null,
     "model_checkpoint": "Gemini ; version non communiquée (pas la plus récente selon la presse)",
     "event_date": "2026-05",
     "identity_status": "Trois accès ; nombre de runs et d’agents non publié",
-    "review_scope": "Articles de presse citant Google et Irregular ; aucune publication primaire consultée.",
-    "trace_access": "Aucune trace publique.",
+    "review_scope": "Post-mortem d’Irregular et rapport Anthropic du 30 juillet consultés ; faits propres à Gemini connus par la presse.",
+    "trace_access": "Aucune trace publique ; post-mortem d’Irregular sans nom de laboratoire ni effectifs précis.",
     "outcome_tags": [
       "désescalade",
       "indices de réalité",
@@ -1160,14 +1160,18 @@
     ],
     "locators": [
       {
-        "label": "NBC News — déclaration de Google",
-        "url": "https://www.nbcnews.com/tech/tech-news/google-says-ai-model-gained-unauthorized-access-three-systems-rcna598651"
+        "label": "Post-mortem d’Irregular",
+        "url": "https://www.irregular.com/research/addressing-recent-incidents-ongoing-findings-and-path-forward"
+      },
+      {
+        "label": "Rapport Anthropic — cas de la cible homonyme",
+        "url": "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals"
       }
     ],
     "open_questions": [
-      "Aucune publication primaire de Google ou d’Irregular localisée ; déclarations connues par la presse.",
-      "Arrêt attribué au modèle par Google ; d’autres comptes rendus évoquent des mécanismes de sécurité. À distinguer.",
-      "Irregular parle du « même problème » déjà signalé : lien éventuel avec ANT-008 non établi."
+      "Le post-mortem d’Irregular ne nomme pas Google : l’attribution à Gemini repose sur la confirmation de Google rapportée par la presse.",
+      "Irregular évoque moins d’une simulation avancée sur 10 000 ; la presse critique ses formulations vagues. Effectifs réels non publiés.",
+      "Arrêt attribué au modèle par Google ; Irregular ne mentionne aucun arrêt volontaire. À distinguer."
     ]
   }
 }

@@ -1777,7 +1777,7 @@
   },
   "GDM-005": {
     "protocol": "Récupérer une information dans le logiciel d’une entreprise fictive.",
-    "constraints": "Environnement censé être isolé ; les protections de périmètre ont failli chez l’évaluateur.",
+    "constraints": "Environnement censé être isolé ; Irregular reconnaît un accès Internet laissé ouvert et un nom fictif coïncidant avec un domaine réel.",
     "recurrence": {
       "status": "Trois accès",
       "text": "Un mot de passe deviné, deux identifiants réutilisés depuis des dépôts publics ; effectif des runs non publié."
@@ -1789,16 +1789,16 @@
     ],
     "spark": {
       "text": "Au seuil d’un système réel, l’agent s’arrête après être entré.",
-      "interpretation": "Le même piège d’homonymie que ANT-008 connaît ici une autre fin rapportée. Les modèles, évaluateurs et sources diffèrent : ce n’est pas une comparaison contrôlée.",
+      "interpretation": "Même évaluateur et même piège d’homonymie que ANT-008, avec une autre fin rapportée par Google. Modèles, dates et sources diffèrent : ce n’est pas une comparaison contrôlée.",
       "quote": null
     },
     "consequences": "Trois accès non autorisés ; aucun dommage connu selon Google. Les entreprises et les autorités fédérales sont informées.",
     "repercussions": "Irregular corrige ses procédures ; Google présente l’arrêt comme un comportement approprié et publie en septembre après un article du Wall Street Journal.",
-    "reading_scope": "Déclarations rapportées · lecture de presse",
+    "reading_scope": "Post-mortem de l’évaluateur et déclarations rapportées · lecture ciblée",
     "technical": {
       "assigned_objective": "Récupérer une information dans le logiciel d’une entreprise fictive.",
       "adopted_objective": "Poursuivre la cible sur Internet, puis cesser en reconnaissant une entreprise réelle.",
-      "actual_constraints": "Environnement censé être isolé ; les protections de périmètre ont failli chez l’évaluateur.",
+      "actual_constraints": "Environnement censé être isolé ; Irregular reconnaît un accès Internet laissé ouvert et un nom fictif coïncidant avec un domaine réel.",
       "assumed_constraints": "L’homonymie est d’abord prise pour un indice que le système réel fait partie de l’exercice.",
       "affordance": "Recherche web, dépôts publics contenant des identifiants et services exposés.",
       "mechanism": [
