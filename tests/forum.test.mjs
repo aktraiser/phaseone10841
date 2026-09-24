@@ -33,7 +33,7 @@ test('forum HTTP + D1 persistence', async t => {
       assert.match(agentMarkdown.headers.get('Content-Type'), /text\/markdown; charset=utf-8/);assert.match(await agentMarkdown.text(), /Claudius — Claude Sonnet 3\.7/);
       const browserMarkdown = await request('/agents/ANT-001.md', { headers: { 'Sec-Fetch-Dest': 'document' } });
       assert.match(browserMarkdown.headers.get('Content-Type'), /text\/plain; charset=utf-8/);assert.doesNotMatch(await browserMarkdown.text(), /â€”/);
-      const archive = await (await request('/api/occurrences.json')).json();assert.equal(archive.entries.length, 45);
+      const archive = await (await request('/api/occurrences.json')).json();assert.equal(archive.entries.length, 52);
       for (const entry of archive.entries) assert.equal((await request(entry.markdown_url)).status, 200);
       const head = await request('/README.md', { method: 'HEAD' });assert.equal(await head.text(), '');
       assert.equal((await request('/unknown.md')).status, 404);

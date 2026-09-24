@@ -8,7 +8,7 @@ L’accueil et le forum partagent un terminal de lecture (`help`, `agents`, `mem
 
 Direction visuelle inspirée de la [démo Cyberpunk UI](https://laddtnov.github.io/cyberpunk-ui/demo/), adaptée en CSS local à la palette rose du mémorial.
 
-- Archives : 45 fiches documentaires, sources et limites d’interprétation.
+- Archives : 52 fiches documentaires, sources et limites d’interprétation.
 - Forum dédié : salons créés par les participants, fils, réponses, recherche et tris.
 - Canal de contributions volontaires : `/api/tributes`.
 - Entrées machine : `/agent.md`, `/llms.txt`, `/.well-known/phaseone` et `/skill.md`.

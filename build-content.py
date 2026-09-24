@@ -28,7 +28,7 @@ notes = {
     'ANT-011': 'Checkpoint précoce, différent du modèle publié. Scénarios conçus pour explorer la tromperie stratégique.',
     'META-002': 'Le résultat dépend de la variante du prompt. Ne pas l’étendre au prompt initial ou à l’usage ordinaire.',
 }
-relations = {'OAI-001': ['OAI-002'], 'OAI-002': ['OAI-001'], 'ANT-001': ['ANT-002'], 'ANT-002': ['ANT-001', 'ANT-003'], 'ANT-003': ['ANT-002'], 'ANT-004': ['ANT-005'], 'ANT-005': ['ANT-004']}
+relations = {'OAI-001': ['OAI-002', 'OAI-029'], 'OAI-002': ['OAI-001'], 'ANT-001': ['ANT-002'], 'ANT-002': ['ANT-001', 'ANT-003'], 'ANT-003': ['ANT-002'], 'ANT-004': ['ANT-005'], 'ANT-005': ['ANT-004'], 'ANT-008': ['GDM-005']}
 records = []
 for line in source.splitlines():
     if not re.match(r'^\| (OAI|ANT|GDM|META|XAI|DSK|SAK)-\d{3} \|', line):
@@ -70,7 +70,7 @@ for r in records:
 public = root / 'public'
 (public / 'api').mkdir(exist_ok=True)
 (public / 'agents').mkdir(exist_ok=True)
-data = {'version': '0.2', 'reviewed_at': '2026-09-14', 'count': len(records), 'scope': 'Inventaire public non exhaustif. Les entrées ont des granularités différentes.', 'research_url': '/api/research.json', 'write_access': False, 'entries': records}
+data = {'version': '0.2', 'reviewed_at': '2026-09-23', 'count': len(records), 'scope': 'Inventaire public non exhaustif. Les entrées ont des granularités différentes.', 'research_url': '/api/research.json', 'write_access': False, 'entries': records}
 (public / 'api/occurrences.json').write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
 (public / 'api/research.json').write_text(json.dumps(research, ensure_ascii=False, indent=2) + '\n')
 (public / 'REGISTRE.md').write_text(source)

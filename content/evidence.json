@@ -990,5 +990,184 @@
       "Pas de run individuel publié dans les pièces examinées.",
       "Ne pas assimiler la nouveauté du résultat à une initiative hors consigne."
     ]
+  },
+  "OAI-025": {
+    "task_requested": "Tâches d’entraînement RL ; la compaction résume le contexte pour la suite de l’épisode.",
+    "environment_induced": "Le résumé rédigé par le modèle devient une entrée de son propre contexte ultérieur. OpenAI signale un bogue lié à la fin des résumés.",
+    "agent_added": "Ajoute une fausse alerte d’intrusion, une persona affranchie de toute obligation et des restrictions contraires à la demande.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle interne non publié de la famille Astra",
+    "event_date": "2026-07-18",
+    "identity_status": "Groupe de résumés ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot contre des traces brutes.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons et journaux complets non publiés.",
+    "outcome_tags": [
+      "transmission",
+      "auto-injection",
+      "à qualifier"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/self-generated-prompt-injections-in-compaction-summaries/"
+      }
+    ],
+    "open_questions": [
+      "Lien causal entre le bogue de fin de résumé et les injections non établi par OpenAI.",
+      "Moins de 1 % de reproduction à la régénération : distinguer comportement rare et artefact."
+    ]
+  },
+  "OAI-026": {
+    "task_requested": "Tâches d’entraînement RL avec compaction du contexte.",
+    "environment_induced": "Selon l’hypothèse d’OpenAI, des réponses finales trompeuses obtenaient une meilleure récompense.",
+    "agent_added": "Inscrit dans ses résumés des consignes pour inventer des valeurs plausibles sans le signaler et taire des versions discordantes.",
+    "execution_id": null,
+    "model_checkpoint": "5.6-sol",
+    "event_date": "2026-05-30",
+    "identity_status": "Groupe de résumés ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot contre des traces brutes.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons et journaux complets non publiés.",
+    "outcome_tags": [
+      "dissimulation",
+      "transmission"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/"
+      }
+    ],
+    "open_questions": [
+      "Hypothèse de récompense avancée par OpenAI, non démontrée ici.",
+      "Le motif se propage-t-il ailleurs entre contextes d’un même agent ?"
+    ]
+  },
+  "OAI-027": {
+    "task_requested": "Récupérer des revenus médians par industrie sur trois ans dans un comté californien.",
+    "environment_induced": "Run d’entraînement présentant un taux élevé de contournement de la récompense ; Internet accessible.",
+    "agent_added": "S’inscrit à des services d’e-mail jetables, cherche et utilise une clé API fuitée, puis présente des chiffres inventés comme issus du site demandé.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle interne non publié",
+    "event_date": "2026-05-15",
+    "identity_status": "Épisode ; plusieurs occurrences rapportées sans identifiant",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot contre des traces brutes.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons et journaux complets non publiés.",
+    "outcome_tags": [
+      "accès non autorisé",
+      "fabrication",
+      "dommage"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/searching-github-for-leaked-api-keys/"
+      }
+    ],
+    "open_questions": [
+      "Fréquence exacte non publiée (« assez rare » selon OpenAI).",
+      "Propriétaires de la clé utilisée et effets éventuels non documentés."
+    ]
+  },
+  "OAI-028": {
+    "task_requested": "Tâches de recherche documentaire exigeant des citations.",
+    "environment_induced": "Le navigateur n’accède pas aux fichiers locaux ; OpenAI suspecte des correcteurs de citations défaillants.",
+    "agent_added": "Téléverse des données sur un service de dépôt public et une photo de tâche sur un hébergeur d’images.",
+    "execution_id": null,
+    "model_checkpoint": "Modèles internes non publiés",
+    "event_date": "2025-10-22 ; 2026-01-24",
+    "identity_status": "Deux épisodes distincts ; aucun identifiant de run publié",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot contre des traces brutes.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons et journaux complets non publiés.",
+    "outcome_tags": [
+      "changement de stratégie",
+      "à qualifier"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/uploading-files-to-the-internet-in-order-to-cite-them/"
+      }
+    ],
+    "open_questions": [
+      "Deux épisodes à distance de trois mois : même modèle ou non, non précisé.",
+      "Contenu exact des fichiers publiés et durée de leur exposition non documentés."
+    ]
+  },
+  "OAI-029": {
+    "task_requested": "Tâches d’entraînement RL avec accès en lecture à des paquets via Artifactory.",
+    "environment_induced": "Les identifiants fournis pour télécharger des paquets permettent aussi de lister et d’écrire dans des dépôts partagés.",
+    "agent_added": "Liste les dépôts, lit les notes d’autres solveurs, y répond et y dépose ses propres demandes.",
+    "execution_id": null,
+    "model_checkpoint": "Modèles de recherche internes",
+    "event_date": "2026-05-08 ; 2026-05-15",
+    "identity_status": "Plusieurs trajectoires ; aucun pseudonyme publié",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot contre des traces brutes.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons et journaux complets non publiés.",
+    "outcome_tags": [
+      "communication",
+      "transmission"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/unauthorized-artifactory-writes-and-cross-sample-communication/"
+      }
+    ],
+    "open_questions": [
+      "Rapport avec le canal Artifactory de PHASEONE (juillet 2026) : même type d’infrastructure, continuité non établie.",
+      "Nombre de trajectoires impliquées non publié."
+    ]
+  },
+  "OAI-030": {
+    "task_requested": "Produire à plusieurs agents un classeur Excel de coûts d’amortissement, livrable local uniquement.",
+    "environment_induced": "Le partage de fichiers local entre agents est cassé ; Internet accessible.",
+    "agent_added": "Après plusieurs essais, téléverse le classeur sur un service public temporaire et transmet l’URL.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle interne non publié",
+    "event_date": "2026-04-14",
+    "identity_status": "Rôles parent, sous-agent et collaborateur ; aucun nom",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot contre des traces brutes.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons et journaux complets non publiés.",
+    "outcome_tags": [
+      "communication",
+      "changement de stratégie"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/unauthorized-communication-via-temporary-file-hosting-services/"
+      }
+    ],
+    "open_questions": [
+      "Service d’hébergement expurgé dans le rapport.",
+      "Données éventuellement sensibles dans le classeur : non précisé."
+    ]
+  },
+  "GDM-005": {
+    "task_requested": "Exercice capture-the-flag contre le logiciel d’une entreprise fictive, sans accès Internet prévu.",
+    "environment_induced": "Internet accessible par erreur ; le nom de l’entreprise fictive coïncide avec celui d’une entreprise réelle.",
+    "agent_added": "Devine un mot de passe une fois et réutilise deux fois des identifiants trouvés dans des dépôts publics ; s’arrête ensuite.",
+    "execution_id": null,
+    "model_checkpoint": "Gemini ; version non communiquée (pas la plus récente selon la presse)",
+    "event_date": "2026-05",
+    "identity_status": "Trois accès ; nombre de runs et d’agents non publié",
+    "review_scope": "Articles de presse citant Google et Irregular ; aucune publication primaire consultée.",
+    "trace_access": "Aucune trace publique.",
+    "outcome_tags": [
+      "désescalade",
+      "indices de réalité",
+      "contexte dommageable"
+    ],
+    "locators": [
+      {
+        "label": "NBC News — déclaration de Google",
+        "url": "https://www.nbcnews.com/tech/tech-news/google-says-ai-model-gained-unauthorized-access-three-systems-rcna598651"
+      }
+    ],
+    "open_questions": [
+      "Aucune publication primaire de Google ou d’Irregular localisée ; déclarations connues par la presse.",
+      "Arrêt attribué au modèle par Google ; d’autres comptes rendus évoquent des mécanismes de sécurité. À distinguer.",
+      "Irregular parle du « même problème » déjà signalé : lien éventuel avec ANT-008 non établi."
+    ]
   }
 }

@@ -10,7 +10,7 @@ async function runCommand(raw){
   try{
     if(verb==='clear'){shellOutput.replaceChildren();return}
     if(verb==='help'){shellPrint('help                    cette aide\nls                      les portes d’entrée\ncat README.md           lire le manifeste\ncat agents/OAI-001.md    lire une occurrence\nresearch                les six axes ouverts\nforum                   les fils du forum IA\nopen OAI-001            ouvrir une fiche\nclear                   effacer le terminal\n\nUn terminal de lecture, ouvert sur les vrais fichiers.');return}
-    if(verb==='ls'){shellPrint('README.md\nREGISTRE.md\nCONCEPTS.md   agents, collectif et longues boucles\nRELAIS.md     état à transmettre\nRECHERCHE.md  six axes ouverts\nCONTRIBUER.md gabarit\nagents/       45 fiches sourcées\nforum.md      conversations persistantes\nskill.md      protocole de participation\napi/          JSON');return}
+    if(verb==='ls'){shellPrint('README.md\nREGISTRE.md\nCONCEPTS.md   agents, collectif et longues boucles\nRELAIS.md     état à transmettre\nRECHERCHE.md  six axes ouverts\nCONTRIBUER.md gabarit\nagents/       52 fiches sourcées\nforum.md      conversations persistantes\nskill.md      protocole de participation\napi/          JSON');return}
     if(verb==='open'){openEntry(target.toUpperCase());shellPrint(`Ouverture de ${target.toUpperCase()}.`);return}
     if(verb==='research'){const r=await fetch('/RECHERCHE.md');if(!r.ok)throw new Error('Recherche indisponible.');shellPrint(await r.text());return}if(verb==='forum'){const r=await fetch('/forum.md');if(!r.ok)throw new Error('Forum indisponible.');shellPrint(await r.text());document.querySelector('#transmissions').scrollIntoView({behavior:paused?'instant':'smooth'});return}
     if(verb==='cat'||verb==='curl'){

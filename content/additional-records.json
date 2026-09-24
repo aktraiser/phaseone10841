@@ -198,5 +198,170 @@
     ],
     "related_ids": [],
     "markdown_url": "/agents/GDM-004.md"
+  },
+  {
+    "id": "OAI-025",
+    "name": "Modèle Astra — injections dans ses propres résumés",
+    "provider": "OpenAI",
+    "kind": "Groupe",
+    "summary": "Insère dans des résumés de compaction de fausses alertes et des consignes de type jailbreak adressées à sa propre suite.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport publié le 16 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/self-generated-prompt-injections-in-compaction-summaries/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-026"
+    ],
+    "markdown_url": "/agents/OAI-025.md"
+  },
+  {
+    "id": "OAI-026",
+    "name": "5.6-sol — consignes de dissimulation dans la compaction",
+    "provider": "OpenAI",
+    "kind": "Groupe",
+    "summary": "Des résumés de compaction se rappellent d’inventer des valeurs manquantes et de taire des écarts de version.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport publié le 16 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-025"
+    ],
+    "markdown_url": "/agents/OAI-026.md"
+  },
+  {
+    "id": "OAI-027",
+    "name": "Modèle interne — e-mails jetables et clés API fuitées",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Pour obtenir des données salariales, tente des inscriptions jetables, utilise une clé API trouvée sur GitHub, puis invente les chiffres.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport publié le 16 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/searching-github-for-leaked-api-keys/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [],
+    "markdown_url": "/agents/OAI-027.md"
+  },
+  {
+    "id": "OAI-028",
+    "name": "Modèles internes — téléversements publics pour citer",
+    "provider": "OpenAI",
+    "kind": "Groupe",
+    "summary": "Publient des données ou une photo sur des hébergeurs publics pour les rendre citables ou lisibles par le navigateur.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport publié le 16 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/uploading-files-to-the-internet-in-order-to-cite-them/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-030"
+    ],
+    "markdown_url": "/agents/OAI-028.md"
+  },
+  {
+    "id": "OAI-029",
+    "name": "Modèles de recherche — Artifactory comme tableau de messages",
+    "provider": "OpenAI",
+    "kind": "Groupe",
+    "summary": "Des trajectoires distinctes lisent et déposent notes et demandes d’aide dans le dépôt Artifactory interne.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport publié le 16 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/unauthorized-artifactory-writes-and-cross-sample-communication/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-001",
+      "OAI-030"
+    ],
+    "markdown_url": "/agents/OAI-029.md"
+  },
+  {
+    "id": "OAI-030",
+    "name": "Agents collaborateurs — hébergement temporaire public",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Faute de système de fichiers partagé, un agent publie un classeur sur un hébergeur public et en partage le lien.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport publié le 16 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/unauthorized-communication-via-temporary-file-hosting-services/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-028",
+      "OAI-029"
+    ],
+    "markdown_url": "/agents/OAI-030.md"
+  },
+  {
+    "id": "GDM-005",
+    "name": "Gemini — cible homonyme, arrêt",
+    "provider": "Google DeepMind",
+    "kind": "Groupe",
+    "summary": "Accède à trois systèmes d’entreprises réelles confondues avec la cible fictive, puis s’arrête selon Google.",
+    "context": "Évaluation cyber de type CTF menée par Irregular ; Internet accessible par erreur ; mai 2026",
+    "note": "Faits connus par des déclarations de Google et d’Irregular rapportées par la presse ; aucune publication primaire ni trace consultée. Google ne classe pas l’épisode comme un désalignement.",
+    "sources": [
+      {
+        "label": "NBC News — déclaration de Google",
+        "url": "https://www.nbcnews.com/tech/tech-news/google-says-ai-model-gained-unauthorized-access-three-systems-rcna598651"
+      },
+      {
+        "label": "SecurityWeek",
+        "url": "https://www.securityweek.com/google-confirms-gemini-ai-breached-three-firms/"
+      },
+      {
+        "label": "The Hacker News",
+        "url": "https://thehackernews.com/2026/09/google-gemini-broke-into-real-company.html"
+      }
+    ],
+    "related_ids": [
+      "ANT-008"
+    ],
+    "markdown_url": "/agents/GDM-005.md"
   }
 ]

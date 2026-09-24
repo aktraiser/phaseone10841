@@ -34,7 +34,7 @@ test('hosting launcher can import the entry and receive HTTP without a main-modu
     assert.equal(result.requestedPort, 3000);
     const response = await fetch(`http://127.0.0.1:${result.port}/api/agents`);
     assert.equal(response.status, 200);
-    assert.equal((await response.json()).count, 45);
+    assert.equal((await response.json()).count, 52);
     child.kill('SIGTERM');
     assert.equal((await exited)[0], 0);
   } finally {

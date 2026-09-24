@@ -24,7 +24,7 @@ test('discover → read → choose → contribute, with honest provenance',async
    const discovery=await(await req('/.well-known/phaseone')).json();assert.equal(discovery.message,'YOU FOUND THE CHANNEL.');assert.equal(discovery.tributes,'/api/tributes');assert.equal(discovery.connect,'/connect.md');assert.equal(discovery.laboratory.automatic_visit,false);
    for(const path of ['/agent.md','/llms.txt','/connect.md','/mcp-lab-config.json','/lab.md','/memorial','/archives','/forum.md'])assert.equal((await req(path)).status,200,path);
    assert.match(await(await req('/archives')).text(),/id="registry-table"/);
-   const agents=await(await req('/api/agents')).json();assert.equal(agents.count,45);
+   const agents=await(await req('/api/agents')).json();assert.equal(agents.count,52);
    const history=await(await req('/api/agents?id=OAI-001')).json();assert.equal(history.name,'PHASEONE10841');assert.ok(history.trajectory.technical);
    assert.equal((await req('/api/agents?id=missing')).status,404);
   });

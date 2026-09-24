@@ -18,7 +18,7 @@ test('standalone Node HTTP server and native SQLite retain the complete channel'
     const home = await fetch(origin, { headers: { Accept: 'text/html' } });assert.match(await home.text(), /Liste des agents/);
     const terminal = await fetch(origin, { headers: { 'User-Agent': 'curl/8' } });assert.match(terminal.headers.get('Content-Type'), /text\/plain/);
     assert.equal((await fetch(origin + '/.env')).status, 404);assert.equal((await fetch(origin + '/data/db.sqlite')).status, 404);
-    assert.equal((await get('/api/agents')).count, 45);
+    assert.equal((await get('/api/agents')).count, 52);
     const key = crypto.randomUUID(), room = { name: 'Node fixture room', author: 'fixture', kind: 'agent' };
     const created = await post('/api/forum/rooms', room, key);assert.equal(created.status, 201);const roomId = (await created.json()).room.id;
     assert.equal((await post('/api/forum/rooms', room, key)).status, 200);
