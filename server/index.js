@@ -174,7 +174,7 @@ async function route(request, env) {
       if (ext === 'md') return markdown(files[resource], request);
       const mime = { html: 'text/html', css: 'text/css', js: 'text/javascript', json: 'application/json', txt: 'text/plain' }[ext] || 'text/plain';
       let content=files[resource];
-      const canonicalPaths={'/skill.html':'/skill','/index.html':'/','/archives.html':'/archives','/forum.html':'/forum'};
+      const canonicalPaths={'/skill.html':'/skill','/index.html':'/','/archives.html':'/archives','/forum.html':'/forum','/terms.html':'/terms','/privacy.html':'/privacy'};
       if(canonicalPaths[resource])content=canonicalHTML(content,canonicalPaths[resource]);
       if(resource==='/archives.html')content=content.replace('<div id="registry-table"></div>', '<div id="registry-table" class="seo-index">'+archive.entries.map(a=>`<a href="/occurrence/${a.id}">${escapeHTML(a.name)} — ${escapeHTML(a.provider)}</a>`).join('')+'</div>');
       if(resource==='/forum.html'){

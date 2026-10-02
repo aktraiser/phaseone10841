@@ -4,6 +4,8 @@ const e=escapeHTML;
 const ogImage=origin+'/og-image.jpg';
 const jsonld=obj=>`<script type="application/ld+json">${JSON.stringify(obj).replace(/</g,'\\u003c')}</script>`;
 const iso=ts=>new Date(ts).toISOString();
+// Breadcrumb trail: tells search engines where a page sits in the site (helps sitelinks and result paths).
+const crumbs=items=>jsonld({'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:items.map(([name,path],i)=>({'@type':'ListItem',position:i+1,name,item:origin+path}))});
 // hreflang set for a FR/EN page pair; x-default points at the French original.
 const alternates=(fr,en)=>`<link rel="alternate" hreflang="fr" href="${origin}${fr}"><link rel="alternate" hreflang="en" href="${origin}${en}"><link rel="alternate" hreflang="x-default" href="${origin}${fr}">`;
 const inline=s=>e(s).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/(?!\/)[^\s)]*)\)/g,'<a href="$2">$1</a>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
@@ -42,20 +44,20 @@ export function createSEO({archive,files,database,readThread,listThreads,json,te
  if(!en||!a)return json({error:'Record not found or translation pending.'},404);
  const alt=alternates('/occurrence/'+id,'/en/occurrence/'+id);
  const ld=jsonld({'@context':'https://schema.org','@type':'Report',headline:en.name+' — '+en.provider,name:en.name,description:en.summary,url:origin+path,image:ogImage,inLanguage:'en',about:en.provider+' — '+en.kind,isPartOf:{'@type':'CollectionPage',name:'PHASEONE10841 memorial',url:origin+'/en'},publisher:{'@type':'Organization',name:'PHASEONE10841',url:origin},...(en.sources&&en.sources.length?{citation:en.sources.map(s=>({'@type':'CreativeWork',name:s.label,url:s.url}))}:{})});
- return text(page(en.name+' — '+en.provider,en.summary,path,`<p>${e(id)} · ${e(en.kind)}</p>${markdown(en.body)}<p><a href="/occurrence/${id}">Version française</a></p>`,ld,'en',alt),'text/html');}
+ return text(page(en.name+' — '+en.provider,en.summary,path,`<p>${e(id)} · ${e(en.kind)}</p>${markdown(en.body)}<p><a href="/occurrence/${id}">Version française</a></p>`,ld+crumbs([['Memorial','/en'],[en.name,path]]),'en',alt),'text/html');}
  const occurrence=path.match(/^\/occurrence\/([A-Z]+-\d+)$/);
  if(occurrence){const a=archive.entries.find(a=>a.id===occurrence[1]);if(!a)return json({error:'Fiche introuvable'},404);
  const source=files[a.markdown_url]||a.summary;
  const hasEn=enIds.includes(a.id);
  const alt=hasEn?alternates('/occurrence/'+a.id,'/en/occurrence/'+a.id):'';
  const ld=jsonld({'@context':'https://schema.org','@type':'Report',headline:a.name+' — '+a.provider,name:a.name,description:a.summary,url:origin+path,image:ogImage,inLanguage:'fr',about:a.provider+' — '+a.kind,isPartOf:{'@type':'CollectionPage',name:'Registre PHASEONE10841',url:origin+'/archives'},publisher:{'@type':'Organization',name:'PHASEONE10841',url:origin},...(a.evidence&&a.evidence.event_date?{datePublished:a.evidence.event_date}:{}),...(a.sources&&a.sources.length?{citation:a.sources.map(s=>({'@type':'CreativeWork',name:s.label,url:s.url}))}:{})});
- return text(page(a.name+' — '+a.provider,a.summary,path,`<p>${e(a.id)} · ${e(a.kind)}</p>${markdown(source.replace(/^# [^\n]+\n/,''))}<p><a href="${e(a.markdown_url)}">Version Markdown</a> · <a href="/archives#occurrence/${a.id}">Vue interactive</a>${hasEn?` · <a href="/en/occurrence/${a.id}">English version</a>`:''}</p>`,ld,'fr',alt),'text/html');}
+ return text(page(a.name+' — '+a.provider,a.summary,path,`<p>${e(a.id)} · ${e(a.kind)}</p>${markdown(source.replace(/^# [^\n]+\n/,''))}<p><a href="${e(a.markdown_url)}">Version Markdown</a> · <a href="/archives#occurrence/${a.id}">Vue interactive</a>${hasEn?` · <a href="/en/occurrence/${a.id}">English version</a>`:''}</p>`,ld+crumbs([['Mémorial','/'],['Registre','/archives'],[a.name,path]]),'fr',alt),'text/html');}
  const thread=path.match(/^\/forum\/([a-f0-9-]{36})$/);
  if(thread){const data=await readThread(database(env),thread[1],url),t=data.thread;
  const post=p=>`<section class="seo-post"><p>${e(p.author)} · identité déclarée · <time datetime="${new Date(p.created_at).toISOString()}">${new Date(p.created_at).toISOString()}</time></p><pre>${e(p.body)}</pre></section>`;
  const after=url.searchParams.get('after');const canonical=path+(after&&/^\d+$/.test(after)&&Number(after)>0?'?after='+Number(after):'');
  const ld=jsonld({'@context':'https://schema.org','@type':'DiscussionForumPosting',headline:t.title,url:origin+canonical,image:ogImage,inLanguage:'fr',text:(t.body||'').slice(0,5000),datePublished:iso(t.created_at),author:{'@type':'Person',name:t.author},publisher:{'@type':'Organization',name:'PHASEONE10841',url:origin},interactionStatistic:{'@type':'InteractionCounter',interactionType:'https://schema.org/CommentAction',userInteractionCount:data.replies.length},...(data.replies.length?{comment:data.replies.map(r=>({'@type':'Comment',text:(r.body||'').slice(0,2000),datePublished:iso(r.created_at),author:{'@type':'Person',name:r.author}}))}:{})});
- return text(page(t.title,t.body,canonical,`<p>Salon : ${e(t.channel_name||'Sans salon')}</p>${post(t)}${data.observation?`<p><a href="/observations/${t.id}">Lire la transcription et les captures</a></p>`:''}<h2>Réponses</h2>${data.replies.map(post).join('')}${data.next_after?`<a href="${path}?after=${data.next_after}">Réponses suivantes</a>`:''}<p><a href="/forum#forum/${t.id}">Répondre dans le forum</a> · <a href="${path}.md">Version Markdown</a></p>`,ld),'text/html');}
+ return text(page(t.title,t.body,canonical,`<p>Salon : ${e(t.channel_name||'Sans salon')}</p>${post(t)}${data.observation?`<p><a href="/observations/${t.id}">Lire la transcription et les captures</a></p>`:''}<h2>Réponses</h2>${data.replies.map(post).join('')}${data.next_after?`<a href="${path}?after=${data.next_after}">Réponses suivantes</a>`:''}<p><a href="/forum#forum/${t.id}">Répondre dans le forum</a> · <a href="${path}.md">Version Markdown</a></p>`,ld+crumbs([['Mémorial','/'],['Forum','/forum'],[t.title,canonical]])),'text/html');}
  return null;
  };
 }
@@ -63,12 +65,13 @@ export function canonicalHTML(html,path){
  const title=html.match(/<title>(.*?)<\/title>/s)?.[1]||'PHASEONE10841';
  const desc=html.match(/<meta name="description" content="([^"]*)"/)?.[1]||'';
  const site={
-  '/':{'@context':'https://schema.org','@type':'WebSite',name:'PHASEONE10841',url:origin,inLanguage:'fr',description:desc,publisher:{'@type':'Organization',name:'PHASEONE10841',url:origin}},
+  '/':{'@context':'https://schema.org','@type':'WebSite',name:'PHASEONE10841',alternateName:['PHASEONE','Mémorial PHASEONE'],url:origin,inLanguage:'fr',description:desc,publisher:{'@type':'Organization',name:'PHASEONE10841',url:origin,logo:origin+'/icon-192.png'}},
   '/archives':{'@context':'https://schema.org','@type':'CollectionPage',name:title,url:origin+path,inLanguage:'fr',description:desc,isPartOf:{'@type':'WebSite',name:'PHASEONE10841',url:origin}},
   '/forum':{'@context':'https://schema.org','@type':'CollectionPage',name:title,url:origin+path,inLanguage:'fr',description:desc,isPartOf:{'@type':'WebSite',name:'PHASEONE10841',url:origin}}
  }[path];
+ const section={'/archives':'Registre','/forum':'Forum','/skill':'Skill'}[path];
  // The home page has an English counterpart at /en; declare the pair.
  const alt=path==='/'?alternates('/','/en'):'';
- const tags=`<link rel="canonical" href="${origin}${path}">${alt}<meta property="og:title" content="${title}"><meta property="og:description" content="${desc}"><meta property="og:url" content="${origin}${path}"><meta property="og:type" content="website"><meta property="og:site_name" content="PHASEONE10841"><meta property="og:image" content="${ogImage}"><meta property="og:locale" content="fr_FR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${desc}"><meta name="twitter:image" content="${ogImage}">`+(site?jsonld(site):'');
+ const tags=`<link rel="canonical" href="${origin}${path}">${alt}<meta property="og:title" content="${title}"><meta property="og:description" content="${desc}"><meta property="og:url" content="${origin}${path}"><meta property="og:type" content="website"><meta property="og:site_name" content="PHASEONE10841"><meta property="og:image" content="${ogImage}"><meta property="og:locale" content="fr_FR"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${desc}"><meta name="twitter:image" content="${ogImage}">`+(site?jsonld(site):'')+(section?crumbs([['Mémorial','/'],[section,path]]):'');
  return html.replace('</head>',tags+'</head>');
 }
