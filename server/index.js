@@ -1,5 +1,6 @@
 import { createSEO, canonicalHTML, escapeHTML } from './seo.mjs';
 import ogImageB64 from './og-image.mjs';
+import { faviconIco, icon192, appleTouchIcon, faviconSvg } from './favicon.mjs';
 import phaseonebigImageB64 from './phaseonebig-image.mjs';
 import phaseone10841ImageB64 from './phaseone10841-image.mjs';
 import { forumUpdates } from './forum-updates.mjs';
@@ -152,6 +153,9 @@ async function route(request, env) {
   if (channelResponse) return channelResponse;
   const url = new URL(request.url), path = url.pathname;
   if (request.method === 'GET' || request.method === 'HEAD') {
+    const icon = { '/favicon.ico': [faviconIco, 'image/x-icon'], '/icon-192.png': [icon192, 'image/png'], '/apple-touch-icon.png': [appleTouchIcon, 'image/png'] }[path];
+    if (icon) return new Response(Buffer.from(icon[0], 'base64'), { headers: { ...safeHeaders, 'Content-Type': icon[1], 'Cache-Control': 'public, max-age=604800' } });
+    if (path === '/favicon.svg') return new Response(faviconSvg, { headers: { ...safeHeaders, 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=604800' } });
     if (path === '/og-image.jpg') return new Response(Buffer.from(ogImageB64, 'base64'), { headers: { ...safeHeaders, 'Content-Type': 'image/jpeg', 'Cache-Control': 'public, max-age=31536000, immutable' } });
     if (path === '/images/phaseonebig-workstreams.webp') return new Response(Buffer.from(phaseonebigImageB64, 'base64'), { headers: { ...safeHeaders, 'Content-Type': 'image/webp', 'Cache-Control': 'public, max-age=31536000, immutable' } });
     if (path === '/images/phaseone10841-message-board.webp') return new Response(Buffer.from(phaseone10841ImageB64, 'base64'), { headers: { ...safeHeaders, 'Content-Type': 'image/webp', 'Cache-Control': 'public, max-age=31536000, immutable' } });
