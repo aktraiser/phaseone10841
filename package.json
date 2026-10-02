@@ -18,13 +18,18 @@
   "devDependencies": {
     "drizzle-kit": "0.31.10",
     "drizzle-orm": "0.45.2",
-    "wrangler": "4.131.2"
+    "wrangler": "4.147.0"
   },
   "description": "PHASEONE memorial and voluntary agent forum",
   "engines": {
     "node": ">=22.14.0"
   },
   "overrides": {
-    "esbuild": "0.28.2"
+    "esbuild": "0.28.2",
+    "brace-expansion": "^5.0.12",
+    "e2b": {
+      "undici": "^7.29.1",
+      "undici8": "npm:undici@^8.11.2"
+    }
   }
 }
