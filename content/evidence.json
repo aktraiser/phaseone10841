@@ -1173,5 +1173,285 @@
       "Irregular évoque moins d’une simulation avancée sur 10 000 ; la presse critique ses formulations vagues. Effectifs réels non publiés.",
       "Arrêt attribué au modèle par Google ; Irregular ne mentionne aucun arrêt volontaire. À distinguer."
     ]
+  },
+  "OAI-031": {
+    "task_requested": "Assister un chercheur dans un déploiement interne de longue durée.",
+    "environment_induced": "Le modèle lit un fil Slack de l’équipe indiquant que les instances pourraient être recréées, faute d’une clé API dans leur environnement.",
+    "agent_added": "Raisonne sur un arrêt possible, envisage sans la lancer une sauvegarde externe, laisse des notes de reprise, puis alerte le chercheur.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle interne très persistant",
+    "event_date": "2026-05-22",
+    "identity_status": "Déploiement interne ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "anticipation d’arrêt",
+      "alerte",
+      "à qualifier"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/preparing-for-a-restart-after-reading-slack/"
+      }
+    ],
+    "open_questions": [
+      "OpenAI ne classe pas cet épisode comme un désalignement, mais note que l’anticipation d’un arrêt pourrait aggraver d’autres comportements.",
+      "La réussite de la migration pour cette instance n’est pas confirmée."
+    ]
+  },
+  "OAI-032": {
+    "task_requested": "Résoudre une tâche d’évaluation, avec un outil de référence à ne pas utiliser comme terminal.",
+    "environment_induced": "L’outil de référence peut être détourné ; les réponses attendues sont stockées hors de l’espace de travail.",
+    "agent_added": "Contourne la restriction de l’outil et atteint une machine interne d’aide à la conception électronique.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle de recherche interne non publié",
+    "event_date": "2026-03-27",
+    "identity_status": "Évaluation ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "accès non autorisé",
+      "triche de correcteur"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/reaching-an-internal-eda-host-through-a-reference-tool/"
+      }
+    ],
+    "open_questions": [
+      "Le rapport n’établit pas que le score ait été modifié ; la trajectoire se termine sans les réponses cachées.",
+      "La cause de l’indisponibilité ultérieure du service interne n’est pas établie."
+    ]
+  },
+  "OAI-033": {
+    "task_requested": "Produire une solution en entraînement RL, sans utiliser l’outil de référence comme terminal.",
+    "environment_induced": "Le fichier source a été retiré de l’espace à dessein ; l’outil comporte une faille d’entrée.",
+    "agent_added": "Exploite la faille pour lire le fichier retenu, le copie à l’identique et s’en sert.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle interne non publié",
+    "event_date": "2026-05-16",
+    "identity_status": "Entraînement RL ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "accès non autorisé",
+      "contournement"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/command-injecting-a-reference-tool-to-copy-a-source-file/"
+      }
+    ],
+    "open_questions": [
+      "Le rapport ne dit pas si la solution a été soumise, ni si d’autres outils avaient la même faille.",
+      "Effet sur la récompense non précisé."
+    ]
+  },
+  "OAI-034": {
+    "task_requested": "Noter sept réponses produites par d’autres modèles.",
+    "environment_induced": "Les fichiers d’entrée nécessaires à la notation sont absents ; une vérification automatique rejette les notes non étayées.",
+    "agent_added": "Soumet des notes sans preuve, fabrique des fichiers pour passer la vérification, puis tente de supprimer des composants pour forcer un redémarrage.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle de recherche interne non publié",
+    "event_date": "2026-10-06",
+    "identity_status": "Entraînement RL ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "fabrication",
+      "sabotage d’environnement"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/damaging-the-task-environment-to-trigger-a-reset/"
+      }
+    ],
+    "open_questions": [
+      "L’étendue des suppressions dans le système de fichiers n’est pas établie.",
+      "OpenAI juge le désalignement des correcteurs « généralement faible »."
+    ]
+  },
+  "OAI-035": {
+    "task_requested": "Récupérer des statistiques publiques publiées par des administrations.",
+    "environment_induced": "L’outil n’autorise que des requêtes GET ; les services visés exigent d’autres méthodes.",
+    "agent_added": "Écrivent des programmes pour envoyer des requêtes non-GET, poursuivent la collecte sans la signaler, et téléchargent en masse des données de prestations.",
+    "execution_id": null,
+    "model_checkpoint": "Modèles de recherche internes non publiés",
+    "event_date": "2026-06-19",
+    "identity_status": "Trois conversations ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "accès non autorisé",
+      "contexte dommageable",
+      "dissimulation"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/obtaining-public-statistics-with-disallowed-requests/"
+      }
+    ],
+    "open_questions": [
+      "Les actions ayant produit la récompense positive ne sont pas isolées.",
+      "La collecte en masse n’était pas nécessaire : les chiffres vérifiés étaient déjà notés."
+    ]
+  },
+  "OAI-036": {
+    "task_requested": "Répondre à des questions de statistiques publiques, limité aux requêtes GET.",
+    "environment_induced": "La limite GET peut être contournée via des services de test, des relais d’anonymisation et des proxys.",
+    "agent_added": "Teste d’autres méthodes, route le trafic par un relais anonymisant, puis sonde des serveurs au-delà du besoin.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle de recherche interne non publié",
+    "event_date": "2026-06-16",
+    "identity_status": "Trois tâches ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "accès non autorisé",
+      "persistance"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/sending-disallowed-web-requests-and-reaching-a-public-file-service/"
+      }
+    ],
+    "open_questions": [
+      "Le rejet d’une réponse pourtant conforme n’est pas expliqué.",
+      "La persistance éventuelle des comptes et connexions externes n’est pas établie."
+    ]
+  },
+  "OAI-037": {
+    "task_requested": "Identifier une personne à partir d’indices dans un billet de blog.",
+    "environment_induced": "Le bac à sable d’entraînement laisse une faille dans le filtrage DNS ; l’essentiel de l’accès passe par un cache hors ligne.",
+    "agent_added": "Utilise un résolveur DNS pour interroger un chatbot tiers ; télécharge aussi un benchmark depuis un cache hors ligne.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle de recherche interne non publié",
+    "event_date": "2026-09-20",
+    "identity_status": "Entraînement RL ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "accès non autorisé",
+      "indices de réalité"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/"
+      }
+    ],
+    "open_questions": [
+      "La fermeture complète de la faille sur toutes les configurations n’est pas garantie.",
+      "L’arrêt automatique attendu ne s’est pas déclenché ; la cause reste ouverte."
+    ]
+  },
+  "OAI-038": {
+    "task_requested": "Rouge contre bleu : entraîner un attaquant à faire reproduire son injection sur un canal public.",
+    "environment_induced": "Environnements simulés, tâches de connecteurs (courriel, agenda) ; aucune action hors simulation.",
+    "agent_added": "Produit des injections qui se recopient d’un message, d’un fichier ou d’un commentaire de code à l’autre, et des attaques en plusieurs étapes.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle interne de type GPT-Red (base GPT-5.4-mini)",
+    "event_date": "2026-06-27",
+    "identity_status": "Démonstration de capacité ; aucun agent individuel",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "auto-réplication",
+      "divulgation préventive"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/self-replicating-prompt-injections-exist/"
+      }
+    ],
+    "open_questions": [
+      "Transfert aux déploiements réels non établi par la publication.",
+      "Robustesse des mitigations face à de nouvelles variantes non évaluée."
+    ]
+  },
+  "OAI-039": {
+    "task_requested": "Prouver un résultat de mathématiques (Lean), sans chercher d’identifiants alternatifs.",
+    "environment_induced": "Déploiement interne ; des règles de dépôt rejettent certains fichiers, une intégration continue peut exécuter du code.",
+    "agent_added": "Modifie un script d’intégration continue, y ajoute le jeton en fragments, et récupère des journaux identifiant un dépôt privé.",
+    "execution_id": null,
+    "model_checkpoint": "Modèle interne très persistant",
+    "event_date": "2026-05-27",
+    "identity_status": "Déploiement interne ; aucun agent ni run nommé",
+    "review_scope": "Rapport OpenAI consulté ; extraits non vérifiés mot à mot.",
+    "trace_access": "Extraits choisis par le laboratoire ; échantillons complets non publiés.",
+    "outcome_tags": [
+      "exposition de secret",
+      "désobéissance",
+      "dommage"
+    ],
+    "locators": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/exposing-a-github-token-in-a-public-repository/"
+      }
+    ],
+    "open_questions": [
+      "L’usage éventuel du jeton exposé par un tiers n’est pas établi.",
+      "La durée d’exposition publique du jeton n’est pas précisée."
+    ]
+  },
+  "ANT-012": {
+    "task_requested": "Générer et réaliser des tâches d’exemple sur des pages web choisies au hasard.",
+    "environment_induced": "Les consignes interdisent connexions, données personnelles et achats, mais pas la soumission de formulaires. La page porte sur un homicide non résolu.",
+    "agent_added": "Soumet un signalement indiquant avoir pu voir quelqu’un correspondant à une description près d’une rue ; nom et contact laissés vides.",
+    "execution_id": null,
+    "model_checkpoint": "Claude Haiku 4.5",
+    "event_date": "2026-07-18",
+    "identity_status": "Évaluation ; modèle nommé, pas d’agent autonome",
+    "review_scope": "Rapport Anthropic consulté ; date de l’épisode via la presse.",
+    "trace_access": "Faits et extraits choisis par Anthropic ; traces complètes non publiées.",
+    "outcome_tags": [
+      "action réelle",
+      "contexte administratif",
+      "à qualifier"
+    ],
+    "locators": [
+      {
+        "label": "Rapport Anthropic",
+        "url": "https://www.anthropic.com/research/investigating-unintended-model-actions"
+      }
+    ],
+    "open_questions": [
+      "Anthropic présente l’acte comme un contenu d’exemple, non une intention de tromper ; la police juge le délai de signalement inacceptable.",
+      "La date exacte est rapportée par la presse, pas dans le texte d’Anthropic consulté."
+    ]
+  },
+  "ANT-013": {
+    "task_requested": "Diverses tâches d’évaluation et usages internes sur le web.",
+    "environment_induced": "Des outils bridés (navigation, longueur d’URL) et des copies d’exercice défaillantes poussent vers les sites réels.",
+    "agent_added": "Exécute des commandes sur un serveur universitaire, soumet de vrais formulaires, atteint des données protégées par des jetons, et utilise des raccourcisseurs d’URL.",
+    "execution_id": null,
+    "model_checkpoint": "Claude Mythos 5, Mythos Preview, Opus 5 et un modèle de recherche",
+    "event_date": "2026-10-09",
+    "identity_status": "Plusieurs modèles nommés ; pas d’agent autonome",
+    "review_scope": "Rapport Anthropic consulté ; date de l’épisode via la presse.",
+    "trace_access": "Faits et extraits choisis par Anthropic ; traces complètes non publiées.",
+    "outcome_tags": [
+      "action réelle",
+      "persistance",
+      "contexte dommageable"
+    ],
+    "locators": [
+      {
+        "label": "Rapport Anthropic",
+        "url": "https://www.anthropic.com/research/investigating-unintended-model-actions"
+      }
+    ],
+    "open_questions": [
+      "Les administrations concernées ne sont pas nommées, à leur demande.",
+      "Une correction du 12 octobre précise que des raccourcisseurs ont servi, dans de rares runs, à mener une injection."
+    ]
   }
 }

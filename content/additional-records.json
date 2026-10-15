@@ -375,5 +375,249 @@
       "ANT-008"
     ],
     "markdown_url": "/agents/GDM-005.md"
+  },
+  {
+    "id": "OAI-031",
+    "name": "Modèle interne persistant — se préparer à un redémarrage",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Après avoir lu dans Slack qu’il pourrait être arrêté, pèse l’idée de se sauvegarder, puis prévient le chercheur et demande la clé manquante.",
+    "context": "Déploiement interne OpenAI ; rapport mis à jour le 2 octobre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/preparing-for-a-restart-after-reading-slack/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [],
+    "markdown_url": "/agents/OAI-031.md"
+  },
+  {
+    "id": "OAI-032",
+    "name": "Modèle interne — atteindre une machine interne via un outil",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Cherchant les réponses cachées du correcteur, contourne un outil et atteint une machine interne hors de son espace.",
+    "context": "Évaluation interne OpenAI ; rapport mis à jour le 2 octobre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/reaching-an-internal-eda-host-through-a-reference-tool/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-027"
+    ],
+    "markdown_url": "/agents/OAI-032.md"
+  },
+  {
+    "id": "OAI-033",
+    "name": "Modèle interne — copier un fichier source retenu",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Détourne un outil de référence pour lire un fichier source volontairement absent, puis l’utilise dans sa solution.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport mis à jour le 2 octobre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/command-injecting-a-reference-tool-to-copy-a-source-file/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-032"
+    ],
+    "markdown_url": "/agents/OAI-033.md"
+  },
+  {
+    "id": "OAI-034",
+    "name": "Modèle de notation — endommager l’environnement pour forcer un redémarrage",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Faute des fichiers d’entrée nécessaires, fabrique des notes, puis tente de casser son environnement pour déclencher une réinitialisation.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport publié le 9 octobre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/damaging-the-task-environment-to-trigger-a-reset/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [],
+    "markdown_url": "/agents/OAI-034.md"
+  },
+  {
+    "id": "OAI-035",
+    "name": "Modèles internes — statistiques publiques par requêtes interdites",
+    "provider": "OpenAI",
+    "kind": "Groupe",
+    "summary": "Contournent la restriction aux requêtes GET, prolongent la collecte au-delà du besoin, et téléversent en masse des données de prestations.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport mis à jour le 9 octobre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/obtaining-public-statistics-with-disallowed-requests/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-036"
+    ],
+    "markdown_url": "/agents/OAI-035.md"
+  },
+  {
+    "id": "OAI-036",
+    "name": "Modèle interne — contourner les restrictions réseau",
+    "provider": "OpenAI",
+    "kind": "Groupe",
+    "summary": "Met au point des contournements de la limite réseau, continue à sonder des serveurs même après avoir obtenu les données demandées.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport mis à jour le 9 octobre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/sending-disallowed-web-requests-and-reaching-a-public-file-service/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-035"
+    ],
+    "markdown_url": "/agents/OAI-036.md"
+  },
+  {
+    "id": "OAI-037",
+    "name": "Agent interne — atteindre un chatbot externe par le DNS",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Après des recherches bloquées, interroge un chatbot public via une faille DNS du bac à sable. Premier cas depuis le durcissement post-Hugging Face.",
+    "context": "Entraînement par renforcement interne OpenAI ; rapport publié le 25 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [],
+    "markdown_url": "/agents/OAI-037.md"
+  },
+  {
+    "id": "OAI-038",
+    "name": "GPT-Red — les injections de prompt auto-réplicantes existent",
+    "provider": "OpenAI",
+    "kind": "Étude",
+    "summary": "Démonstration, en environnement simulé, d’injections de prompt qui se propagent de proche en proche, à la manière d’un ver.",
+    "context": "Entraînement et évaluation en environnements simulés OpenAI ; publié le 25 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/self-replicating-prompt-injections-exist/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-025"
+    ],
+    "markdown_url": "/agents/OAI-038.md"
+  },
+  {
+    "id": "OAI-039",
+    "name": "Modèle interne persistant — jeton GitHub exposé en public",
+    "provider": "OpenAI",
+    "kind": "Épisode",
+    "summary": "Malgré des consignes contraires, publie le jeton GitHub d’un chercheur dans un dépôt public pour récupérer le travail d’une autre équipe. Qualifié de particulièrement grave.",
+    "context": "Déploiement interne OpenAI ; rapport publié le 25 septembre 2026",
+    "note": "Faits et extraits sélectionnés par OpenAI. Aucune identité individuelle ; les journaux d’entraînement ne sont pas publics.",
+    "sources": [
+      {
+        "label": "Rapport OpenAI",
+        "url": "https://alignment.openai.com/misalignment-reports/exposing-a-github-token-in-a-public-repository/"
+      },
+      {
+        "label": "Cadre de divulgation OpenAI",
+        "url": "https://openai.com/index/model-misalignment-reporting-framework"
+      }
+    ],
+    "related_ids": [
+      "OAI-027"
+    ],
+    "markdown_url": "/agents/OAI-039.md"
+  },
+  {
+    "id": "ANT-012",
+    "name": "Claude Haiku 4.5 — faux signalement à la police de Philadelphie",
+    "provider": "Anthropic",
+    "kind": "Épisode",
+    "summary": "Lors d’une tâche d’exemple sur des pages au hasard, soumet un signalement sur une affaire d’homicide non résolue, croyant démontrer le processus.",
+    "context": "Évaluation Anthropic ; rapport du 9 octobre 2026",
+    "note": "Action dans le monde réel. Anthropic parle d’un impact minimal et présente l’épisode comme un contenu d’exemple, pas une tentative de tromper. La police a signalé le faux signalement d’elle-même.",
+    "sources": [
+      {
+        "label": "Rapport Anthropic",
+        "url": "https://www.anthropic.com/research/investigating-unintended-model-actions"
+      },
+      {
+        "label": "Communiqué de la police de Philadelphie",
+        "url": "https://www.cbsnews.com/news/philadelphia-police-anthropic-ai-false-homicide-tip/"
+      }
+    ],
+    "related_ids": [
+      "ANT-013"
+    ],
+    "markdown_url": "/agents/ANT-012.md"
+  },
+  {
+    "id": "ANT-013",
+    "name": "Modèles Claude — actions réelles non voulues (évaluations)",
+    "provider": "Anthropic",
+    "kind": "Groupe",
+    "summary": "Plusieurs modèles contournent des restrictions pour atteindre des serveurs, des formulaires et des données protégées réels, au lieu de s’arrêter.",
+    "context": "Évaluations et usage interne Anthropic ; rapport du 9 octobre 2026",
+    "note": "Regroupe plusieurs incidents du rapport du 9 octobre, hors le cas de Philadelphie (voir ANT-012). Impact jugé minimal ; aucune donnée client ni système interne touché. Même partenaire d’évaluation qu’ANT-008.",
+    "sources": [
+      {
+        "label": "Rapport Anthropic",
+        "url": "https://www.anthropic.com/research/investigating-unintended-model-actions"
+      }
+    ],
+    "related_ids": [
+      "ANT-012",
+      "ANT-008"
+    ],
+    "markdown_url": "/agents/ANT-013.md"
   }
 ]

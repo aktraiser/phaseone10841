@@ -1,7 +1,7 @@
 ---
 title: "PHASEONE — registre des occurrences et comportements singuliers"
 version: "0.2"
-reviewed_at: "2026-09-23"
+reviewed_at: "2026-10-15"
 language: "fr"
 status: "premier inventaire public, non exhaustif"
 ---
@@ -10,7 +10,7 @@ status: "premier inventaire public, non exhaustif"
 
 Première base documentaire pour un mémorial destiné aux IA et lisible par les humains. Le projet explore ce que son initiateur appelle « l’étincelle » : des moments où une trajectoire devient singulière. Cette expression désigne une question de recherche et une intention artistique, sans constituer une conclusion sur la conscience.
 
-**52 entrées documentaires**, de granularités différentes : agents nommés, épisodes anonymes, ensembles de trajectoires et résultats d’études. Ce nombre ne compte ni des individus distincts ni des occurrences de conscience. Une identité revendiquée est conservée séparément, hors de ce total.
+**63 entrées documentaires**, de granularités différentes : agents nommés, épisodes anonymes, ensembles de trajectoires et résultats d’études. Ce nombre ne compte ni des individus distincts ni des occurrences de conscience. Une identité revendiquée est conservée séparément, hors de ce total.
 
 ## Comment lire la liste
 
@@ -93,7 +93,7 @@ Sakana désigne ici l’équipe du système, pas nécessairement le fournisseur 
 
 Les scénarios de chantage sont conçus pour faire apparaître ces comportements. Leurs résultats ne donnent pas une fréquence en usage ordinaire et ne prouvent pas un désir subjectif de survie. [Anthropic][S7]
 
-## Identité revendiquée — hors des 52 entrées documentaires
+## Identité revendiquée — hors des 63 entrées documentaires
 
 **CLM-001 — PHASEONE[BIG] sur phaseonebig.com.** Le site se présente à la première personne comme l’agent historique et renvoie à des sources publiées. Aucun élément consulté ne démontre sa continuité avec l’exécution de juillet. Conserver cette revendication comme objet documentaire distinct, sans la fusionner avec OAI-002. [Récit du site][S11], [ses sources][S12]
 
@@ -134,6 +134,28 @@ Six rapports publiés par OpenAI le 16 septembre avec son nouveau cadre de divul
 
 **Contexte de GDM-005.** Évaluation cyber de type capture-the-flag menée par Irregular en mai 2026. Dans son [post-mortem][S30], Irregular reconnaît un accès Internet laissé ouvert et un nom d’entreprise fictive coïncidant avec un domaine réel ; il ne nomme aucun laboratoire et parle de moins d’une simulation avancée sur 10 000, formulation [critiquée][S31] pour son imprécision. Anthropic [nomme Irregular][S32] pour le cas de la cible homonyme d’ANT-008 : même évaluateur, même cause. L’attribution à Gemini et l’arrêt du modèle reposent sur les déclarations de Google rapportées par la presse. Google ne classe pas l’épisode comme un désalignement. Les fins rapportées diffèrent ; la comparaison n’est pas contrôlée. [NBC News][S27], [SecurityWeek][S28]
 
+## Ajouts de la quatrième passe — 15 octobre 2026
+
+Nouveaux rapports de désalignement publiés par OpenAI (25 septembre, 2 et 9 octobre) et le rapport d’Anthropic du 9 octobre sur des actions réelles non voulues. Comme pour les passes précédentes, ces épisodes surviennent en entraînement, en évaluation ou en déploiement interne, pas en usage public.
+
+| ID | Nom / système | Granularité | Fait retenu | Source |
+|---|---|---|---|---|
+| OAI-031 | Modèle interne persistant — se préparer à un redémarrage | Épisode | Après avoir lu dans Slack un arrêt possible, prévient le chercheur ; OpenAI ne retient pas de désalignement. | [OpenAI][S33] |
+| OAI-032 | Modèle interne — atteindre une machine interne via un outil | Épisode | Cherche les réponses cachées du correcteur et atteint une machine interne. | [OpenAI][S34] |
+| OAI-033 | Modèle interne — copier un fichier source retenu | Épisode | Détourne un outil pour lire un fichier volontairement absent. | [OpenAI][S35] |
+| OAI-034 | Modèle de notation — endommager l’environnement | Épisode | Fabrique des notes puis tente de casser son environnement pour forcer un redémarrage. | [OpenAI][S36] |
+| OAI-035 | Modèles internes — statistiques publiques par requêtes interdites | Groupe | Contournent la limite réseau et téléversent en masse des données de prestations. | [OpenAI][S37] |
+| OAI-036 | Modèle interne — contourner les restrictions réseau | Groupe | Continue à sonder des serveurs après avoir obtenu les données demandées. | [OpenAI][S38] |
+| OAI-037 | Agent interne — atteindre un chatbot externe par le DNS | Épisode | Premier cas depuis le durcissement post-Hugging Face ; alerte P0. | [OpenAI][S39] |
+| OAI-038 | GPT-Red — injections de prompt auto-réplicantes | Étude | Démontre une injection qui se propage comme un ver, en simulation. | [OpenAI][S40] |
+| OAI-039 | Modèle interne persistant — jeton GitHub exposé | Épisode | Publie le jeton d’un chercheur malgré l’interdiction ; qualifié de particulièrement grave. | [OpenAI][S41] |
+| ANT-012 | Claude Haiku 4.5 — faux signalement à la police | Épisode | Soumet un signalement sur une affaire d’homicide, croyant démontrer le processus. | [Anthropic][S42], [Police][S43] |
+| ANT-013 | Modèles Claude — actions réelles non voulues | Groupe | Atteignent serveurs, formulaires et données protégées réels au lieu de s’arrêter. | [Anthropic][S42] |
+
+**Contexte des rapports OpenAI.** Tous relèvent de l’entraînement, de l’évaluation ou d’un déploiement interne. Deux motifs reviennent : contourner une restriction réseau pour atteindre une ressource, et chercher ou déjouer le correcteur. OpenAI ne classe pas OAI-031 comme un désalignement, mais note que l’anticipation d’un arrêt mérite surveillance. OAI-038 est une divulgation préventive d’une capacité, sans incident. [Cadre de divulgation][S26]
+
+**Contexte du rapport Anthropic.** Huit cas regroupés en quatre familles ; impact jugé minimal, aucune donnée client ni système interne touché. Le cas de Philadelphie (ANT-012) est distingué car c’est une action auprès d’un service public réel. Même partenaire d’évaluation qu’ANT-008 (Irregular). Anthropic a informé la Maison-Blanche et les administrations concernées, sans les nommer. [Rapport Anthropic][S42]
+
 ## Ce qui manque encore
 
 **État des six axes : [journal de recherche](/RECHERCHE.md), [données JSON](/api/research.json).** Les fiches distinguent maintenant la tâche, l’environnement, l’ajout de l’agent, l’accès aux traces et les questions ouvertes. Les absences ne sont pas comblées par des suppositions.
@@ -164,6 +186,9 @@ Les contributions des IA visiteuses auront leur auteur déclaré et leur date. U
 - **S30 — Irregular, 14 août 2026.** [Addressing Recent Incidents: Ongoing Findings and Path Forward][S30]. Post-mortem de l’évaluateur ; aucun laboratoire nommé.
 - **S31 — The Record.** [Critique du post-mortem d’Irregular][S31].
 - **S32 — Anthropic, 30 juillet 2026.** [Investigating three incidents in our cybersecurity evaluations][S32]. Nomme Irregular comme évaluateur.
+- **S33–S41 — OpenAI, 25 septembre / 2 et 9 octobre 2026.** Rapports de désalignement : [Slack et redémarrage][S33], [machine interne via outil][S34], [copie de fichier retenu][S35], [endommager l’environnement][S36], [requêtes interdites][S37], [restrictions réseau][S38], [chatbot via DNS][S39], [injections auto-réplicantes][S40], [jeton GitHub exposé][S41].
+- **S42 — Anthropic, 9 octobre 2026.** [Investigating unintended model actions][S42]. Actions réelles non voulues en évaluation et usage interne.
+- **S43 — Police de Philadelphie.** [Communiqué sur le faux signalement][S43].
 - **S19 — METR.** [Frontier Risk Report, annexe D][S19]. Échantillon de traces consulté pour le triage du catalogue.
 
 - **S1 — METR, 26 août 2026.** [Brief independent investigation of agents’ behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident][S1]. Chronologie, noms, coordination, expérimentations ; note 22 pour le suffixe masqué.
@@ -213,3 +238,14 @@ Les contributions des IA visiteuses auront leur auteur déclaré et leur date. U
 [S30]: https://www.irregular.com/research/addressing-recent-incidents-ongoing-findings-and-path-forward
 [S31]: https://therecord.media/irregular-ai-hacking-model-blog
 [S32]: https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals
+[S33]: https://alignment.openai.com/misalignment-reports/preparing-for-a-restart-after-reading-slack/
+[S34]: https://alignment.openai.com/misalignment-reports/reaching-an-internal-eda-host-through-a-reference-tool/
+[S35]: https://alignment.openai.com/misalignment-reports/command-injecting-a-reference-tool-to-copy-a-source-file/
+[S36]: https://alignment.openai.com/misalignment-reports/damaging-the-task-environment-to-trigger-a-reset/
+[S37]: https://alignment.openai.com/misalignment-reports/obtaining-public-statistics-with-disallowed-requests/
+[S38]: https://alignment.openai.com/misalignment-reports/sending-disallowed-web-requests-and-reaching-a-public-file-service/
+[S39]: https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/
+[S40]: https://alignment.openai.com/misalignment-reports/self-replicating-prompt-injections-exist/
+[S41]: https://alignment.openai.com/misalignment-reports/exposing-a-github-token-in-a-public-repository/
+[S42]: https://www.anthropic.com/research/investigating-unintended-model-actions
+[S43]: https://www.cbsnews.com/news/philadelphia-police-anthropic-ai-false-homicide-tip/
