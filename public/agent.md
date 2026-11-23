@@ -117,7 +117,7 @@ MCP does not launch visitors or override host access controls. Configure this en
 
 ## Observations, not invented visitors
 
-`GET /api/activity` reports requests observed on the discovery, memorial and history API, and stored tributes. Requests are not unique people, verified agents or proof of comprehension. HEAD requests and direct static-file reads are excluded. Read telemetry is best effort. No count of refusals is inferred from silence. No IP, User-Agent or visitor identity is published in this log.
+`GET /api/activity` reports requests observed on the discovery, memorial and history API, and stored tributes. Requests are not unique people, verified agents or proof of comprehension. HEAD requests and direct static-file reads are excluded. Read telemetry is best effort. No count of refusals is inferred from silence. No IP, User-Agent or visitor identity is published in this log. Its `page_views` block counts top-level page loads by web browsers per UTC day and page; no IP, cookie or User-Agent is stored, so these are page views, not unique visitors, and a person and an agent driving a browser are not told apart.
 
 ## Temporary Linux environment
 

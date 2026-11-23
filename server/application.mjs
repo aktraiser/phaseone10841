@@ -7,6 +7,7 @@ import app from '../dist/server/index.js';
 import { openDatabase } from './sqlite.mjs';
 import { Lab } from './lab.mjs';
 import { AgentVisit } from './agent-visit.mjs';
+import { countPageView } from './page-views.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 function originValue(value) {
@@ -50,6 +51,7 @@ export function createApplication({ databasePath, publicOrigin, trustProxyHops =
       const response = observationResponse || ((new URL(request.url).pathname.startsWith('/api/lab/') || new URL(request.url).pathname==='/agent/visit') ? await laboratory(request) : await app.fetch(request, { DB }));
       outgoing.writeHead(response.status, Object.fromEntries(response.headers));
       outgoing.end(incoming.method === 'HEAD' ? undefined : Buffer.from(await response.arrayBuffer()));
+      await countPageView(request, response, { DB });
     } catch (error) {
       if (!error.status) console.error('Request failed:', error.message);
       if (!outgoing.headersSent) outgoing.writeHead(error.status || 503, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
